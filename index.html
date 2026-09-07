@@ -19,7 +19,7 @@ button{border:0;border-radius:9px;padding:10px 13px;font-weight:700;background:#
 
 .vehicle-preview .preview-box{background:linear-gradient(145deg,#0b1118,#182330);border:1px solid #344354;border-radius:14px;padding:10px;min-height:245px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .vehicle-preview svg{width:100%;height:230px;display:block}
-.vehicle-preview .photo-note{margin-top:7px;font-size:11px;color:#93a0ae}
+.vehicle-preview .photo-note{margin-top:7px;font-size:11px;color:#93a0ae}.build-label{font-size:11px;color:#aeb8c4;margin:10px 0 6px}
 .model-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .model-tag{background:#202b38;border:1px solid #344354;border-radius:99px;padding:5px 8px;font-size:10px}
 .status-ok{color:#69d394}.status-info{color:#f1c75b}
@@ -73,16 +73,26 @@ button{border:0;border-radius:9px;padding:10px 13px;font-weight:700;background:#
 </div></div>
 <div class="card vehicle-preview">
 <div style="display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:10px"><div><div class="muted" style="text-transform:uppercase;letter-spacing:.08em">Konfiguration</div><h2 style="margin:2px 0 0">Vald BMW</h2></div><div id="visualPrice" class="muted"></div></div>
-<div id="photoViewer" class="photo360"></div>
-<div id="previewBox" class="preview-box" style="display:none"></div>
+<div class="build-label">🚗 VALD BIL – färg och fälgar ändras direkt</div>
+<div id="previewBox" class="preview-box" style="min-height:280px"></div>
 <div id="imageCaption" class="muted"></div>
-<div class="photo-note">Riktiga modellbilder visas när vi har ett fotopaket för vald generation. Dra på bilden eller använd pilarna för att byta vy. För riktig 360° där färg, fälgar och tillval ändras på själva bilen behöver vi ett matchande 3D/360-paket för modellen.</div>
+<div id="photoViewer" class="photo360"></div>
+<div class="photo-note">Riktiga modellbilder visas när vi har ett fotopaket för vald generation. Dra på bilden eller använd pilarna för att byta vy. För riktig 360° där färg, fälgar och tillval ändras på själva bilen behövs ett matchande 3D/360-paket för modellen.</div>
 </div>
 
 <div class="card"><h2>2. Färg, interiör och hjul</h2><div class="form">
 <div><label>Exteriörfärg</label><select id="color"><option value="0">Alpinvit</option><option value="1">Jet Black</option><option value="2">Black Sapphire</option><option value="3">Space Grey</option><option value="4">Titan Silver</option><option value="5">Sparkling Graphite</option><option value="6">Le Mans Blue</option><option value="7">Monaco Blue</option><option value="8">Deep Green</option><option value="9">Imolaröd</option><option value="10">Melbourne Red</option><option value="11">Mineral White</option><option value="12">Mineral Grey</option><option value="13">Estoril Blue</option><option value="14">San Marino Blue</option><option value="15">Tanzanite Blue</option><option value="16">Frozen Grey</option></select></div>
 <div><label>Klädsel</label><select id="upholstery"><option value="0">Tyg</option><option value="1">Tyg/Alcantara</option><option value="2">Dakota-läder</option><option value="3">Nappa-läder</option><option value="4">Merino-läder</option><option value="5">Sensatec</option></select></div>
-<div><label>Fälgar</label><select id="wheels"><option value="0">Standardfälg</option><option value="1">16"</option><option value="2">17"</option><option value="3">18"</option><option value="4">19"</option><option value="5">20"</option><option value="6">M Sport</option><option value="7">Individual</option></select></div>
+<div><label>Fälgar</label><select id="wheels">
+<option value="17|Original">17" Original</option>
+<option value="17|M Sport">17" M Sport</option>
+<option value="18|Original">18" Original</option>
+<option value="18|M Sport">18" M Sport</option>
+<option value="19|Original">19" Original</option>
+<option value="19|M Sport">19" M Sport</option>
+<option value="20|Original">20" Original</option>
+<option value="20|M Sport">20" M Sport</option>
+</select></div>
 <div><label>Interiörlist</label><select id="interior"><option value="0">Svart</option><option value="1">Beige</option><option value="2">Grå</option><option value="3">Brun</option><option value="4">Aluminium</option><option value="5">Pianolack</option><option value="6">Fineline-trä</option><option value="7">Individual</option></select></div>
 </div></div>
 
@@ -110,7 +120,7 @@ button{border:0;border-radius:9px;padding:10px 13px;font-weight:700;background:#
 <script>
 const colors=["Alpinvit","Jet Black","Black Sapphire","Space Grey","Titan Silver","Sparkling Graphite","Le Mans Blue","Monaco Blue","Deep Green","Imolaröd","Melbourne Red","Mineral White","Mineral Grey","Estoril Blue","San Marino Blue","Tanzanite Blue","Frozen Grey"];
 const uphol=["Tyg","Tyg/Alcantara","Dakota-läder","Nappa-läder","Merino-läder","Sensatec"];
-const wheels=["Standardfälg","16\"","17\"","18\"","19\"","20\"","M Sport","Individual"];
+const wheels=["17\" Original","17\" M Sport","18\" Original","18\" M Sport","19\" Original","19\" M Sport","20\" Original","20\" M Sport"];
 const interiors=["Svart","Beige","Grå","Brun","Aluminium","Pianolack","Fineline-trä","Individual"];
 
 const OPTS=[
@@ -312,9 +322,8 @@ function photoSet(){
     viewer.innerHTML=`<div class="empty"><div style="font-size:34px">📸</div><b>Riktiga bilder för ${DB[S.si][0]} ${g.id}</b><br><span>Bildpaketet för denna generation läggs in här. Tills dess visas modellillustrationen nedan.</span></div>`;
     $("previewBox").style.display="flex"; return;
   }
-  $("previewBox").style.display="none";
   const i=photoIndex%pack.photos.length,p=pack.photos[i];
-  viewer.innerHTML=`<div class="stage" id="photoStage"><span class="badge360">● RIKTIG BILD • E61</span><img id="mainPhoto" src="${p.url}" alt="${pack.label} ${p.name}" draggable="false"><div class="arrows"><button id="prevPhoto" aria-label="Föregående vy">‹</button><button id="nextPhoto" aria-label="Nästa vy">›</button></div><span class="viewname">${p.name}</span></div><div class="viewbar">${pack.photos.map((x,j)=>`<button class="${j===i?'on':''}" data-view="${j}">${x.short}</button>`).join('')}<button class="soon" disabled>3D / 360°</button></div><div class="dots">${pack.photos.map((_,j)=>`<span class="dot ${j===i?'on':''}"></span>`).join('')}</div><div class="thumbs">${pack.photos.map((x,j)=>`<button class="thumb ${j===i?'on':''}" data-i="${j}"><img src="${x.url}" alt="${x.name}"></button>`).join('')}</div><div class="credits">Bild: ${p.source}. <a href="${p.page}" target="_blank" rel="noopener" style="color:#8eb9ff">Bildkälla/licens</a>. Bilderna är inte färg-/fälgkonfigurerbara ännu.</div>`;
+  viewer.innerHTML=`<div class="stage" id="photoStage"><span class="badge360">● RIKTIG BILD • E61</span><img id="mainPhoto" src="${p.url}" alt="${pack.label} ${p.name}" draggable="false"><div class="arrows"><button id="prevPhoto" aria-label="Föregående vy">‹</button><button id="nextPhoto" aria-label="Nästa vy">›</button></div><span class="viewname">${p.name}</span></div><div class="viewbar">${pack.photos.map((x,j)=>`<button class="${j===i?'on':''}" data-view="${j}">${x.short}</button>`).join('')}<button class="soon" disabled>3D / 360°</button></div><div class="dots">${pack.photos.map((_,j)=>`<span class="dot ${j===i?'on':''}"></span>`).join('')}</div><div class="thumbs">${pack.photos.map((x,j)=>`<button class="thumb ${j===i?'on':''}" data-i="${j}"><img src="${x.url}" alt="${x.name}"></button>`).join('')}</div><div class="credits">Bild: ${p.source}. <a href="${p.page}" target="_blank" rel="noopener" style="color:#8eb9ff">Bildkälla/licens</a>. Fotot är en riktig E61-bild. Den konfigurerade byggbilden under fotot ändras efter vald färg och fälg.</div>`;
   $("prevPhoto").onclick=()=>{photoIndex=(i-1+pack.photos.length)%pack.photos.length;photoSet()};
   $("nextPhoto").onclick=()=>{photoIndex=(i+1)%pack.photos.length;photoSet()};
   document.querySelectorAll('.photo360 .thumb,.photo360 .viewbar button[data-view]').forEach(b=>b.onclick=()=>{photoIndex=+(b.dataset.i??b.dataset.view);photoSet()});
@@ -329,16 +338,34 @@ function updateImage(){
   let g=cur(),box=$("previewBox"),year=(g.years&&g.years[S.year])||g.years[0],body=(g.bodies&&g.bodies[S.body])||g.bodies[0];
   let type=String(body).toLowerCase(), series=DB[S.si][0], gen=g.id;
   const colorMap={"Alpinvit":"#f4f4f2","Jet Black":"#15171a","Black Sapphire":"#101923","Space Grey":"#68727c","Titan Silver":"#b7bec5","Sparkling Graphite":"#4f5962","Le Mans Blue":"#2459a6","Monaco Blue":"#172f57","Deep Green":"#274a36","Imolaröd":"#8f1720","Melbourne Red":"#a51d26","Mineral White":"#e8e8e3","Mineral Grey":"#6d747b","Estoril Blue":"#2d68c0","San Marino Blue":"#173e8a","Tanzanite Blue":"#183b61","Frozen Grey":"#7b8185"};
-  const c=colorMap[$("color").value]||"#3f8cff";
-  const wheelName=$("wheels").value||"Standardfälg";
-  const mSport=S.chosen.has("337")||wheelName==="M Sport";
+  const colorName=$("color").options[$("color").selectedIndex]?.text||"Alpinvit"; const c=colorMap[colorName]||"#f4f4f2";
+  const wheelValue=$("wheels").value||"17|Original";
+  const wheelParts=wheelValue.split("|");
+  const wheelSize=Number(wheelParts[0])||17;
+  const wheelType=wheelParts[1]||"Original";
+  const wheelName=`${wheelSize}" ${wheelType}`;
+  const wheelMSport=wheelType==="M Sport";
+  const mSport=S.chosen.has("337")||wheelMSport;
   const sun=S.chosen.has("403")||S.chosen.has("402");
   let bodyPath=type.includes("suv")?"M48 112 Q65 93 104 87 L145 55 Q190 45 275 58 Q330 66 355 103 L392 113 L382 143 L58 143 Z":"M48 112 Q70 95 112 91 L154 59 Q205 48 274 60 Q326 68 350 104 L392 114 L382 143 L58 143 Z";
   if(type.includes("cabriolet")) bodyPath="M48 112 Q78 94 124 91 L168 70 Q220 55 278 69 Q326 76 351 105 L392 114 L382 143 L58 143 Z";
   let roofPath=type.includes("suv")?"M104 87 L145 55 Q190 45 275 58 Q330 66 355 103":"M112 91 L154 59 Q205 48 274 60 Q326 68 350 104";
-  const wheelStyle = wheelName==="M Sport" ? "<circle cx='132' cy='134' r='25'/><circle cx='308' cy='134' r='25'/><circle cx='132' cy='134' r='16' fill='none' stroke='#bfc7d0' stroke-width='4'/><circle cx='308' cy='134' r='16' fill='none' stroke='#bfc7d0' stroke-width='4'/><path d='M120 122l24 24M144 122l-24 24M296 122l24 24M320 122l-24 24' stroke='#bfc7d0' stroke-width='3'/>" :
-    wheelName==="Individual" ? "<circle cx='132' cy='134' r='25'/><circle cx='308' cy='134' r='25'/><circle cx='132' cy='134' r='14' fill='none' stroke='#d8dde3' stroke-width='3'/><circle cx='308' cy='134' r='14' fill='none' stroke='#d8dde3' stroke-width='3'/><path d='M132 119v30M117 134h30M308 119v30M293 134h30' stroke='#d8dde3' stroke-width='3'/>" :
-    "<circle cx='132' cy='134' r='25'/><circle cx='308' cy='134' r='25'/><circle cx='132' cy='134' r='11' fill='#59636e'/><circle cx='308' cy='134' r='11' fill='#59636e'/><circle cx='132' cy='134' r='4' fill='#b8c1cb'/><circle cx='308' cy='134' r='4' fill='#b8c1cb'/>";
+  const wheelR={17:22,18:24,19:26,20:29}[wheelSize]||22;
+  const wheelStyle = wheelMSport ? `
+    <g fill="#111820" stroke="#d6dde5" stroke-width="2">
+      <circle cx="132" cy="134" r="${wheelR}"/><circle cx="308" cy="134" r="${wheelR}"/>
+      <circle cx="132" cy="134" r="${Math.max(9,wheelR-7)}" fill="#2c343d"/><circle cx="308" cy="134" r="${Math.max(9,wheelR-7)}" fill="#2c343d"/>
+      <path d="M132 ${134-wheelR+4} L132 ${134+wheelR-4} M${132-wheelR+4} 134 L${132+wheelR-4} 134 M${132-wheelR+3} ${134-wheelR+3} L${132+wheelR-3} ${134+wheelR-3} M${132+wheelR-3} ${134-wheelR+3} L${132-wheelR+3} ${134+wheelR-3}"/>
+      <path d="M308 ${134-wheelR+4} L308 ${134+wheelR-4} M${308-wheelR+4} 134 L${308+wheelR-4} 134 M${308-wheelR+3} ${134-wheelR+3} L${308+wheelR-3} ${134+wheelR-3} M${308+wheelR-3} ${134-wheelR+3} L${308-wheelR+3} ${134+wheelR-3}"/>
+      <circle cx="132" cy="134" r="5" fill="#b8c1cb"/><circle cx="308" cy="134" r="5" fill="#b8c1cb"/>
+    </g>` : `
+    <g fill="#151b22" stroke="#c7ced6" stroke-width="2">
+      <circle cx="132" cy="134" r="${wheelR}"/><circle cx="308" cy="134" r="${wheelR}"/>
+      <circle cx="132" cy="134" r="${Math.max(9,wheelR-8)}" fill="#59636e"/><circle cx="308" cy="134" r="${Math.max(9,wheelR-8)}" fill="#59636e"/>
+      <path d="M132 ${134-wheelR+5} L132 ${134+wheelR-5} M${132-wheelR+5} 134 L${132+wheelR-5} 134"/>
+      <path d="M${132-wheelR+4} ${134-wheelR+4} L${132+wheelR-4} ${134+wheelR-4} M${132+wheelR-4} ${134-wheelR+4} L${132-wheelR+4} ${134+wheelR-4}"/>
+      <circle cx="132" cy="134" r="5" fill="#b8c1cb"/><circle cx="308" cy="134" r="5" fill="#b8c1cb"/>
+    </g>`;
   const roofExtra=sun?"<path d='M176 66 Q214 56 259 64 L286 77 L173 78 Z' fill='#273c4e' stroke='#b8d9f5' stroke-width='2'/><path d='M176 68 Q216 59 258 66' fill='none' stroke='#6f9abb' stroke-width='2'/>":"";
   const sportExtra=mSport?"<path d='M52 126 L70 121 L82 139 L60 139 Z' fill='#20262d'/><path d='M370 121 L390 117 L382 140 L364 140 Z' fill='#20262d'/>":"";
   box.innerHTML=`<svg viewBox="0 0 440 190" role="img" aria-label="${series} ${gen} ${year}">
@@ -353,12 +380,12 @@ function updateImage(){
     <text x="220" y="25" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">BMW ${series} ${gen}</text>
     <text x="220" y="173" text-anchor="middle" fill="#aab8c8" font-size="12">${year} • ${body} • ${wheelName}${sun?" • Taklucka": ""}</text>
   </svg>`;
-  $("imageCaption").innerHTML=`<span class="status-ok">● Visar bygget:</span> ${series} ${gen} — ${year} — ${body} — ${$("color").value||"Färg"} — ${wheelName}${sun?" — Taklucka":""}`;
+  $("imageCaption").innerHTML=`<span class="status-ok">● Visar bygget:</span> ${series} ${gen} — ${year} — ${body} — ${colorName} — ${wheelName}${sun?" — Taklucka":""}`;
 }
 function save(){let a=document.createElement("a"),txt=$("summary").innerText+"\\n\\n"+$("selected").innerText+"\\n\\nTOTAL: "+$("total").innerText;a.href=URL.createObjectURL(new Blob([txt],{type:"text/plain"}));a.download="BMW-bygge.txt";a.click()}
 function reset(){S.chosen.clear();S.cat="Alla";init()}
 $("series").onchange=()=>{S.si=+$("series").value;refreshG()};$("generation").onchange=()=>{S.gi=+$("generation").value;S.year=0;S.chosen.clear();refreshData()};["year","body","engine","drive","gear","trim","color","upholstery","wheels","interior"].forEach(id=>$(id).onchange=()=>{if(["year","body","engine"].includes(id))S[id]=+$(`${id}`).value;if(id==="year"&&isE61()){S.engine=0;S.gear=0;refreshData();return}refreshUI();updateImage()});
-try{init();}catch(e){
+try{init();updateImage();}catch(e){
   // Keep the visible fallback options if dynamic database initialization fails.
   document.querySelectorAll("#options input").forEach(i=>i.onchange=summary);
   summary();
