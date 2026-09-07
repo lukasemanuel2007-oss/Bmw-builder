@@ -23,6 +23,24 @@ button{border:0;border-radius:9px;padding:10px 13px;font-weight:700;background:#
 .model-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .model-tag{background:#202b38;border:1px solid #344354;border-radius:99px;padding:5px 8px;font-size:10px}
 .status-ok{color:#69d394}.status-info{color:#f1c75b}
+
+/* Real-photo / 360 viewer */
+.photo360{background:#080c11;border:1px solid #344354;border-radius:16px;overflow:hidden;position:relative}
+.photo360 .stage{position:relative;aspect-ratio:16/9;min-height:250px;background:radial-gradient(circle at 50% 45%,#24384c,#0a0f15 72%);display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none}
+.photo360 .stage img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .18s ease,transform .18s ease;cursor:grab}
+.photo360 .stage img:active{cursor:grabbing}
+.photo360 .badge360{position:absolute;top:12px;left:12px;background:#0a0e13dd;border:1px solid #48617c;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;z-index:3}
+.photo360 .viewname{position:absolute;bottom:12px;left:12px;background:#0a0e13dd;border:1px solid #3d5269;border-radius:9px;padding:7px 10px;font-size:11px;z-index:3}
+.photo360 .arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none;z-index:4}
+.photo360 .arrows button{pointer-events:auto;width:42px;height:42px;border-radius:50%;padding:0;background:#0a0e13cc;border:1px solid #526a83;font-size:22px}
+.photo360 .dots{display:flex;justify-content:center;gap:6px;padding:9px 8px 4px}
+.photo360 .dot{width:8px;height:8px;border-radius:50%;background:#465466}.photo360 .dot.on{background:#2877ff;transform:scale(1.25)}
+.photo360 .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:8px}
+.photo360 .thumb{border:1px solid #2f3b49;border-radius:9px;overflow:hidden;background:#111821;padding:0;aspect-ratio:4/3;cursor:pointer}
+.photo360 .thumb.on{border:2px solid #2877ff}.photo360 .thumb img{width:100%;height:100%;object-fit:cover}
+.photo360 .credits{font-size:9px;color:#7f8d9d;padding:2px 10px 10px;line-height:1.4}.viewbar{display:flex;gap:6px;flex-wrap:wrap;padding:9px 8px 2px}.viewbar button{flex:1;min-width:68px;background:#18222d;border:1px solid #344354;color:#cbd5df;font-size:11px;padding:8px 7px}.viewbar button.on{background:#2877ff;border-color:#2877ff;color:#fff}.viewbar button.soon{opacity:.55}
+.photo360 .empty{padding:45px 20px;text-align:center;color:#aeb8c4}.photo360 .empty b{color:#fff}
+
 </style>
 
 <meta name="theme-color" content="#0a0e13">
@@ -54,10 +72,11 @@ button{border:0;border-radius:9px;padding:10px 13px;font-weight:700;background:#
 <div><label>Utrustningsnivå</label><select id="trim"><option value="0">Standard</option><option value="1">SE</option><option value="2">Advantage</option><option value="3">Luxury Line</option><option value="4">Sport Line</option><option value="5">M Sport</option><option value="6">M Performance</option><option value="7">Individual</option></select></div>
 </div></div>
 <div class="card vehicle-preview">
-<h2>Bild på vald BMW</h2>
-<div id="previewBox" class="preview-box"></div>
+<div style="display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:10px"><div><div class="muted" style="text-transform:uppercase;letter-spacing:.08em">Konfiguration</div><h2 style="margin:2px 0 0">Vald BMW</h2></div><div id="visualPrice" class="muted"></div></div>
+<div id="photoViewer" class="photo360"></div>
+<div id="previewBox" class="preview-box" style="display:none"></div>
 <div id="imageCaption" class="muted"></div>
-<div class="photo-note">Bildvisningen är en inbyggd modellillustration så att den fungerar även utan internet. Den visar vald kaross/generation.</div>
+<div class="photo-note">Riktiga modellbilder visas när vi har ett fotopaket för vald generation. Dra på bilden eller använd pilarna för att byta vy. För riktig 360° där färg, fälgar och tillval ändras på själva bilen behöver vi ett matchande 3D/360-paket för modellen.</div>
 </div>
 
 <div class="card"><h2>2. Färg, interiör och hjul</h2><div class="form">
@@ -271,8 +290,42 @@ if(code=="322"&&y<2004)return false;
 if(code=="3AT"&&!(body.includes("Touring")||body.includes("SUV")||body.includes("Gran Tourer")||body.includes("Active Tourer")))return false;
 return true}
 function renderOptions(){let list=OPTS.filter(x=>S.cat=="Alla"||x[0]==S.cat);$("options").innerHTML=list.map(x=>{let ok=allowed(x);return `<div class="opt"><label><input type="checkbox" data-code="${x[1]}" ${S.chosen.has(x[1])?"checked":""} ${ok?"":"disabled"}><span><b>${x[1]} – ${x[2]}</b><div class="price">+ ${x[3].toLocaleString("sv-SE")} kr</div>${ok?"":"<div class='code'>Ej tillgängligt för vald kombination</div>"}</span></label></div>`}).join("");document.querySelectorAll("#options input").forEach(i=>i.onchange=()=>{i.checked?S.chosen.add(i.dataset.code):S.chosen.delete(i.dataset.code);summary();updateImage()})}
-function summary(){let g=cur(),base=g.base,total=base,chosen=[];S.chosen.forEach(c=>{let x=OPTS.find(o=>o[1]==c);if(x&&allowed(x)){total+=x[3];chosen.push(x)}else S.chosen.delete(c)});$("summary").innerHTML=`<b>${DB[S.si][0]} ${g.id}</b><br>${g.years[S.year]} • ${g.bodies[S.body]} • ${currentEngines()[S.engine]} • ${currentGears()[S.gear]}<br>Färg: ${$("color").value||"-"} • Klädsel: ${$("upholstery").value||"-"} • ${$("wheels").value||"-"}`;$("total").textContent=total.toLocaleString("sv-SE")+" kr";$("selected").innerHTML=chosen.length?chosen.map(x=>`<div class="line"><span>${x[1]} ${x[2]}</span><b>+${x[3].toLocaleString("sv-SE")}</b></div>`).join(""):"<p class='muted'>Inga extra tillval valda.</p>"}
+function summary(){let g=cur(),base=g.base,total=base,chosen=[];S.chosen.forEach(c=>{let x=OPTS.find(o=>o[1]==c);if(x&&allowed(x)){total+=x[3];chosen.push(x)}else S.chosen.delete(c)});$("summary").innerHTML=`<b>${DB[S.si][0]} ${g.id}</b><br>${g.years[S.year]} • ${g.bodies[S.body]} • ${currentEngines()[S.engine]} • ${currentGears()[S.gear]}<br>Färg: ${$("color").value||"-"} • Klädsel: ${$("upholstery").value||"-"} • ${$("wheels").value||"-"}`;$("total").textContent=total.toLocaleString("sv-SE")+" kr"; if($("visualPrice")) $("visualPrice").textContent=total.toLocaleString("sv-SE")+" kr";$("selected").innerHTML=chosen.length?chosen.map(x=>`<div class="line"><span>${x[1]} ${x[2]}</span><b>+${x[3].toLocaleString("sv-SE")}</b></div>`).join(""):"<p class='muted'>Inga extra tillval valda.</p>"}
+const PHOTO_DB={
+  "E61":{
+    label:"BMW 5-serie Touring E61",
+    photos:[
+      {name:"Fram",short:"Fram",url:"https://upload.wikimedia.org/wikipedia/commons/e/e7/BMW_5er_Touring_%28E61%29_front-1.JPG",source:"Luftfahrrad • CC BY-SA 3.0",page:"https://commons.wikimedia.org/wiki/File:BMW_5er_Touring_(E61)_front-1.JPG"},
+      {name:"Vänster / sida",short:"Vänster",url:"https://upload.wikimedia.org/wikipedia/commons/5/5b/BMW_525d_xDrive_Touring_%28E61%2C_Facelift%29_%E2%80%93_Seitenansicht%2C_26._Juni_2011%2C_Mettmann.jpg",source:"M 93 • CC BY-SA 3.0 DE",page:"https://commons.wikimedia.org/wiki/File:BMW_525d_xDrive_Touring_(E61,_Facelift)_–_Seitenansicht,_26._Juni_2011%2C_Mettmann.jpg"},
+      {name:"Bak",short:"Bak",url:"https://upload.wikimedia.org/wikipedia/commons/8/85/BMW_5er_Touring_%28E61%29_rear-1.JPG",source:"Luftfahrrad • CC BY-SA 3.0",page:"https://commons.wikimedia.org/wiki/File:BMW_5er_Touring_(E61)_rear-1.JPG"},
+      {name:"Fram 3/4",short:"3/4",url:"https://upload.wikimedia.org/wikipedia/commons/5/5b/BMW_525d_xDrive_Touring_%28E61%2C_Facelift%29_%E2%80%93_Seitenansicht%2C_26._Juni_2011%2C_Mettmann.jpg",source:"M 93 • CC BY-SA 3.0 DE",page:"https://commons.wikimedia.org/wiki/File:BMW_525d_xDrive_Touring_(E61,_Facelift)_–_Seitenansicht,_26._Juni_2011%2C_Mettmann.jpg"}
+    ]
+  }
+};
+let photoIndex=0;
+let photoStartX=null;
+function photoSet(){
+  const g=cur(),viewer=$("photoViewer");
+  if(!viewer)return;
+  const pack=PHOTO_DB[g.id];
+  if(!pack){
+    viewer.innerHTML=`<div class="empty"><div style="font-size:34px">📸</div><b>Riktiga bilder för ${DB[S.si][0]} ${g.id}</b><br><span>Bildpaketet för denna generation läggs in här. Tills dess visas modellillustrationen nedan.</span></div>`;
+    $("previewBox").style.display="flex"; return;
+  }
+  $("previewBox").style.display="none";
+  const i=photoIndex%pack.photos.length,p=pack.photos[i];
+  viewer.innerHTML=`<div class="stage" id="photoStage"><span class="badge360">● RIKTIG BILD • E61</span><img id="mainPhoto" src="${p.url}" alt="${pack.label} ${p.name}" draggable="false"><div class="arrows"><button id="prevPhoto" aria-label="Föregående vy">‹</button><button id="nextPhoto" aria-label="Nästa vy">›</button></div><span class="viewname">${p.name}</span></div><div class="viewbar">${pack.photos.map((x,j)=>`<button class="${j===i?'on':''}" data-view="${j}">${x.short}</button>`).join('')}<button class="soon" disabled>3D / 360°</button></div><div class="dots">${pack.photos.map((_,j)=>`<span class="dot ${j===i?'on':''}"></span>`).join('')}</div><div class="thumbs">${pack.photos.map((x,j)=>`<button class="thumb ${j===i?'on':''}" data-i="${j}"><img src="${x.url}" alt="${x.name}"></button>`).join('')}</div><div class="credits">Bild: ${p.source}. <a href="${p.page}" target="_blank" rel="noopener" style="color:#8eb9ff">Bildkälla/licens</a>. Bilderna är inte färg-/fälgkonfigurerbara ännu.</div>`;
+  $("prevPhoto").onclick=()=>{photoIndex=(i-1+pack.photos.length)%pack.photos.length;photoSet()};
+  $("nextPhoto").onclick=()=>{photoIndex=(i+1)%pack.photos.length;photoSet()};
+  document.querySelectorAll('.photo360 .thumb,.photo360 .viewbar button[data-view]').forEach(b=>b.onclick=()=>{photoIndex=+(b.dataset.i??b.dataset.view);photoSet()});
+  const stage=$("photoStage");
+  stage.ontouchstart=e=>{photoStartX=e.touches[0].clientX};
+  stage.ontouchend=e=>{if(photoStartX===null)return;let dx=e.changedTouches[0].clientX-photoStartX;photoStartX=null;if(Math.abs(dx)>35){photoIndex=(i+(dx<0?1:-1)+pack.photos.length)%pack.photos.length;photoSet()}};
+  stage.onmousedown=e=>{photoStartX=e.clientX};
+  stage.onmouseup=e=>{if(photoStartX===null)return;let dx=e.clientX-photoStartX;photoStartX=null;if(Math.abs(dx)>35){photoIndex=(i+(dx<0?1:-1)+pack.photos.length)%pack.photos.length;photoSet()}};
+}
 function updateImage(){
+  photoSet();
   let g=cur(),box=$("previewBox"),year=(g.years&&g.years[S.year])||g.years[0],body=(g.bodies&&g.bodies[S.body])||g.bodies[0];
   let type=String(body).toLowerCase(), series=DB[S.si][0], gen=g.id;
   const colorMap={"Alpinvit":"#f4f4f2","Jet Black":"#15171a","Black Sapphire":"#101923","Space Grey":"#68727c","Titan Silver":"#b7bec5","Sparkling Graphite":"#4f5962","Le Mans Blue":"#2459a6","Monaco Blue":"#172f57","Deep Green":"#274a36","Imolaröd":"#8f1720","Melbourne Red":"#a51d26","Mineral White":"#e8e8e3","Mineral Grey":"#6d747b","Estoril Blue":"#2d68c0","San Marino Blue":"#173e8a","Tanzanite Blue":"#183b61","Frozen Grey":"#7b8185"};
