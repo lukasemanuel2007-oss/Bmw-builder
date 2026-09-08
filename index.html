@@ -195,9 +195,68 @@ button{border-radius:10px}
 @media(max-width:620px){.suite-grid,.suite-grid.three,.car-grid{grid-template-columns:1fr}.suite-card{padding:13px}}
 </style>
 
+
+<style id="garage-polish-css">
+/* Premium app-like Garage */
+#garageSuite{max-width:980px;margin:18px auto 40px}
+#garageSuite .suite-card{border-radius:22px;background:linear-gradient(145deg,#121c27,#0a1118);border-color:#2b3d50}
+#garageCard{position:relative;overflow:hidden}
+#garageCard:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,#2877ff,#66b7ff,transparent)}
+.garage-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.garage-empty{padding:30px 14px;text-align:center;border:1px dashed #314457;border-radius:17px;background:#0b131c;color:#91a1b2}
+.garage-empty .big{font-size:38px;margin-bottom:7px}
+.garage-card{position:relative;overflow:hidden;border:1px solid #2b4054;border-radius:18px;background:#0a121a;cursor:pointer;transition:.18s}
+.garage-card:hover{transform:translateY(-2px);border-color:#3d8fff}
+.garage-card .hero{height:155px;background:radial-gradient(circle at 50% 40%,#263c52,#080e14 75%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.garage-card .hero img{width:100%;height:100%;object-fit:cover}
+.garage-card .hero .car-art{font-size:58px;opacity:.9}
+.garage-card .gb{padding:13px}
+.garage-card .gt{font-size:16px;font-weight:850}
+.garage-card .gs{font-size:11px;color:#8fa1b3;margin-top:3px}
+.garage-card .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.garage-card .chip{font-size:10px;padding:5px 7px;border-radius:99px;background:#152538;color:#a9d0ff;border:1px solid #233d58}
+.garage-card .open{width:100%;margin:10px 0 0;padding:10px;border-radius:11px;background:#1c73e8;color:#fff}
+.profile-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.profile-back{background:#172431;border:1px solid #2d4053!important}
+.profile-title{font-size:21px;font-weight:850}
+.profile-tabs{display:flex;gap:6px;overflow:auto;margin:0 0 12px;padding-bottom:2px}
+.profile-tabs button{white-space:nowrap;background:#101b26;border:1px solid #2b3e51;color:#aebdcb}
+.profile-tabs button.on{background:#2877ff;border-color:#2877ff;color:#fff}
+.profile-panel{display:none}
+.profile-panel.on{display:block}
+.quick-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.quick-metric{background:#0b141d;border:1px solid #26394b;border-radius:13px;padding:10px}
+.quick-metric b{display:block;font-size:16px}
+.quick-metric span{color:#8295a8;font-size:10px}
+@media(max-width:620px){.garage-card .hero{height:135px}.quick-metrics{grid-template-columns:1fr 1fr}.garage-head{align-items:flex-start;flex-direction:column}}
+</style>
+
+<style id="appStyleUpgrade">
+html{scroll-behavior:smooth}
+body{padding-bottom:80px}
+header,.header,.topbar{position:sticky;top:0;z-index:500;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+#appNav{position:sticky;top:76px;z-index:490;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:9px;margin:0 auto 14px;max-width:980px;background:rgba(7,12,18,.88);border:1px solid #243548;border-radius:18px;box-shadow:0 10px 35px #0007}
+#appNav button{border:1px solid #263a4e;background:#101923;color:#b9c8d6;border-radius:13px;padding:12px 7px;font-weight:800;font-size:11px;min-height:52px}
+#appNav button.active{background:linear-gradient(180deg,#287dff,#1760ce);border-color:#4b9aff;color:#fff;box-shadow:0 5px 18px #1760ce55}
+#appNav button span{display:block;font-size:18px;margin-bottom:3px}
+.page-section{scroll-margin-top:145px}
+#stepBuilder{margin-top:10px}
+#stepBuilder>.sb-card{border-radius:24px}
+#garageSuite{margin-top:12px}
+.suite-card h2{letter-spacing:-.02em}
+@media(max-width:650px){
+ #appNav{top:70px;margin-left:7px;margin-right:7px;gap:5px;padding:7px;border-radius:16px}
+ #appNav button{font-size:9px;padding:8px 4px;min-height:48px}
+ #appNav button span{font-size:17px}
+}
+</style>
+
+<style id="yearAccuracyNote">
+#sbYear:after{content:"E61: 2004–2010";display:block;color:#7890a5;font-size:10px;margin-top:5px}
+</style>
 </head>
 <body>
-<div id="installHint" style="position:fixed;left:10px;right:10px;bottom:12px;z-index:9999;background:#182330;border:1px solid #3d5269;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 10px 35px #0008;font-size:13px">
+<div id="installHint" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;max-width:520px;margin:auto;background:#182330;border:1px solid #3d5269;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 10px 35px #0008;font-size:13px">
   <b>📱 BMW Builder</b><br>
   Öppna denna sida i Safari och välj <b>Dela → Lägg till på hemskärmen → Öppna som webbapp</b>.
   <button onclick="this.parentElement.remove()" style="float:right;margin-top:-22px;background:#2877ff;color:white;border:0;border-radius:8px;padding:5px 9px">OK</button>
@@ -357,7 +416,7 @@ const DB=[
 ];
 
 const IMG={"E61":"https://s1.cdn.autoevolution.com/images/gallery/BMW-5-Series-Touring--E61--1698_31.jpg","E60":"https://s1.cdn.autoevolution.com/images/gallery/BMW-5-Series-Touring--E61--1698_31.jpg"};
-const E61_DATA={2004:{engines:["520i","525i","525d","530i","530d","545i"],gears:["Manuell","Automat"]},2005:{engines:["520i","525i","525d","530i","530d","545i"],gears:["Manuell","Automat"]},2006:{engines:["520i","523i","525i","525d","530i","530d","535d","545i","550i"],gears:["Manuell","Automat"]},2007:{engines:["520d","523i","525i","525d","530i","530d","535d","550i","M5"],gears:["Manuell","Automat","SMG"]},2008:{engines:["520d","523i","525i","530i","530d","535d","550i","M5"],gears:["Manuell","Automat","SMG"]},2009:{engines:["520d","523i","525i","530i","530d","535d","550i"],gears:["Manuell","Automat"]},2010:{engines:["520d","523i","525i","530i","530d","535d","550i"],gears:["Manuell","Automat"]}};
+const E61_DATA={2004:{engines:["520i","525i","525d","530i","530d","535d","545i"],gears:["Manuell","Automat"]},2005:{engines:["520i","525i","525d","530i","530d","535d","545i","520d"],gears:["Manuell","Automat"]},2006:{engines:["520i","525i","525d","530i","530d","535d","545i","550i","520d"],gears:["Manuell","Automat"]},2007:{engines:["520i","523i","525i","525d","530i","530d","535d","550i","520d","M5"],gears:["Manuell","Automat","SMG"]},2008:{engines:["520i","523i","525i","525d","530i","530d","535d","550i","520d","M5"],gears:["Manuell","Automat","SMG"]},2009:{engines:["520i","525i","525d","530i","530d","535d","550i","520d","M5"],gears:["Manuell","Automat","SMG"]},2010:{engines:["520i","525i","525d","530i","530d","535d","550i","520d","M5"],gears:["Manuell","Automat","SMG"]}};
 const E61_OPTS=new Set(["403","402","456","459","481","494","522","524","5AC","508","609","610","544","676","677","688","6FL","3AC","761","337","715","2TB","2VH","5DP","654","420"]);
 function isE61(){return DB[S.si][0]==="5-serie"&&cur().id==="E61";}
 function currentEngines(){let g=cur(),y=g.years[S.year]||g.years[0];return isE61()&&E61_DATA[y]?E61_DATA[y].engines:g.engines;}
@@ -373,19 +432,20 @@ const MODEL_RULES = {
     bodies:["Touring"],
     years:[2004,2005,2006,2007,2008,2009,2010],
     enginesByYear:{
-      2004:["520i","525i","530i","545i","520d","525d","530d","535d"],
-      2005:["520i","525i","530i","545i","520d","525d","530d","535d"],
-      2006:["520i","523i","525i","530i","550i","520d","525d","530d","535d"],
-      2007:["520i","523i","525i","530i","550i","520d","525d","530d","535d"],
-      2008:["520i","523i","525i","530i","550i","520d","525d","530d","535d"],
-      2009:["520i","523i","525i","530i","550i","520d","525d","530d","535d"],
-      2010:["520i","523i","525i","530i","550i","520d","525d","530d","535d"]
-    },
+      2004:["520i","525i","525d","530i","530d","535d","545i"],
+      2005:["520i","525i","525d","530i","530d","535d","545i","520d"],
+      2006:["520i","525i","525d","530i","530d","535d","545i","550i","520d"],
+      2007:["520i","523i","525i","525d","530i","530d","535d","550i","520d","M5"],
+      2008:["520i","523i","525i","525d","530i","530d","535d","550i","520d","M5"],
+      2009:["520i","525i","525d","530i","530d","535d","550i","520d","M5"],
+      2010:["520i","525i","525d","530i","530d","535d","550i","520d","M5"]
+,
     gearsByEngine:{
       "520d":["Manuell","6-stegad Steptronic"],
       "525d":["Manuell","6-stegad Steptronic"],
       "530d":["Manuell","6-stegad Steptronic"],
       "535d":["6-stegad Steptronic"],
+      "M5":["SMG"],
       "520i":["Manuell","6-stegad Steptronic"],
       "523i":["Manuell","6-stegad Steptronic"],
       "525i":["Manuell","6-stegad Steptronic"],
@@ -777,6 +837,74 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
 #stepBuilder .sb-native-select{width:100%;background:#111c27;border:1px solid #31485c;color:#fff;border-radius:10px;padding:11px;font-size:15px}
 </style>
 
+
+
+<style id="cleanAppLayout">
+/* Ren appstruktur: startsida -> en funktion i taget */
+body>.wrap{display:none!important}
+#appNav{display:none!important}
+#appHome{max-width:980px;margin:18px auto;padding:14px}
+.app-home-title{font-size:28px;font-weight:900;margin:8px 0 4px}
+.app-home-sub{color:#91a1b2;margin-bottom:18px}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.home-choice{appearance:none;border:1px solid #2b4055;background:linear-gradient(180deg,#121d28,#0b1219);color:#fff;border-radius:20px;padding:22px 16px;text-align:left;min-height:150px;cursor:pointer;box-shadow:0 12px 30px #0005;transition:.18s}
+.home-choice:hover{transform:translateY(-2px);border-color:#3e79b7}
+.home-choice .ico{font-size:32px;margin-bottom:12px}.home-choice b{display:block;font-size:19px}.home-choice span{display:block;color:#91a1b2;font-size:13px;margin-top:5px;line-height:1.4}
+.app-screen{max-width:980px;margin:14px auto;padding:0 14px}
+.app-screen-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.app-back{border:1px solid #304254;background:#111b25;color:#fff;border-radius:12px;padding:10px 13px;font-weight:800}
+.app-screen-title{font-size:22px;font-weight:900}
+#stepBuilder,#garageSuite{display:none}
+#diagScreen,#lookupScreen{display:none}
+body.route-build #appHome,body.route-garage #appHome,body.route-diag #appHome,body.route-lookup #appHome{display:none}
+body.route-build #stepBuilder{display:block}
+body.route-garage #garageSuite{display:grid}
+body.route-diag #diagScreen{display:block}
+body.route-lookup #lookupScreen{display:block}
+body.route-build .app-only-back{display:flex}
+#diagScreen .diag-wrap{display:grid;gap:14px}
+#diagScreen .suite-card,#lookupScreen .suite-card{margin:0}
+@media(max-width:650px){.home-grid{grid-template-columns:1fr}.home-choice{min-height:125px}.app-home-title{font-size:24px}}
+</style>
+<script id="bmwReliableRouter">
+(function(){
+  window.bmwRoute=function(route){
+    var home=document.getElementById('appHome');
+    var build=document.getElementById('stepBuilder');
+    var garage=document.getElementById('garageSuite');
+    var diag=document.getElementById('diagScreen');
+    var lookup=document.getElementById('lookupScreen');
+    [home,build,garage,diag,lookup].forEach(function(el){if(el)el.style.display='none';});
+    var target={build:build,garage:garage,diag:diag,lookup:lookup}[route];
+    if(target){target.style.display=(route==='garage'?'grid':'block'); target.scrollIntoView({behavior:'smooth',block:'start'});}
+    else if(home){home.style.display='block';window.scrollTo(0,0);}
+  };
+})();
+</script>
+<div id="appHome">
+  <div class="app-home-title">BMW Builder</div>
+  <div class="app-home-sub">Vad vill du göra?</div>
+  <div class="home-grid">
+    <button type="button" class="home-choice" data-route="build" onclick="window.bmwRoute('build')"><div class="ico">🚘</div><b>Bygg BMW</b><span>Bygg en BMW steg för steg med rätt modell, motor, färg, fälgar och tillval.</span></button>
+    <button type="button" class="home-choice" data-route="diag" onclick="window.bmwRoute('diag')"><div class="ico">🔧</div><b>Felsökning & diagnos</b><span>Sök felkod, klistra in INPA/ISTA/Carly-koder eller få hjälp utan felkod.</span></button>
+    <button type="button" class="home-choice" data-route="garage" onclick="window.bmwRoute('garage')"><div class="ico">🚗</div><b>Mitt Garage</b><span>Samla dina BMW, service, miltal, kostnader, fel och anteckningar.</span></button>
+    <button type="button" class="home-choice" data-route="lookup" onclick="window.bmwRoute('lookup')"><div class="ico">🔎</div><b>Sök regnummer / VIN</b><span>Slå upp en bil och använd uppgifterna i appen.</span></button>
+  </div>
+</div>
+<div id="diagScreen" class="app-screen">
+  <div class="app-screen-head"><button type="button" class="app-back" data-home onclick="window.bmwRoute('')">← Till startsidan</button><div class="app-screen-title">🔧 Felsökning & diagnos</div></div>
+  <div class="diag-wrap"><div id="diagMountSmart"></div><div id="diagMountCodes"></div></div>
+</div>
+<div id="lookupScreen" class="app-screen">
+  <div class="app-screen-head"><button type="button" class="app-back" data-home onclick="window.bmwRoute('')">← Till startsidan</button><div class="app-screen-title">🔎 Sök regnummer / VIN</div></div>
+  <div id="lookupMount"></div>
+</div>
+<nav id="appNav" aria-label="Huvudmeny">
+ <button class="active" data-target="stepBuilder"><span>🚘</span>BYGG BMW</button>
+ <button data-target="garageSuite"><span>🚗</span>MITT GARAGE</button>
+ <button data-target="garageImportCard"><span>🔎</span>SÖK REG/VIN</button>
+ <button data-target="smartDiagCard"><span>🔧</span>DIAGNOS</button>
+</nav>
 <section id="stepBuilder" class="step-builder" aria-label="Bygg BMW steg för steg">
   <div class="sb-preview">
     <div class="sb-card">
@@ -862,7 +990,7 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
     <div class="sb-actions">
       <button type="button" class="sb-back" id="sbBack">← Tillbaka</button>
       <button type="button" class="sb-next" id="sbNext">Nästa →</button>
-      <button type="button" class="sb-finish" id="sbSave" style="display:none">💾 Spara bygge</button>
+      <button type="button" class="sb-finish" id="sbSave" style="display:none">💾 Spara bygge</button><button type="button" class="sb-finish" id="sbGarage" style="display:none;background:#168b61">＋ Lägg i Garage</button>
     </div>
   </div>
 </section>
@@ -1224,4 +1352,422 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
   if(clear)clear.onclick=()=>{input.value='';out.innerHTML='';};
 })();
 </script>
+
+<script id="garageFunctionalScript">
+(function(){
+  const KEY='bmwBuilderGarageV2';
+  let garage=[];
+  let activeId=null;
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const read=()=>{try{garage=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(garage))garage=[]}catch(e){garage=[]}};
+  const write=()=>localStorage.setItem(KEY,JSON.stringify(garage));
+
+  function currentBuild(){
+    const g=typeof cur==='function'?cur():null;
+    const series=typeof DB!=='undefined'&&DB[S.si]?DB[S.si][0]:'BMW';
+    return {
+      series,
+      generation:g?.id||'',
+      year:g?.years?.[S.year]||'',
+      body:g?.bodies?.[S.body]||'',
+      engine:typeof currentEngines==='function'?(currentEngines()[S.engine]||''):'',
+      drive:$('drive')?.selectedOptions?.[0]?.text||'',
+      gear:typeof currentGears==='function'?(currentGears()[S.gear]||''):'',
+      trim:$('trim')?.selectedOptions?.[0]?.text||'',
+      color:$('color')?.selectedOptions?.[0]?.text||'',
+      upholstery:$('upholstery')?.selectedOptions?.[0]?.text||'',
+      wheels:$('wheels')?.selectedOptions?.[0]?.text||'',
+      interior:$('interior')?.selectedOptions?.[0]?.text||'',
+      price:$('total')?.textContent||'0 kr',
+      options:[...(S.chosen||[])],
+      created:new Date().toISOString()
+    };
+  }
+
+  function addBuild(){
+    const b=currentBuild();
+    const car={
+      id:'bmw_'+Date.now(),
+      name:[b.series,b.generation,b.engine].filter(Boolean).join(' ')||'Min BMW',
+      mileage:'',
+      reg:'',
+      vin:'',
+      condition:'Bra',
+      notes:'',
+      image:'',
+      build:b,
+      tasks:[],
+      services:[],
+      costs:[]
+    };
+    garage.unshift(car); activeId=car.id; write(); renderGarage(); openProfile(car.id);
+    return car;
+  }
+
+  function renderGarage(){
+    const list=$('garageList'); if(!list)return;
+    if(!garage.length){
+      list.innerHTML='<div class="garage-empty" style="grid-column:1/-1"><div class="big">🚘</div><b>Garaget är tomt</b><div style="margin-top:5px">Bygg en BMW och tryck på <b>＋ Lägg i Garage</b>.</div></div>';
+      return;
+    }
+    list.innerHTML=garage.map(c=>{
+      const b=c.build||{};
+      const title=c.name||[b.series,b.generation].filter(Boolean).join(' ')||'BMW';
+      const spec=[b.year,b.engine,b.body].filter(Boolean).join(' • ');
+      const img=c.image?`<img src="${esc(c.image)}" alt="">`:'<div class="car-art">🚘</div>';
+      return `<article class="garage-card" data-open="${esc(c.id)}">
+        <div class="hero">${img}</div>
+        <div class="gb"><div class="gt">${esc(title)}</div><div class="gs">${esc(spec)}</div>
+        <div class="chips">${c.reg?`<span class="chip">${esc(c.reg)}</span>`:''}${c.mileage?`<span class="chip">${esc(c.mileage)} mil</span>`:''}<span class="chip">${esc(b.price||'—')}</span></div>
+        <button type="button" class="open" data-open="${esc(c.id)}">Öppna bilen →</button></div>
+      </article>`;
+    }).join('');
+    list.querySelectorAll('[data-open]').forEach(el=>el.onclick=e=>{e.stopPropagation();openProfile(el.dataset.open)});
+  }
+
+  function profile(c){
+    $('carProfileCard').style.display='';
+    $('garageCard').style.display='none';
+    $('smartDiagCard').style.display='none';
+    $('codePasteCard').style.display='none';
+    $('garageImportCard').style.display='none';
+    $('profileTitle').textContent='🚗 '+(c.name||'Min BMW');
+    $('profileSubtitle').textContent=[c.build?.series,c.build?.generation,c.build?.year,c.build?.engine].filter(Boolean).join(' • ');
+    $('carNameInput').value=c.name||'';
+    $('carMileageInput').value=c.mileage||'';
+    $('carRegInput').value=c.reg||'';
+    $('carVinInput').value=c.vin||'';
+    $('carConditionInput').value=c.condition||'Bra';
+    $('carNotesInput').value=c.notes||'';
+    renderTasks(c); renderServices(c);
+    $('pdcStatus').innerHTML='<b>Ej verifierad</b><div class="suite-muted" style="margin-top:5px">PDC-utrustning kan visas här när bilens fabriksdata är verifierad.</div>';
+  }
+
+  function openProfile(id){activeId=id;const c=garage.find(x=>x.id===id);if(c)profile(c)}
+  function closeProfile(){$('carProfileCard').style.display='none';$('garageCard').style.display='';$('smartDiagCard').style.display='';$('codePasteCard').style.display='';$('garageImportCard').style.display='';renderGarage()}
+
+  function saveProfile(){
+    const c=garage.find(x=>x.id===activeId); if(!c)return;
+    c.name=$('carNameInput').value.trim()||'Min BMW';
+    c.mileage=$('carMileageInput').value;
+    c.reg=$('carRegInput').value.trim().toUpperCase();
+    c.vin=$('carVinInput').value.trim().toUpperCase();
+    c.condition=$('carConditionInput').value;
+    c.notes=$('carNotesInput').value;
+    write(); profile(c); renderGarage();
+  }
+
+  function renderTasks(c){
+    const out=$('taskList'); if(!out)return;
+    if(!c.tasks?.length){out.innerHTML='<div class="suite-muted" style="padding:10px 0">Inga saker att göra ännu.</div>';return}
+    out.innerHTML=c.tasks.map((t,i)=>`<div class="task ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} data-task="${i}"><div class="grow"><b>${esc(t.name)}</b><div class="mini">${t.cost?esc(t.cost)+' kr':''}${t.dueMileage?' • vid '+esc(t.dueMileage)+' mil':''}${t.dueDate?' • '+esc(t.dueDate):''}</div></div><button type="button" class="suite-btn danger" data-del-task="${i}">×</button></div>`).join('');
+    out.querySelectorAll('[data-task]').forEach(x=>x.onchange=()=>{c.tasks[+x.dataset.task].done=x.checked;write();renderTasks(c)});
+    out.querySelectorAll('[data-del-task]').forEach(x=>x.onclick=()=>{c.tasks.splice(+x.dataset.delTask,1);write();renderTasks(c)});
+  }
+  function addTask(){
+    const c=garage.find(x=>x.id===activeId);if(!c)return;
+    const name=$('taskNameInput').value.trim();if(!name)return;
+    c.tasks=c.tasks||[];c.tasks.push({name,cost:$('taskCostInput').value,dueMileage:$('taskDueMileageInput').value,dueDate:$('taskDueDateInput').value,done:false});
+    ['taskNameInput','taskCostInput','taskDueMileageInput','taskDueDateInput'].forEach(id=>$(id).value='');
+    write();renderTasks(c);
+  }
+  function renderServices(c){
+    const out=$('serviceList');if(!out)return;
+    const defaults=['Motorolja + filter','Luftfilter','Bränslefilter','Bromsvätska','Bromsar'];
+    c.services=c.services||[];
+    if(!c.services.length)out.innerHTML=defaults.map((x,i)=>`<div class="task"><input type="checkbox" data-service="${i}"><div class="grow"><b>${x}</b><div class="mini">Inte registrerad ännu</div></div></div>`).join('');
+    else out.innerHTML=c.services.map((x,i)=>`<div class="task"><input type="checkbox" ${x.done?'checked':''} data-svc="${i}"><div class="grow"><b>${esc(x.name)}</b><div class="mini">${esc(x.date||'')} ${x.mileage?'• '+esc(x.mileage)+' mil':''}</div></div></div>`).join('');
+    out.querySelectorAll('[data-svc]').forEach(x=>x.onchange=()=>{c.services[+x.dataset.svc].done=x.checked;write()});
+  }
+
+  function wire(){
+    $('addGarageBtn').onclick=()=>{const c=addBuild();if(c)alert('BMW:n lades till i ditt Garage.');};
+    $('saveCarBtn').onclick=saveProfile;
+    $('addTaskBtn').onclick=addTask;
+    $('deleteCarBtn').onclick=()=>{if(!activeId)return;if(confirm('Ta bort bilen från Garage?')){garage=garage.filter(x=>x.id!==activeId);write();activeId=null;closeProfile();}};
+    $('valueCarBtn').onclick=()=>{$('valuationResult').style.display='block';$('valuationResult').innerHTML='<b>Värdering</b><div class="suite-muted" style="margin-top:6px">Ange miltal, skick och marknadsdata för en mer användbar värdering. Appen gissar inte ett exakt marknadsvärde utan underlag.</div>'};
+    $('exportGarageBtn').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(garage,null,2)],{type:'application/json'}));a.download='BMW-Garage.json';a.click()};
+    $('carImageInput').onchange=e=>{const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const c=garage.find(x=>x.id===activeId);if(c){c.image=reader.result;write();renderGarage();profile(c)}};reader.readAsDataURL(file)};
+    if(!$('garageBackBtn')){
+      const b=document.createElement('button');b.id='garageBackBtn';b.type='button';b.className='suite-btn profile-back';b.textContent='← Garage';
+      b.onclick=closeProfile;$('profileTitle').before(b);
+    }
+    if($('sbGarage'))$('sbGarage').onclick=()=>{const c=addBuild();showGarageToast();};
+  }
+  function showGarageToast(){const n=document.createElement('div');n.textContent='✓ BMW sparad i Garage';n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:10000;background:#168b61;color:#fff;padding:12px 17px;border-radius:12px;font-weight:800;box-shadow:0 10px 30px #0008';document.body.appendChild(n);setTimeout(()=>n.remove(),1800)}
+  window.bmwGarageAPI={refresh:function(){read();renderGarage()},open:function(id){read();activeId=id;openProfile(id)}};
+  read();
+  document.addEventListener('DOMContentLoaded',()=>{wire();renderGarage()});
+  if(document.readyState!=='loading'){wire();renderGarage()}
+})();
+</script>
+
+<script id="finalAppPatch">
+(function(){
+ const q=id=>document.getElementById(id);
+ const nav=q('appNav');
+ if(nav){
+  nav.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{
+   nav.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+   btn.classList.add('active');
+   const el=q(btn.dataset.target);
+   if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+ }
+ // Ensure the step-builder final action is visible and has a clear Garage action.
+ const finish=q('sbSave'), garage=q('sbGarage');
+ if(finish) finish.textContent='💾 Spara bygge';
+ if(garage){garage.style.display='block';garage.textContent='＋ Lägg i Garage';}
+ // Bridge to the robust Garage script already present in this file.
+ window.addEventListener('bmw:garage-ready',()=>{});
+})();
+</script>
+
+<script id="correctedBuilderGarage">
+(function(){
+  function $x(id){return document.getElementById(id)}
+  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function currentBuildFixed(){
+    const g=typeof cur==='function'?cur():null;
+    if(!g)return null;
+    const series=DB[S.si][0];
+    const year=g.years[S.year] ?? g.years[0];
+    const engines=typeof currentEngines==='function'?currentEngines():g.engines;
+    const gears=typeof currentGears==='function'?currentGears():g.gear;
+    const engine=engines[S.engine] ?? engines[0];
+    const gear=gears[S.gear] ?? gears[0];
+    let total=Number(g.base)||0;
+    const selected=[];
+    if(S.chosen&&typeof allowed==='function'){
+      S.chosen.forEach(code=>{
+        const o=OPTS.find(x=>x[1]===code);
+        if(o&&allowed(o)){total+=Number(o[3])||0;selected.push(code)}
+      });
+    }
+    return {
+      series,generation:g.id,year,body:g.bodies[S.body]??g.bodies[0],
+      engine,drive:$x('drive')?.selectedOptions?.[0]?.text||'',
+      gear,trim:$x('trim')?.selectedOptions?.[0]?.text||'',
+      color:$x('color')?.selectedOptions?.[0]?.text||'',
+      upholstery:$x('upholstery')?.selectedOptions?.[0]?.text||'',
+      wheels:$x('wheels')?.selectedOptions?.[0]?.text||'',
+      interior:$x('interior')?.selectedOptions?.[0]?.text||'',
+      price:total,options:selected
+    };
+  }
+  function saveToGarageFixed(){
+    const b=currentBuildFixed();
+    if(!b){alert('Välj BMW först.');return}
+    const key='bmwBuilderGarageV2';
+    let cars=[];try{cars=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
+    if(!Array.isArray(cars))cars=[];
+    const car={
+      id:'bmw_'+Date.now(),
+      name:[b.series,b.generation,b.engine].filter(Boolean).join(' ')||'Min BMW',
+      mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',
+      build:b,tasks:[],services:[],costs:[]
+    };
+    cars.unshift(car);
+    localStorage.setItem(key,JSON.stringify(cars));
+    // Use the existing renderer/profile if available.
+    try{
+      if(window.bmwGarageAPI){window.bmwGarageAPI.refresh();window.bmwGarageAPI.open(car.id)}
+    }catch(e){}
+    const n=document.createElement('div');
+    n.textContent='✓ BMW sparad i Garage';
+    n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:10000;background:#168b61;color:#fff;padding:13px 18px;border-radius:13px;font-weight:850;box-shadow:0 10px 30px #0008';
+    document.body.appendChild(n);setTimeout(()=>n.remove(),1800);
+  }
+  function forcePrice(){
+    const b=currentBuildFixed();if(!b)return;
+    const p=b.price.toLocaleString('sv-SE')+' kr';
+    if($x('total'))$x('total').textContent=p;
+    if($x('visualPrice'))$x('visualPrice').textContent=p;
+    if($x('sbMiniPrice'))$x('sbMiniPrice').textContent=p;
+    if($x('sbTotalMount'))$x('sbTotalMount').innerHTML='<div class="total">'+esc(p)+'</div>';
+  }
+  function wireFixed(){
+    const btn=$x('sbGarage');
+    if(btn){btn.onclick=saveToGarageFixed;btn.style.display='block'}
+    forcePrice();
+    ['series','generation','year','body','engine','drive','gear','trim','color','upholstery','wheels','interior'].forEach(id=>{
+      const el=$x(id);if(el)el.addEventListener('change',()=>setTimeout(forcePrice,20));
+    });
+    document.querySelectorAll('#stepBuilder .sb-choice').forEach(b=>b.addEventListener('click',()=>setTimeout(forcePrice,40)));
+    // Keep final summary fresh when options are clicked.
+    const opt=$x('options');if(opt)new MutationObserver(()=>setTimeout(forcePrice,20)).observe(opt,{childList:true,subtree:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wireFixed);else wireFixed();
+})();
+</script>
+<script id="cleanAppRouting">
+(function(){
+ const body=document.body, home=document.getElementById('appHome');
+ const step=document.getElementById('stepBuilder'), garage=document.getElementById('garageSuite');
+ const smart=document.getElementById('smartDiagCard'), codes=document.getElementById('codePasteCard'), lookup=document.getElementById('garageImportCard');
+ const smParent=smart&&smart.parentElement, codeParent=codes&&codes.parentElement, lookupParent=lookup&&lookup.parentElement;
+ // Move existing diagnosis/lookup cards into their own screens so nothing from another mode leaks in.
+ if(smart)document.getElementById('diagMountSmart').appendChild(smart);
+ if(codes)document.getElementById('diagMountCodes').appendChild(codes);
+ if(lookup)document.getElementById('lookupMount').appendChild(lookup);
+ function route(r){
+   body.classList.remove('route-build','route-garage','route-diag','route-lookup');
+   if(r) body.classList.add('route-'+r);
+   // Startsidan visar exakt en funktion åt gången.
+   const screens={build:step,garage:garage,diag:document.getElementById('diagScreen'),lookup:document.getElementById('lookupScreen')};
+   Object.values(screens).forEach(el=>{if(el) el.style.display='none';});
+   if(r && screens[r]){
+     screens[r].style.display = r==='garage' ? 'grid' : 'block';
+     screens[r].scrollIntoView({behavior:'smooth',block:'start'});
+   } else if(home){
+     home.style.display='block';
+     window.scrollTo({top:0,behavior:'smooth'});
+   }
+   // Keep the hidden legacy navigation in sync, without relying on it for routing.
+   document.querySelectorAll('#appNav button').forEach(b=>b.classList.toggle('active',b.dataset.target===({build:'stepBuilder',garage:'garageSuite',diag:'smartDiagCard',lookup:'garageImportCard'}[r]||'')));
+ }
+ document.querySelectorAll('[data-route]').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));
+ document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',()=>route('')));
+ // Start clean on the home screen.
+ route('');
+})();
+</script>
 </body></html>
+
+<style id="failsafeBuilderCSS">
+/* FINAL FAILSAFE - independent touch controls */
+#failsafeBuilder{display:none;max-width:980px;margin:14px auto;padding:0 14px}
+#failsafeBuilder .fb-card{background:linear-gradient(145deg,#121c27,#0a1118);border:1px solid #2d4054;border-radius:20px;padding:16px;box-shadow:0 12px 35px #0006}
+#failsafeBuilder h2{margin:0 0 5px;font-size:22px}.fb-sub{color:#91a1b2;font-size:12px;margin-bottom:14px}
+.fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fb-field label{display:block;color:#aab7c5;font-size:11px;margin-bottom:5px}
+.fb-field select{width:100%;padding:13px;background:#080e15;color:#fff;border:1px solid #34485c;border-radius:11px;font-size:14px}
+.fb-choice-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.fb-choice{border:1px solid #304458!important;background:#101a24!important;color:#d8e1ea!important;border-radius:11px!important;padding:11px 12px!important;margin:0!important}.fb-choice.active{background:#1978f5!important;border-color:#4b9cff!important;color:#fff!important}
+.fb-next{width:100%;margin-top:14px!important;padding:14px!important;font-size:15px;background:#1978f5!important}.fb-status{margin-top:12px;padding:11px;border-radius:11px;background:#0b151f;border:1px solid #263a4d;color:#b8c6d4;font-size:12px}
+@media(max-width:650px){.fb-grid{grid-template-columns:1fr}#failsafeBuilder{padding:0 10px}}
+</style>
+<script id="finalFailsafeBuilder">
+(function(){
+  function start(){
+    var home=document.getElementById('appHome');
+    var oldBuild=document.getElementById('stepBuilder');
+    if(!home) return;
+
+    /* Make the start buttons work without depending on any earlier router. */
+    var buttons=home.querySelectorAll('.home-choice');
+    buttons.forEach(function(b){
+      b.onclick=function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        var r=b.getAttribute('data-route');
+        if(r==='build') showBuild();
+        else if(window.bmwRoute) window.bmwRoute(r);
+      };
+    });
+
+    var fb=document.getElementById('failsafeBuilder');
+    if(!fb){
+      fb=document.createElement('section'); fb.id='failsafeBuilder';
+      fb.innerHTML='<div class="fb-card">'+
+        '<button id="fbBack" type="button" class="app-back">← Till startsidan</button>'+
+        '<h2 style="margin-top:14px">🚘 Bygg BMW</h2>'+
+        '<div class="fb-sub">Välj bil direkt. Det här är den nya enkla byggaren och fungerar oberoende av den gamla menyn.</div>'+
+        '<div class="fb-grid">'+
+          '<div class="fb-field"><label>Serie / modell</label><select id="fbSeries"></select></div>'+
+          '<div class="fb-field"><label>Generation</label><select id="fbGeneration"></select></div>'+ 
+          '<div class="fb-field"><label>Årsmodell</label><select id="fbYear"></select></div>'+ 
+          '<div class="fb-field"><label>Kaross</label><select id="fbBody"></select></div>'+ 
+          '<div class="fb-field"><label>Motor</label><select id="fbEngine"></select></div>'+ 
+          '<div class="fb-field"><label>Växellåda</label><select id="fbGear"></select></div>'+ 
+        '</div>'+ 
+        '<div class="fb-choice-row" id="fbQuick"></div>'+ 
+        '<div class="fb-status" id="fbStatus">Välj serie för att börja.</div>'+ 
+        '<button type="button" class="fb-next" id="fbContinue">Fortsätt med den här BMW:n →</button>'+ 
+      '</div>';
+      document.body.appendChild(fb);
+    }
+
+    var sel={series:fb.querySelector('#fbSeries'),generation:fb.querySelector('#fbGeneration'),year:fb.querySelector('#fbYear'),body:fb.querySelector('#fbBody'),engine:fb.querySelector('#fbEngine'),gear:fb.querySelector('#fbGear')};
+    var fallback={
+      series:['1-serie','2-serie','3-serie','4-serie','5-serie','6-serie','7-serie','8-serie','X1','X2','X3','X4','X5','X6','X7','Z-serie','i-serie'],
+      generations:['E12','E21','E30','E36','E46','E53','E60/E61','E90/E91/E92/E93','F10/F11','F30/F31/F34','G30/G31'],
+      years:['2004','2005','2006','2007','2008','2009','2010'],
+      bodies:['Sedan','Touring','Coupé','Cabriolet','SUV'],
+      engines:['520i','523i','525i','530i','545i','550i','520d','525d','530d','535d','M5'],
+      gears:['Manuell','Automat','6-stegad Steptronic','SMG']
+    };
+    function optionsFor(el,arr){el.innerHTML=arr.map(function(x,i){return '<option value="'+i+'">'+String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</option>';}).join('');}
+    function currentData(){
+      try{return (typeof DB!=='undefined')?DB:null}catch(e){return null}
+    }
+    function dataForSeries(si){var d=currentData();return d&&d[si]?d[si][1]:null}
+    function refreshSeries(){
+      var d=currentData(), names=d?d.map(function(x){return x[0]}):fallback.series;
+      optionsFor(sel.series,names);
+      sel.series.value='4'; refreshGeneration();
+    }
+    function refreshGeneration(){
+      var g=dataForSeries(+sel.series.value), names=g?g.map(function(x){return x.id}):fallback.generations;
+      optionsFor(sel.generation,names);
+      var vals=Array.from(sel.generation.options).map(function(o){return o.text});
+      var e61=vals.findIndex(function(x){return x==='E61'});
+      if(names[e61]&&names[e61]==='E61') sel.generation.value=e61; else if(vals.includes('E60/E61')) sel.generation.value=vals.indexOf('E60/E61');
+      refreshDetails();
+    }
+    function refreshDetails(){
+      var g=dataForSeries(+sel.series.value); g=g&&g[+sel.generation.value];
+      var years=g&&g.years?g.years:fallback.years.map(Number);
+      optionsFor(sel.year,years.map(String));
+      var bodies=g&&g.bodies?g.bodies:fallback.bodies;
+      optionsFor(sel.body,bodies);
+      var engines=g&&g.engines?g.engines:fallback.engines;
+      /* Exact E61 year data when available in the existing database. */
+      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'){
+        var yy=years[+sel.year.value]||years[0]; if(E61_DATA[yy]) engines=E61_DATA[yy].engines;
+      }
+      optionsFor(sel.engine,engines);
+      var gears=g&&g.gear?g.gear:fallback.gears;
+      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'){
+        var yy2=years[+sel.year.value]||years[0]; if(E61_DATA[yy2]) gears=E61_DATA[yy2].gears;
+      }
+      optionsFor(sel.gear,gears);
+      updateStatus();
+    }
+    function updateStatus(){
+      var txt=sel.series.options[sel.series.selectedIndex]?.text+' '+sel.generation.options[sel.generation.selectedIndex]?.text+' '+sel.year.options[sel.year.selectedIndex]?.text;
+      var engine=sel.engine.options[sel.engine.selectedIndex]?.text||'';
+      var body=sel.body.options[sel.body.selectedIndex]?.text||'';
+      var gear=sel.gear.options[sel.gear.selectedIndex]?.text||'';
+      var st=fb.querySelector('#fbStatus'); if(st)st.textContent=txt+' • '+body+' • '+engine+' • '+gear;
+      var quick=fb.querySelector('#fbQuick');
+      if(quick)quick.innerHTML=['5-serie','E61','2008','520d','Manuell'].map(function(x){return '<button type="button" class="fb-choice">'+x+'</button>';}).join('');
+    }
+    function syncOld(){
+      try{
+        var ids=['series','generation','year','body','engine','gear'];
+        ids.forEach(function(id){var x=document.getElementById(id), f=sel[id];if(x&&f){x.value=f.value;x.dispatchEvent(new Event('change',{bubbles:true}));}});
+      }catch(e){}
+      var title=document.getElementById('headerModel');if(title)title.textContent=(sel.series.options[sel.series.selectedIndex]?.text||'BMW')+' '+(sel.generation.options[sel.generation.selectedIndex]?.text||'');
+    }
+    function showBuild(){
+      home.style.display='none';
+      if(oldBuild)oldBuild.style.display='none';
+      fb.style.display='block';
+      window.scrollTo(0,0);
+      refreshSeries();
+    }
+    function goHome(){fb.style.display='none';home.style.display='block';window.scrollTo(0,0)}
+    sel.series.onchange=refreshGeneration; sel.generation.onchange=refreshDetails; sel.year.onchange=refreshDetails;
+    sel.body.onchange=updateStatus; sel.engine.onchange=updateStatus; sel.gear.onchange=updateStatus;
+    fb.querySelector('#fbBack').onclick=goHome;
+    fb.querySelector('#fbContinue').onclick=function(){syncOld();fb.querySelector('#fbStatus').textContent+=' ✓ Vald';};
+    fb.addEventListener('click',function(e){
+      var q=e.target.closest('.fb-choice');if(!q)return;
+      var v=q.textContent.trim();
+      [sel.series,sel.generation,sel.year,sel.engine,sel.gear].some(function(s){var i=Array.from(s.options).findIndex(function(o){return o.text===v});if(i>=0){s.value=String(i);s.dispatchEvent(new Event('change'));return true}return false});
+    });
+    refreshSeries();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
