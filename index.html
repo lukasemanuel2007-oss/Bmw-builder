@@ -847,4 +847,61 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initGarage);else initGarage();
 })();
 </script>
+<script>
+/* BMW Builder – pasted fault-code reader */
+(function(){
+  function byId(id){return document.getElementById(id)}
+  function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+  function parsePastedCodes(text){
+    const src=String(text||'').replace(/\r/g,'');
+    const found=[];
+    const seen=new Set();
+    const add=(code,module,desc)=>{
+      code=String(code||'').toUpperCase();
+      if(!code || seen.has(code)) return;
+      seen.add(code); found.push({code,module:module||'',desc:(desc||'').trim()});
+    };
+    // Standard OBD codes, e.g. P0299 / U0100 / B1234 / C0035
+    for(const m of src.matchAll(/\b([PBCU]\d{4})\b/gi)) add(m[1]);
+    // BMW hex fault codes, e.g. 4A63, 4083, 4B90. Avoid years/ordinary numbers by
+    // preferring 4-hex-digit tokens that occur near BMW diagnostic/module wording.
+    const lines=src.split(/\n+/);
+    for(const line of lines){
+      const module=(line.match(/\b(DDE|DME|DSC|ABS|EHC|CAS|FRM|JBBF|PDC|KOMBI|SMFA|IHKA|EGS|TCU|LM|SZL)\b/i)||[])[1]||'';
+      const hexes=[...line.matchAll(/\b([0-9A-F]{4})\b/gi)];
+      for(const m of hexes){
+        const code=m[1].toUpperCase();
+        const hasModule=!!module;
+        const hasDiagWord=/\b(fault|fehler|felkod|code|signal|dde|dme|dsc|abs|ehc|pdc|diagnos)/i.test(line);
+        // 4-digit BMW codes are accepted when the line looks diagnostic or has a module.
+        if(hasModule||hasDiagWord) add(code,module,line.replace(m[0],'').replace(/^[\s,:;\-]+|[\s,:;\-]+$/g,''));
+      }
+    }
+    return found;
+  }
+  function renderParsed(){
+    const input=byId('codePasteInput'), out=byId('parsedCodesResult');
+    if(!input||!out)return;
+    const text=input.value.trim();
+    if(!text){out.innerHTML='<div class="tool-result warn"><b>Klistra in felkoder först.</b><div class="tool-muted" style="margin-top:6px">Du kan klistra in hela texten från INPA, ISTA, Carly eller OBD-läsaren.</div></div>';return;}
+    const codes=parsePastedCodes(text);
+    if(!codes.length){out.innerHTML='<div class="tool-result warn"><b>Jag hittade ingen tydlig felkod.</b><div class="tool-muted" style="margin-top:6px">För BMW kan du klistra in t.ex. <b>4083 DDE</b> eller <b>4A63 DDE</b>, eller en vanlig OBD-kod som <b>P0299</b>.</div></div>';return;}
+    out.innerHTML=`<div class="tool-result ok"><b>Hittade ${codes.length} felkod${codes.length===1?'':'er'}</b>${codes.map(c=>{
+      const f=(typeof FAULT_DB!=='undefined')?FAULT_DB[c.code]:null;
+      const title=f?` – ${escapeHtml(f.title)}`:'';
+      const module=c.module?` <span class="severity">${escapeHtml(c.module)}</span>`:'';
+      const desc=c.desc?`<div class="tool-muted" style="margin-top:5px">Text från diagnosen: ${escapeHtml(c.desc)}</div>`:'';
+      const detail=f?`<div style="margin-top:7px"><b>Felsökning</b>${f.steps.slice(0,4).map((x,i)=>`<div class="step"><b>${i+1}.</b> ${escapeHtml(x)}</div>`).join('')}</div>`:`<div class="tool-muted" style="margin-top:7px">Det här är en BMW-specifik/okänd kod i den inbyggda databasen. Appen gissar inte betydelsen. Behåll modulen och den fullständiga texten från diagnosen för nästa felsökningssteg.</div>`;
+      return `<div class="fault" style="margin-top:8px"><b>${escapeHtml(c.code)}${title}</b>${module}${desc}${detail}</div>`;
+    }).join('')}</div>`;
+  }
+  function initPastedReader(){
+    const btn=byId('parseCodesBtn'), clear=byId('clearCodesBtn'), input=byId('codePasteInput'), out=byId('parsedCodesResult');
+    if(!btn||!input)return;
+    btn.onclick=renderParsed;
+    clear.onclick=()=>{input.value=''; if(out)out.innerHTML='';};
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initPastedReader); else initPastedReader();
+})();
+</script>
 </body></html>
