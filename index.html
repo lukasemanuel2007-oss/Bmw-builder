@@ -775,4 +775,76 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
   </div>
 </section>
 
-<noscript><div style="position:fixed;bottom:0;left:0;right:0;background:#b33;color:white;padding:10px;text-align:center">JavaScript är avstängt. Alla val finns ändå tillgängliga.</div></noscript></body></html>
+<noscript><div style="position:fixed;bottom:0;left:0;right:0;background:#b33;color:white;padding:10px;text-align:center">JavaScript är avstängt. Alla val finns ändå tillgängliga.</div></noscript>
+<script>
+/* BMW Builder – Garage engine */
+(function(){
+  const KEY='bmw_builder_garage_v1';
+  let garage=[];
+  let activeId=null;
+  const $g=id=>document.getElementById(id);
+  function loadGarage(){try{garage=JSON.parse(localStorage.getItem(KEY)||'[]'); if(!Array.isArray(garage))garage=[];}catch(e){garage=[]}}
+  function saveGarage(){try{localStorage.setItem(KEY,JSON.stringify(garage));}catch(e){}}
+  function esc(v){return String(v??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));}
+  function currentBuilderCar(){
+    try{
+      const g=cur();
+      return {make:'BMW',series:DB[S.si][0],generation:g.id,year:g.years[S.year],body:g.bodies[S.body],engine:getSelectedText('engine'),gear:getSelectedText('gear'),drive:getSelectedText('drive'),color:getSelectedText('color'),wheels:getSelectedText('wheels')};
+    }catch(e){return {make:'BMW',series:'BMW',generation:'',year:'',body:'',engine:'',gear:'',drive:'',color:'',wheels:''};}
+  }
+  function makeId(){return 'car_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
+  function renderGarage(){
+    const box=$g('garageList'); if(!box)return;
+    if(!garage.length){box.innerHTML='<div class="suite-muted" style="padding:12px 0">Inga sparade BMW ännu. Tryck på <b>＋ Lägg till BMW</b> för att spara bilen du bygger.</div>';return;}
+    box.innerHTML=garage.map(c=>{
+      const title=c.name||`${c.make||'BMW'} ${c.generation||''}`.trim();
+      const sub=[c.year,c.body,c.engine,c.gear].filter(Boolean).join(' • ');
+      const img=c.image?`<img src="${c.image}" alt="${esc(title)}" style="width:100%;height:150px;object-fit:cover;border-radius:12px;display:block">`:`<div style="height:150px;border-radius:12px;background:linear-gradient(135deg,#0d1722,#17283a);display:grid;place-items:center;font-size:48px">🚗</div>`;
+      const tasks=(c.tasks||[]).filter(t=>!t.done).length;
+      return `<button type="button" class="garage-car" data-garage-id="${c.id}" style="text-align:left;cursor:pointer;padding:10px;border:1px solid #26384b;background:#0b131d;border-radius:15px;color:#fff;width:100%">${img}<div style="padding:9px 2px 2px"><b style="font-size:17px">${esc(title)}</b><div class="suite-muted" style="margin-top:4px">${esc(sub||'BMW')}</div><div class="suite-muted" style="margin-top:6px">${c.mileage?esc(Number(c.mileage).toLocaleString('sv-SE'))+' mil':''}${c.reg?' • '+esc(c.reg):''}${tasks?' • '+tasks+' att göra':''}</div></div></button>`;
+    }).join('');
+    box.querySelectorAll('[data-garage-id]').forEach(b=>b.onclick=()=>openCar(b.dataset.garageId));
+  }
+  function openCar(id){
+    const c=garage.find(x=>x.id===id); if(!c)return; activeId=id;
+    $g('carProfileCard').style.display='block';
+    $g('garageCard').scrollIntoView({behavior:'smooth',block:'start'});
+    $g('profileTitle').textContent='🚗 '+(c.name||'Min BMW');
+    $g('profileSubtitle').textContent=[c.series,c.generation,c.year,c.body,c.engine,c.gear].filter(Boolean).join(' • ');
+    $g('carNameInput').value=c.name||'';$g('carMileageInput').value=c.mileage||'';$g('carRegInput').value=c.reg||'';$g('carVinInput').value=c.vin||'';$g('carConditionInput').value=c.condition||'Bra';$g('carNotesInput').value=c.notes||'';
+    renderTasks(c);renderServices(c);renderPdc(c);$g('valuationResult').style.display='none';
+  }
+  function newCar(){
+    const b=currentBuilderCar();
+    const c={id:makeId(),name:`Min ${b.generation||'BMW'}`,make:'BMW',...b,mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',tasks:[],services:[],created:Date.now()};
+    garage.unshift(c);saveGarage();renderGarage();openCar(c.id);
+  }
+  function active(){return garage.find(x=>x.id===activeId)}
+  function saveProfile(){const c=active();if(!c)return;c.name=$g('carNameInput').value.trim()||'Min BMW';c.mileage=$g('carMileageInput').value;c.reg=$g('carRegInput').value.trim().toUpperCase().replace(/\s/g,'');c.vin=$g('carVinInput').value.trim().toUpperCase();c.condition=$g('carConditionInput').value;c.notes=$g('carNotesInput').value;saveGarage();renderGarage();openCar(c.id);}
+  function renderTasks(c){const box=$g('taskList');if(!box)return;const ts=c.tasks||[];box.innerHTML=ts.length?ts.map((t,i)=>`<div class="line" style="padding:9px 0;border-top:1px solid #202b36;display:flex;gap:8px;align-items:center"><input type="checkbox" ${t.done?'checked':''} data-task="${i}"><span style="flex:1"><b>${esc(t.name)}</b><br><span class="suite-muted">${t.cost?Number(t.cost).toLocaleString('sv-SE')+' kr':''}${t.mileage?' • vid '+Number(t.mileage).toLocaleString('sv-SE')+' mil':''}${t.date?' • '+esc(t.date):''}</span></span><button type="button" class="suite-btn danger" data-del-task="${i}" style="padding:6px 9px">×</button></div>`).join(''):'<div class="suite-muted">Inga jobb planerade ännu.</div>';
+    box.querySelectorAll('[data-task]').forEach(x=>x.onchange=()=>{ts[+x.dataset.task].done=x.checked;saveGarage();renderTasks(c);});box.querySelectorAll('[data-del-task]').forEach(x=>x.onclick=()=>{ts.splice(+x.dataset.delTask,1);saveGarage();renderTasks(c);renderGarage();});
+  }
+  function addTask(){const c=active();if(!c)return;const name=$g('taskNameInput').value.trim();if(!name)return;$g('taskNameInput').value='';c.tasks=c.tasks||[];c.tasks.push({name,cost:$g('taskCostInput').value,mileage:$g('taskDueMileageInput').value,date:$g('taskDueDateInput').value,done:false});$g('taskCostInput').value='';$g('taskDueMileageInput').value='';$g('taskDueDateInput').value='';saveGarage();renderTasks(c);renderGarage();}
+  const SERVICE_DEFAULTS=[['Motorolja',1500],['Oljefilter',1500],['Luftfilter',3000],['Bränslefilter',3000],['Kupéfilter',1500],['Bromsvätska',0],['Kylvätska',0]];
+  function renderServices(c){const box=$g('serviceList');if(!box)return;const mileage=Number(c.mileage||0);const arr=c.services&&c.services.length?c.services:SERVICE_DEFAULTS.map(x=>({name:x[0],interval:x[1],last:'',next:x[1]?mileage+x[1]:0}));c.services=arr;box.innerHTML=arr.map((s,i)=>{let remaining=s.next&&mileage?Math.max(0,s.next-mileage):null;let label=remaining===null?'Ange senaste service/interval':remaining===0?'Dags nu':`ca ${remaining.toLocaleString('sv-SE')} mil kvar`;return `<div class="service-row" style="padding:10px 0;border-top:1px solid #202b36"><b>${esc(s.name)}</b><div class="suite-muted">${esc(label)}${s.interval?' • riktvärde '+Number(s.interval).toLocaleString('sv-SE')+' mil':''}</div></div>`}).join('');}
+  function addService(){const c=active();if(!c)return;const name=prompt('Vad ska servas/bytas?');if(!name)return;const interval=Number(prompt('Intervall i mil (0 om tidsbaserat/okänt):','1500')||0);const last=Number(c.mileage||0);c.services=c.services||[];c.services.push({name,interval,last,next:interval?last+interval:0});saveGarage();renderServices(c);}
+  function renderPdc(c){const box=$g('pdcStatus');if(!box)return;const gen=c.generation||'';let txt='PDC-status kan inte verifieras från sparad bil ännu.';if(gen==='E61')txt='E61: PDC kan finnas som fabriksutrustning (SA 508). Sensorer i en stötfångare bevisar inte i sig att bilen hade PDC från fabrik.';box.innerHTML=`<div class="suite-muted">${esc(txt)}</div>`;}
+  function buildPdcGuide(){const b=$g('pdcGuide');b.style.display='block';b.innerHTML='<div class="tool-result"><b>🅿️ PDC-felsökning utan felkod</b><div class="step"><b>1.</b> Slå på PDC och lägg i backen.</div><div class="step"><b>2.</b> Lyssna/känn på varje sensor efter ett svagt tick.</div><div class="step"><b>3.</b> Kontrollera säkring, matning och jord.</div><div class="step"><b>4.</b> Kontrollera kontakter och kablage i stötfångaren.</div><div class="step"><b>5.</b> Läs PDC-modulen med INPA/ISTA och kontrollera livedata.</div><div class="tool-muted" style="margin-top:8px">Guiden pekar ut nästa test – den ska inte automatiskt döma ut en sensor utan kontroll.</div></div>';}
+  function deleteCar(){const c=active();if(!c)return;if(!confirm('Ta bort bilen från garaget?'))return;garage=garage.filter(x=>x.id!==c.id);activeId=null;saveGarage();renderGarage();$g('carProfileCard').style.display='none';}
+  function valueCar(){const c=active();if(!c)return;const mileage=Number(c.mileage||0);let base=0;if(c.generation==='E61'&&/520d/i.test(c.engine))base=50000;else if(c.generation)base=65000;const adj=mileage?Math.max(-20000,Math.min(15000,(25000-mileage)*0.12)):0;const low=Math.max(5000,Math.round((base+adj)*0.9/1000)*1000),high=Math.max(low+5000,Math.round((base+adj)*1.1/1000)*1000);const out=$g('valuationResult');out.style.display='block';out.className='tool-result ok';out.innerHTML=`<b>Exempel på värdering: ${low.toLocaleString('sv-SE')}–${high.toLocaleString('sv-SE')} kr</b><div class="tool-muted" style="margin-top:6px">Detta är en preliminär appuppskattning. Riktig marknadsvärdering ska senare baseras på aktuella svenska annonser/sålda objekt, exakt utrustning, miltal och skick.</div>`;}
+  async function lookupGarage(){const reg=($g('garageRegInput').value||'').trim().toUpperCase().replace(/\s/g,'');const vin=($g('garageVinInput').value||'').trim().toUpperCase();const out=$g('garageLookupResult');if(!reg&&!vin){out.className='tool-result warn';out.innerHTML='<b>Skriv regnummer eller VIN.</b>';return;}if(reg&&!/^[A-Z0-9]{5,7}$/.test(reg)){out.className='tool-result warn';out.innerHTML='<b>Kontrollera registreringsnumret.</b>';return;}if(vin&&!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)){out.className='tool-result warn';out.innerHTML='<b>VIN ska vara 17 tecken.</b>';return;}
+    out.className='tool-result';out.innerHTML='<span class="tool-muted">Söker…</span>';
+    if(vin){try{const r=await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesExtended/'+encodeURIComponent(vin)+'?format=json');const j=await r.json();const d=j.Results&&j.Results[0];if(d&&d.Make){const info={make:d.Make,model:d.Model,year:d.ModelYear,body:d.BodyClass,engine:d.EngineModel,fuel:d.FuelTypePrimary,gear:d.TransmissionStyle,vin};out.className='tool-result ok';out.innerHTML=`<b>VIN hittad</b><div style="margin-top:6px">${[info.make,info.model,info.year,info.body,info.engine,info.fuel,info.gear].filter(Boolean).map(esc).join(' • ')}</div><div class="tool-actions"><button type="button" id="saveLookupVin">＋ Spara i garage</button></div>`;$g('saveLookupVin').onclick=()=>{const c={id:makeId(),name:`Min ${info.model||'BMW'}`,make:info.make,series:'',generation:'',year:info.year||'',body:info.body||'',engine:info.engine||'',gear:info.gear||'',drive:'',color:'',wheels:'',mileage:'',reg,vin,condition:'Bra',notes:'',image:'',tasks:[],services:[]};garage.unshift(c);saveGarage();renderGarage();openCar(c.id);};return;}}catch(e){}
+    }
+    out.className='tool-result warn';out.innerHTML=`<b>Regnummeruppslag behöver en ansluten fordonsdatakälla.</b><div class="tool-muted" style="margin-top:6px">Transportstyrelsen erbjuder sökning på registreringsnummer och tekniska fordonsuppgifter, men deras publika e-tjänst är inte ett öppet webbläsar-API för vår GitHub Pages-app. För automatisk uppslagning behöver vi koppla en API-tjänst, t.ex. en svensk fordonsdataleverantör, med API-nyckel.</div><div style="margin-top:8px"><a href="https://fordon-fu-regnr.transportstyrelsen.se/UppgifterAnnatFordon/" target="_blank" rel="noopener" style="color:#57a6ff">Öppna Transportstyrelsens sökning</a></div>`;
+  }
+  function exportGarage(){const blob=new Blob([JSON.stringify(garage,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BMW-Garage.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+  function importBuilderToGarage(){newCar();}
+  function initGarage(){loadGarage();renderGarage();
+    $g('addGarageBtn')?.addEventListener('click',importBuilderToGarage);$g('exportGarageBtn')?.addEventListener('click',exportGarage);$g('saveCarBtn')?.addEventListener('click',saveProfile);$g('deleteCarBtn')?.addEventListener('click',deleteCar);$g('valueCarBtn')?.addEventListener('click',valueCar);$g('addTaskBtn')?.addEventListener('click',addTask);$g('addServiceBtn')?.addEventListener('click',addService);$g('pdcGuideBtn')?.addEventListener('click',buildPdcGuide);$g('garageLookupBtn')?.addEventListener('click',lookupGarage);
+    $g('carImageInput')?.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f||!active())return;const r=new FileReader();r.onload=()=>{active().image=r.result;saveGarage();renderGarage();openCar(activeId)};r.readAsDataURL(f);});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initGarage);else initGarage();
+})();
+</script>
+</body></html>
