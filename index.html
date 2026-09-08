@@ -1726,22 +1726,32 @@ body.route-build .app-only-back{display:flex}
       refreshDetails();
     }
     function refreshDetails(){
+      var oldYear=sel.year && sel.year.options.length ? sel.year.value : '0';
+      var oldBody=sel.body && sel.body.options.length ? sel.body.value : '0';
+      var oldEngine=sel.engine && sel.engine.options.length ? sel.engine.value : '0';
+      var oldGear=sel.gear && sel.gear.options.length ? sel.gear.value : '0';
       var g=dataForSeries(+sel.series.value); g=g&&g[+sel.generation.value];
       var years=g&&g.years?g.years:fallback.years.map(Number);
       optionsFor(sel.year,years.map(String));
+      var yi=years.map(String).indexOf(String(years[+oldYear] ?? oldYear));
+      if(yi<0) yi=0;
+      sel.year.value=String(yi);
       var bodies=g&&g.bodies?g.bodies:fallback.bodies;
       optionsFor(sel.body,bodies);
+      if(+oldBody < bodies.length) sel.body.value=oldBody;
+      var selectedYear=years[+sel.year.value]||years[0];
       var engines=g&&g.engines?g.engines:fallback.engines;
       /* Exact E61 year data when available in the existing database. */
-      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'){
-        var yy=years[+sel.year.value]||years[0]; if(E61_DATA[yy]) engines=E61_DATA[yy].engines;
-      }
+      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'&&E61_DATA[selectedYear]) engines=E61_DATA[selectedYear].engines;
       optionsFor(sel.engine,engines);
+      if(+oldEngine < engines.length) sel.engine.value=oldEngine;
+      var selectedEngine=sel.engine.options[sel.engine.selectedIndex]?.text||'';
       var gears=g&&g.gear?g.gear:fallback.gears;
-      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'){
-        var yy2=years[+sel.year.value]||years[0]; if(E61_DATA[yy2]) gears=E61_DATA[yy2].gears;
+      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'&&E61_DATA[selectedYear]){
+        gears=E61_DATA[selectedYear].gears;
       }
       optionsFor(sel.gear,gears);
+      if(+oldGear < gears.length) sel.gear.value=oldGear;
       updateStatus();
     }
     function updateStatus(){
@@ -2009,6 +2019,124 @@ body.route-build .app-only-back{display:flex}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{installSplash();finalWire()},{once:true});
   else {installSplash();finalWire()}
+})();
+</script>
+
+<script id="bmwGarageBuildEditorFix">
+(function(){
+  'use strict';
+  const KEY='bmwBuilderGarageV2';
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let editingId=null;
+
+  function readCars(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
+  function writeCars(c){localStorage.setItem(KEY,JSON.stringify(c))}
+
+  function currentFailSafeBuild(){
+    const ids=['fbSeries','fbGeneration','fbYear','fbBody','fbEngine','fbGear'];
+    const vals={};
+    ids.forEach(id=>{const e=$(id); vals[id]=e?.selectedOptions?.[0]?.text||''});
+    return {series:vals.fbSeries||'BMW',generation:vals.fbGeneration,year:vals.fbYear,body:vals.fbBody,engine:vals.fbEngine,drive:'',gear:vals.fbGear,trim:'',color:'',upholstery:'',wheels:'',interior:'',price:0,options:[]};
+  }
+  function updateBuilderStatus(){
+    const b=currentFailSafeBuild();
+    const st=$('fbStatus'); if(st) st.textContent=[b.series,b.generation,b.year,b.body,b.engine,b.gear].filter(Boolean).join(' • ');
+  }
+  function setSelectByText(id,text){
+    const e=$(id); if(!e||!text)return false;
+    const i=Array.from(e.options).findIndex(o=>o.text.trim()===String(text).trim());
+    if(i<0)return false; e.value=String(i); e.dispatchEvent(new Event('change',{bubbles:true})); return true;
+  }
+  function fillBuilder(b){
+    const set=(id,text)=>{const e=$(id);if(!e||!text)return false;const i=Array.from(e.options).findIndex(o=>o.text.trim()===String(text).trim());if(i<0)return false;e.value=String(i);return true};
+    set('fbSeries',b.series);
+    const genSet=set('fbGeneration',b.generation);
+    if($('fbGeneration')) $('fbGeneration').dispatchEvent(new Event('change',{bubbles:true}));
+    setTimeout(()=>{
+      set('fbYear',b.year);
+      set('fbBody',b.body);
+      set('fbEngine',b.engine);
+      set('fbGear',b.gear);
+      updateBuilderStatus();
+    },80);
+  }
+
+  function ensureButtons(){
+    const cont=$('fbContinue'); if(!cont)return;
+    let save=$('fbSaveGarage');
+    if(!save){
+      save=document.createElement('button'); save.id='fbSaveGarage'; save.type='button'; save.className='fb-next';
+      save.style.marginTop='10px'; save.style.background='#168b61'; cont.insertAdjacentElement('afterend',save);
+    }
+    save.textContent=editingId?'💾 Spara ändringar i Garage':'＋ Lägg bilen i Garage';
+    save.onclick=saveBuilder;
+  }
+
+  function saveBuilder(){
+    const b=currentFailSafeBuild();
+    if(!b.generation||!b.year||!b.engine){alert('Välj serie, generation, årsmodell och motor först.');return}
+    const cars=readCars();
+    if(editingId){
+      const c=cars.find(x=>x.id===editingId);
+      if(c){c.build={...(c.build||{}),...b};c.name=[b.series,b.generation,b.engine].filter(Boolean).join(' ');writeCars(cars);editingId=null;showGarage();toast('✓ BMW uppdaterad i Garage');return;}
+      editingId=null;
+    }
+    const car={id:'bmw_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),name:[b.series,b.generation,b.engine].filter(Boolean).join(' ')||'Min BMW',mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',build:b,tasks:[],services:[],costs:[]};
+    cars.unshift(car);writeCars(cars);showGarage();toast('✓ BMW sparad i Garage');
+    setTimeout(()=>openGarageProfile(car.id),60);
+  }
+  function toast(text){const n=document.createElement('div');n.textContent=text;n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147483000;background:#168b61;color:#fff;padding:13px 18px;border-radius:13px;font-weight:850;box-shadow:0 10px 30px #0008';document.body.appendChild(n);setTimeout(()=>n.remove(),1800)}
+  function showGarage(){if(window.bmwRoute)window.bmwRoute('garage');else{['appHome','stepBuilder','failsafeBuilder','diagScreen','lookupScreen'].forEach(id=>{const e=$(id);if(e)e.style.display='none'});if($('garageSuite'))$('garageSuite').style.display='grid'};if(window.bmwGarageAPI)window.bmwGarageAPI.refresh()}
+  function openGarageProfile(id){if(window.bmwGarageAPI){window.bmwGarageAPI.refresh();window.bmwGarageAPI.open(id)}}
+
+  function addEditButton(){
+    const title=$('profileTitle'); if(!title)return;
+    let btn=$('editBuildBtn');
+    if(!btn){btn=document.createElement('button');btn.id='editBuildBtn';btn.type='button';btn.className='suite-btn secondary';btn.textContent='✏️ Ändra BMW';btn.style.margin='8px 0';title.insertAdjacentElement('afterend',btn)}
+    btn.onclick=editCurrentCar;
+  }
+  function editCurrentCar(){
+    const cars=readCars();
+    const title=($('profileTitle')?.textContent||'').replace(/^🚗\s*/,'');
+    let id=window.bmwGarageActiveId||null;
+    if(!id && window.bmwGarageAPI && window.bmwGarageAPI.getActiveId) id=window.bmwGarageAPI.getActiveId();
+    let c=id?cars.find(x=>x.id===id):null;
+    if(!c)c=cars.find(x=>x.name===title)||null;
+    if(!c||!c.build){alert('Kunde inte hitta bilen i Garage.');return}
+    editingId=c.id;
+    if(window.bmwGoBuild)window.bmwGoBuild();else if(window.bmwRoute)window.bmwRoute('build');
+    setTimeout(()=>{ensureButtons();fillBuilder(c.build)},120);
+  }
+
+  // Keep active id observable without replacing the existing garage API.
+  function hookGarage(){
+    if(window.bmwGarageAPI && !window.bmwGarageAPI.__editorHooked){
+      const oldOpen=window.bmwGarageAPI.open;
+      window.bmwGarageAPI.open=function(id){window.bmwGarageActiveId=id;return oldOpen(id)};
+      window.bmwGarageAPI.__editorHooked=true;
+    }
+    addEditButton();
+  }
+
+  // Fix delete so the exact garage record disappears immediately.
+  document.addEventListener('click',function(e){
+    const del=e.target.closest?.('#deleteCarBtn'); if(!del)return;
+    setTimeout(()=>{
+      try{const active=window.bmwGarageActiveId; if(active){const cars=readCars().filter(c=>c.id!==active);writeCars(cars);window.bmwGarageActiveId=null;}}
+      catch(_e){}
+    },30);
+  },true);
+
+  // Rebind the failsafe builder controls after it is created and after every route.
+  function watch(){
+    ensureButtons();
+    ['fbSeries','fbGeneration','fbYear','fbBody','fbEngine','fbGear'].forEach(id=>{const e=$(id);if(e&&!e.dataset.editorBound){e.dataset.editorBound='1';e.addEventListener('change',()=>setTimeout(updateBuilderStatus,10));}});
+    hookGarage();
+  }
+  const mo=new MutationObserver(watch);mo.observe(document.body,{childList:true,subtree:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
+  window.bmwEditGarageCar=function(id){const c=readCars().find(x=>x.id===id);if(!c)return;editingId=id;if(window.bmwGoBuild)window.bmwGoBuild();setTimeout(()=>fillBuilder(c.build),120)};
 })();
 </script>
 
