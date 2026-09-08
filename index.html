@@ -254,20 +254,8 @@ header,.header,.topbar{position:sticky;top:0;z-index:500;backdrop-filter:blur(18
 <style id="yearAccuracyNote">
 #sbYear:after{content:"E61: 2004–2010";display:block;color:#7890a5;font-size:10px;margin-top:5px}
 </style>
-
-<style id="bmwSplashStyle">
-#bmwSplash{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:#050608;opacity:1;pointer-events:auto;transition:opacity .65s ease,visibility .65s ease}
-#bmwSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
-#bmwSplash .splash-logo{width:min(180px,42vw);height:min(180px,42vw);border-radius:50%;transform:scale(.15) rotate(-18deg);opacity:0;animation:bmwLogoIntro 1.25s cubic-bezier(.18,.9,.22,1.05) forwards}
-#bmwSplash .splash-ring{position:absolute;width:min(220px,52vw);height:min(220px,52vw);border-radius:50%;border:1px solid rgba(255,255,255,.18);opacity:0;animation:bmwRing .9s ease-out .25s forwards}
-@keyframes bmwLogoIntro{0%{transform:scale(.15) rotate(-18deg);opacity:0}55%{transform:scale(1.08) rotate(3deg);opacity:1}78%{transform:scale(.97) rotate(0)}100%{transform:scale(1) rotate(0);opacity:1}}
-@keyframes bmwRing{0%{transform:scale(.45);opacity:0}45%{opacity:1}100%{transform:scale(1.12);opacity:0}}
-@media(prefers-reduced-motion:reduce){#bmwSplash .splash-logo{animation:none;transform:none;opacity:1}#bmwSplash .splash-ring{display:none}}
-</style>
 </head>
 <body>
-<div id="bmwSplash" aria-hidden="true"><div class="splash-ring"></div><img class="splash-logo" src="https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg" alt=""></div>
-
 <div id="installHint" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;max-width:520px;margin:auto;background:#182330;border:1px solid #3d5269;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 10px 35px #0008;font-size:13px">
   <b>📱 BMW Builder</b><br>
   Öppna denna sida i Safari och välj <b>Dela → Lägg till på hemskärmen → Öppna som webbapp</b>.
@@ -1865,65 +1853,163 @@ body.route-build .app-only-back{display:flex}
   else home();
 })();
 </script>
-
-<script id="bmwSplashScript">(function(){function h(){var s=document.getElementById('bmwSplash');if(!s)return;s.classList.add('hide');setTimeout(function(){s.remove()},750)}window.addEventListener('load',function(){setTimeout(h,1500)});setTimeout(h,3000)})();</script>
-<script id="bmwFinalController">
+<script id="bmwFinalFixes">
 (function(){
   'use strict';
-  function by(id){return document.getElementById(id)}
-  function hide(){['appHome','stepBuilder','garageSuite','diagScreen','lookupScreen','failsafeBuilder'].forEach(function(id){var e=by(id);if(e)e.style.display='none';})}
-  function home(){hide();var e=by('appHome');if(e)e.style.display='block';window.scrollTo(0,0)}
+  const $=id=>document.getElementById(id);
+
+  /* ---------- BMW start animation ---------- */
+  function installSplash(){
+    if($('bmwSplash')) return;
+    const style=document.createElement('style');
+    style.id='bmwSplashCSS';
+    style.textContent=`
+      #bmwSplash{position:fixed;inset:0;z-index:2147483647;background:#05080c;display:flex;align-items:center;justify-content:center;opacity:1;visibility:visible;transition:opacity .65s ease,visibility .65s ease}
+      #bmwSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
+      #bmwSplash .splashLogo{width:min(190px,45vw);height:min(190px,45vw);transform:scale(.18) rotate(-25deg);opacity:0;animation:bmwSplashIn 1.15s cubic-bezier(.17,.89,.25,1.18) forwards}
+      #bmwSplash .splashGlow{position:absolute;width:min(230px,54vw);height:min(230px,54vw);border:1px solid rgba(180,205,230,.22);border-radius:50%;transform:scale(.35);opacity:0;animation:bmwSplashRing 1.1s ease-out .15s forwards}
+      @keyframes bmwSplashIn{0%{transform:scale(.18) rotate(-25deg);opacity:0}55%{transform:scale(1.08) rotate(4deg);opacity:1}78%{transform:scale(.96) rotate(0)}100%{transform:scale(1) rotate(0);opacity:1}}
+      @keyframes bmwSplashRing{0%{transform:scale(.35);opacity:0}35%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+      @media(prefers-reduced-motion:reduce){#bmwSplash .splashLogo{animation:none;transform:none;opacity:1}#bmwSplash .splashGlow{display:none}}
+    `;
+    document.head.appendChild(style);
+    const s=document.createElement('div');s.id='bmwSplash';s.innerHTML=`<div class="splashGlow"></div><svg class="splashLogo" viewBox="0 0 200 200" aria-label="BMW"><circle cx="100" cy="100" r="91" fill="#0d141c" stroke="#dce7f2" stroke-width="6"/><circle cx="100" cy="100" r="70" fill="#f3f6f9"/><path d="M100 100L100 30A70 70 0 0 1 170 100Z" fill="#1680d9"/><path d="M100 100L170 100A70 70 0 0 1 100 170Z" fill="#1680d9"/><circle cx="100" cy="100" r="70" fill="none" stroke="#b7c8d8" stroke-width="2"/><text x="100" y="108" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="900" fill="#17202a">BMW</text></svg>`;
+    document.body.prepend(s);
+    const hide=()=>{s.classList.add('hide');setTimeout(()=>s.remove(),700)};
+    window.addEventListener('load',()=>setTimeout(hide,1250),{once:true});
+    setTimeout(hide,3200);
+  }
+
+  /* ---------- Routing: one authoritative router ---------- */
+  function hideScreens(){
+    ['appHome','stepBuilder','garageSuite','diagScreen','lookupScreen','failsafeBuilder'].forEach(id=>{const e=$(id);if(e)e.style.display='none'});
+  }
+  function home(){
+    hideScreens();
+    const e=$('appHome');if(e)e.style.display='block';
+    window.scrollTo(0,0);
+  }
   function build(){
-    hide();
-    var fb=by('failsafeBuilder');
+    hideScreens();
+    const fb=$('failsafeBuilder');
+    const step=$('stepBuilder');
     if(fb){fb.style.display='block';window.scrollTo(0,0);return}
-    var sb=by('stepBuilder');if(sb){sb.style.display='block';window.scrollTo(0,0)}
+    if(step){step.style.display='block';window.scrollTo(0,0);}
   }
-  function garage(){hide();var g=by('garageSuite');if(g)g.style.display='grid';try{if(window.bmwGarageAPI)window.bmwGarageAPI.refresh()}catch(e){};window.scrollTo(0,0)}
-  function route(r){if(r==='build')return build();if(r==='garage')return garage();if(r==='diag'){hide();var d=by('diagScreen');if(d)d.style.display='block';return}if(r==='lookup'){hide();var l=by('lookupScreen');if(l)l.style.display='block';return}home()}
-  window.bmwFinalRoute=route;window.bmwGoHome=home;window.bmwGoBuild=build;
-
-  function selectedText(id){var e=by(id);return e&&e.selectedOptions&&e.selectedOptions[0]?e.selectedOptions[0].text:''}
-  function getFallbackBuild(){
-    var b=window.bmwCurrentBuild||{};
-    return {series:b.series||selectedText('fbSeries')||selectedText('series')||'BMW',generation:b.generation||selectedText('fbGeneration')||selectedText('generation')||'',year:b.year||selectedText('fbYear')||selectedText('year')||'',body:b.body||selectedText('fbBody')||selectedText('body')||'',engine:b.engine||selectedText('fbEngine')||selectedText('engine')||'',drive:b.drive||selectedText('drive')||'',gear:b.gear||selectedText('fbGear')||selectedText('gear')||'',trim:b.trim||selectedText('trim')||'',color:b.color||selectedText('color')||'',upholstery:b.upholstery||selectedText('upholstery')||'',wheels:b.wheels||selectedText('wheels')||'',interior:b.interior||selectedText('interior')||'',price:Number(b.price)||0,options:Array.isArray(b.options)?b.options:[]};
-  }
-  function saveGarage(){
-    var b=getFallbackBuild();
-    if(!b.generation && !b.engine && b.series==='BMW'){alert('Välj en BMW först.');return}
-    var key='bmwBuilderGarageV2',cars=[];try{cars=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){};if(!Array.isArray(cars))cars=[];
-    var car={id:'bmw_'+Date.now(),name:[b.series,b.generation,b.engine].filter(Boolean).join(' ')||'Min BMW',mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',build:b,tasks:[],services:[],costs:[]};
-    cars.unshift(car);localStorage.setItem(key,JSON.stringify(cars));
-    garage();
-    setTimeout(function(){try{if(window.bmwGarageAPI)window.bmwGarageAPI.open(car.id)}catch(e){}},80);
-    var n=document.createElement('div');n.textContent='✓ BMW sparad i Garage';n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:100000;background:#168b61;color:#fff;padding:13px 18px;border-radius:13px;font-weight:800;box-shadow:0 10px 30px #0008';document.body.appendChild(n);setTimeout(function(){n.remove()},1800);
-  }
-  window.bmwSaveGarage=saveGarage;
-
-  function addFailsafeSave(){
-    var fb=by('failsafeBuilder');if(!fb||by('fbSaveGarage'))return;
-    var c=by('fbContinue');
-    var b=document.createElement('button');b.id='fbSaveGarage';b.type='button';b.className='fb-next';b.style.marginTop='9px';b.textContent='＋ Spara BMW i Garage';b.onclick=function(e){e.preventDefault();e.stopPropagation();saveGarage()};
-    if(c)c.parentNode.insertBefore(b,c.nextSibling);else fb.querySelector('.fb-card').appendChild(b);
-  }
-  function wire(){
-    addFailsafeSave();
-    document.addEventListener('click',function(ev){
-      var el=ev.target.closest?ev.target.closest('.bmw-roundel,.home-choice,[data-home],#fbBack,#fbSaveGarage,#addGarageBtn,#sbGarage'):null;
-      if(!el)return;
-      ev.preventDefault();ev.stopPropagation();
-      if(el.classList.contains('bmw-roundel')||el.hasAttribute('data-home')||el.id==='fbBack'){home();return}
-      if(el.classList.contains('home-choice')){route(el.getAttribute('data-route')||'');return}
-      if(el.id==='addGarageBtn'){build();return}
-      if(el.id==='sbGarage'||el.id==='fbSaveGarage'){saveGarage();return}
-    },true);
-    // Also make top-level nav buttons reliable.
-    var nav=by('appNav');if(nav)nav.querySelectorAll('button').forEach(function(btn){btn.onclick=function(){var t=btn.getAttribute('data-target');if(t==='stepBuilder')build();else if(t==='garageSuite')garage();else if(t==='garageImportCard')route('lookup');else if(t==='smartDiagCard')route('diag')}});
+  function route(r){
+    if(r==='build'){build();return}
+    if(r==='garage'){hideScreens();const e=$('garageSuite');if(e)e.style.display='grid';window.scrollTo(0,0);return}
+    if(r==='diag'){hideScreens();const e=$('diagScreen');if(e)e.style.display='block';renderDiagnosis();window.scrollTo(0,0);return}
+    if(r==='lookup'){hideScreens();const e=$('lookupScreen');if(e)e.style.display='block';window.scrollTo(0,0);return}
     home();
-    setTimeout(addFailsafeSave,150);
-    setTimeout(addFailsafeSave,500);
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
+  window.bmwRoute=route;window.bmwGoHome=home;window.bmwGoBuild=build;
+
+  /* ---------- Diagnosis: self-contained, always visible ---------- */
+  const faultNames={
+    '4083':['Bromsljus-/bromspedalskontakt – signalavvikelse','Kontrollera bromsljus, bromspedalkontakt, kablage och switch-status i live-data.'],
+    '5DF0':['DSC-pumpenhet – fel','Kontrollera matning, säkringar, DSC-koder och pumpens funktion.'],
+    '5DF2':['DSC/ABS-enhet – hårdvarufel','Kontrollera spänning, kontaktstycke och om felet är aktivt.'],
+    '5E1F':['Rattvinkel – kalibrering/initiering','Kontrollera att ratten står rakt och kalibrera med BMW-diagnos.'],
+    'P0299':['Laddtryck för lågt','Kontrollera laddluftslangar, intercooler, vakuum och turboaktuator.'],
+    'P0401':['EGR-flöde för lågt','Kontrollera EGR/insug, vakuum/elektrik och luftmätning.'],
+    'P0101':['MAF – orimligt luftflöde','Kontrollera MAF, insugsläckage, luftfilter och EGR.'],
+    'P0300':['Flera/slumpmässiga feltändningar','Kontrollera tändning, bränsle, luft och kompression beroende på motor.']
+  };
+  function diagnosisHTML(){return `
+    <div class="suite-card" style="margin:0 0 12px">
+      <h2>🧠 Smart felsökning</h2>
+      <div class="suite-muted">Beskriv felet så får du en konkret kontrollista. Välj gärna diagnosverktyg och modul.</div>
+      <textarea id="finalSymptom" class="suite-textarea" style="margin-top:10px;min-height:120px" placeholder="T.ex. farthållaren fungerar inte och jag har fel på bromspedalskontakt..."></textarea>
+      <div class="suite-grid" style="margin-top:8px"><select id="finalDiagTool" class="suite-select"><option>Ingen diagnosläsare</option><option>INPA</option><option>ISTA</option><option>Carly</option><option>OBD-läsare</option></select><select id="finalDiagModule" class="suite-select"><option>Automatiskt</option><option>DDE</option><option>DME</option><option>DSC/ABS</option><option>EHC</option><option>PDC</option><option>CAS</option><option>FRM</option></select></div>
+      <div class="suite-actions"><button type="button" class="suite-btn" id="finalBuildDiag">🔍 Bygg felsökning</button></div>
+      <div id="finalDiagResult"></div>
+    </div>
+    <div class="suite-card" style="margin:0">
+      <h2>📋 Läs felkoder</h2><div class="suite-muted">Klistra in text från INPA, ISTA, Carly eller OBD-läsaren. Appen hittar BMW-hexkoder och P-koder.</div>
+      <textarea id="finalCodeInput" class="suite-textarea" style="margin-top:10px;min-height:130px" placeholder="Exempel: DDE 4083\nDSC 5DF0\nP0299"></textarea>
+      <div class="suite-actions"><button type="button" class="suite-btn" id="finalParseCodes">Läs felkoder</button><button type="button" class="suite-btn secondary" id="finalClearCodes">Rensa</button></div>
+      <div id="finalCodeResult"></div>
+    </div>`}
+  function renderDiagnosis(){
+    const m=$('diagMountSmart');const c=$('diagMountCodes');
+    if(m){m.innerHTML='';}
+    if(c){c.innerHTML='';}
+    if(m)m.innerHTML=diagnosisHTML().split('<div class="suite-card" style="margin:0">')[0];
+    if(c)c.innerHTML='<div class="suite-card" style="margin:0"><h2>📋 Läs felkoder</h2><div class="suite-muted">Klistra in text från INPA, ISTA, Carly eller OBD-läsaren. Appen hittar BMW-hexkoder och P-koder.</div><textarea id="finalCodeInput" class="suite-textarea" style="margin-top:10px;min-height:130px" placeholder="Exempel: DDE 4083\nDSC 5DF0\nP0299"></textarea><div class="suite-actions"><button type="button" class="suite-btn" id="finalParseCodes">Läs felkoder</button><button type="button" class="suite-btn secondary" id="finalClearCodes">Rensa</button></div><div id="finalCodeResult"></div></div>';
+    bindDiagnosis();
+  }
+  function bindDiagnosis(){
+    const b=$('finalBuildDiag');
+    if(b)b.onclick=()=>{
+      const t=($('finalSymptom')?.value||'').trim().toLowerCase();
+      const mod=$('finalDiagModule')?.value||'Automatiskt';
+      let checks=[];
+      if(/brom|farthåll|cruise/.test(t))checks=['Kontrollera bromsljusen och bromspedalkontakten.','Läs bromsswitchens status i live-data.','Kontrollera säkring, kontaktstycke och kablage.','Läs DSC/DDE efter följdkoder.'];
+      else if(/pdc|parkering|sensor/.test(t))checks=['Kontrollera att alla PDC-sensorer klickar svagt när systemet är aktivt.','Kontrollera PDC-matning och säkring.','Läs PDC-modulen efter felkoder.','Kontrollera kontaktstycken och kablage i stötfångaren.'];
+      else if(/luft|fjädr|ehc|nivå/.test(t))checks=['Kontrollera nivågivarnas länkar och kontaktstycken.','Läs EHC efter felkoder och aktuella höjdvärden.','Kontrollera kompressor och läckage.','Kalibrera höjden först när givarna fungerar.'];
+      else if(/motor|turbo|ladd|egr|diesel/.test(t))checks=['Läs DDE/DME efter aktiva och sparade felkoder.','Kontrollera luft-, vakuum- och laddtryckssystem.','Jämför begärda och uppmätta värden i live-data.','Kontrollera bränsle/insprutning om värdena avviker.'];
+      else checks=['Skriv exakt vad bilen gör och när felet uppstår.','Läs alla aktiva och sparade felkoder.','Kontrollera batterispänning och säkringar.','Jämför live-data med normala värden innan delar byts.'];
+      $('finalDiagResult').innerHTML='<div class="tool-result ok" style="margin-top:10px"><b>Felsökningsplan</b><div class="tool-muted" style="margin-top:5px">Modul: '+esc(mod)+'</div>'+checks.map((x,i)=>'<div class="step"><b>'+(i+1)+'.</b> '+esc(x)+'</div>').join('')+'</div>';
+    };
+    const p=$('finalParseCodes');
+    if(p)p.onclick=()=>{
+      const text=$('finalCodeInput')?.value||'';const found=[];const seen=new Set();
+      const add=(code,module)=>{code=code.toUpperCase();if(seen.has(code))return;seen.add(code);found.push([code,module||''])};
+      for(const m of text.matchAll(/\b([PBCU]\d{4})\b/gi))add(m[1],'');
+      for(const line of text.split(/\r?\n/)){
+        const mod=(line.match(/\b(DDE|DME|DSC|ABS|EHC|CAS|FRM|PDC|KOMBI|IHKA|EGS|SZL)\b/i)||[])[1]||'';
+        for(const m of line.matchAll(/\b(?:0x)?([0-9A-F]{4,6})\b/gi)){const x=m[1].toUpperCase();if(!/^20\d{2}$/.test(x))add(x,mod)}
+      }
+      const out=$('finalCodeResult');if(!found.length){out.innerHTML='<div class="tool-result warn"><b>Ingen tydlig felkod hittades.</b><div class="tool-muted">Klistra in hela raden från diagnosen.</div></div>';return}
+      out.innerHTML='<div class="tool-result ok"><b>Hittade '+found.length+' felkod'+(found.length===1?'':'er')+'</b>'+found.map(([code,mod])=>{const f=faultNames[code];return '<div class="fault" style="margin-top:8px"><b>'+esc(code)+'</b>'+(mod?' <span class="severity">'+esc(mod)+'</span>':'')+(f?'<div style="margin-top:5px"><b>'+esc(f[0])+'</b><div class="tool-muted" style="margin-top:5px">'+esc(f[1])+'</div></div>':'<div class="tool-muted" style="margin-top:5px">Koden finns inte i den inbyggda databasen ännu – appen gissar inte betydelsen.</div>')+'</div>'}).join('')+'</div>';
+    };
+    const cl=$('finalClearCodes');if(cl)cl.onclick=()=>{$('finalCodeInput').value='';$('finalCodeResult').innerHTML=''};
+  }
+
+  /* ---------- Real valuation ---------- */
+  function valuation(){
+    const title=($('profileTitle')?.textContent||'').replace(/^🚗\s*/,'');
+    const mileage=Number($('carMileageInput')?.value||0);
+    const condition=$('carConditionInput')?.value||'Bra';
+    const active=(localStorage.getItem('bmwBuilderGarageV2')||'[]');
+    let cars=[];try{cars=JSON.parse(active)}catch(e){}
+    const current=cars.find(c=>c.name===title)||null;
+    const b=current?.build||{};
+    const series=(b.series||title).toLowerCase();
+    const gen=(b.generation||'').toLowerCase();
+    const engine=(b.engine||'').toLowerCase();
+    let base=/7-serie/.test(series)?90000:/5-serie/.test(series)?65000:/6-serie/.test(series)?75000:/4-serie/.test(series)?60000:/3-serie/.test(series)?52000:/2-serie/.test(series)?48000:/1-serie/.test(series)?40000:/x5/.test(series)?85000:/x3/.test(series)?70000:/x1/.test(series)?55000:50000;
+    if(gen.startsWith('g'))base*=1.55;else if(gen.startsWith('f'))base*=1.18;else if(gen.startsWith('e'))base*=.92;
+    if(/m5|m3|m4|m2/.test(engine))base*=2.15;else if(/535|540|550|545|530d/.test(engine))base*=1.22;else if(/520d|318d|320d|525d/.test(engine))base*=1.02;
+    if(mileage>0){const km=mileage*10; const ref=180000; base*=Math.max(.48,1-(Math.max(0,km-ref)/700000)); if(km<80000)base*=1.12;}
+    const cond={'Dålig':.62,'Godkänd':.82,'Bra':1,'Mycket bra':1.14,'Samlarbil':1.35}[condition]||1;
+    base*=cond;
+    const low=Math.max(15000,Math.round(base*.88/1000)*1000), high=Math.max(low+5000,Math.round(base*1.12/1000)*1000);
+    const out=$('valuationResult');if(!out)return;
+    out.style.display='block';out.innerHTML='<b>💰 Grov värdering</b><div style="font-size:25px;font-weight:900;margin-top:8px">'+low.toLocaleString('sv-SE')+' – '+high.toLocaleString('sv-SE')+' kr</div><div class="suite-muted" style="margin-top:7px">Detta är en enkel app-beräkning baserad på BMW-modell, generation, motor, miltal och skick. Det är inte ett verifierat marknadspris.</div>';
+  }
+
+  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+  function finalWire(){
+    // Home buttons and logo use capture phase so old handlers cannot break them.
+    document.addEventListener('click',function(e){
+      const logo=e.target.closest?.('.bmw-roundel');
+      if(logo){e.preventDefault();e.stopImmediatePropagation();home();return}
+      const choice=e.target.closest?.('.home-choice');
+      if(choice){e.preventDefault();e.stopImmediatePropagation();route(choice.dataset.route||'');return}
+      const back=e.target.closest?.('[data-home],#fbBack');
+      if(back){e.preventDefault();e.stopImmediatePropagation();home();return}
+    },true);
+    const v=$('valueCarBtn');if(v){v.onclick=e=>{e.preventDefault();e.stopPropagation();valuation()}}
+    // Also keep the direct diagnostic card button working if the old UI is shown somewhere.
+    const oldDiag=$('buildDiagBtn');if(oldDiag && !oldDiag.dataset.finalBound){oldDiag.dataset.finalBound='1';oldDiag.onclick=()=>{route('diag')}}
+    home();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{installSplash();finalWire()},{once:true});
+  else {installSplash();finalWire()}
 })();
 </script>
+
 </body></html>
