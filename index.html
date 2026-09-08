@@ -777,131 +777,108 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
 
 <noscript><div style="position:fixed;bottom:0;left:0;right:0;background:#b33;color:white;padding:10px;text-align:center">JavaScript är avstängt. Alla val finns ändå tillgängliga.</div></noscript>
 <script>
-/* BMW Builder – Garage engine */
+/* BMW Builder – expanded BMW fault-code pack.
+   This is a curated pack of commonly encountered BMW/OBD codes.
+   Unknown codes are intentionally NOT guessed. */
 (function(){
-  const KEY='bmw_builder_garage_v1';
-  let garage=[];
-  let activeId=null;
-  const $g=id=>document.getElementById(id);
-  function loadGarage(){try{garage=JSON.parse(localStorage.getItem(KEY)||'[]'); if(!Array.isArray(garage))garage=[];}catch(e){garage=[]}}
-  function saveGarage(){try{localStorage.setItem(KEY,JSON.stringify(garage));}catch(e){}}
-  function esc(v){return String(v??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));}
-  function currentBuilderCar(){
-    try{
-      const g=cur();
-      return {make:'BMW',series:DB[S.si][0],generation:g.id,year:g.years[S.year],body:g.bodies[S.body],engine:getSelectedText('engine'),gear:getSelectedText('gear'),drive:getSelectedText('drive'),color:getSelectedText('color'),wheels:getSelectedText('wheels')};
-    }catch(e){return {make:'BMW',series:'BMW',generation:'',year:'',body:'',engine:'',gear:'',drive:'',color:'',wheels:''};}
-  }
-  function makeId(){return 'car_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
-  function renderGarage(){
-    const box=$g('garageList'); if(!box)return;
-    if(!garage.length){box.innerHTML='<div class="suite-muted" style="padding:12px 0">Inga sparade BMW ännu. Tryck på <b>＋ Lägg till BMW</b> för att spara bilen du bygger.</div>';return;}
-    box.innerHTML=garage.map(c=>{
-      const title=c.name||`${c.make||'BMW'} ${c.generation||''}`.trim();
-      const sub=[c.year,c.body,c.engine,c.gear].filter(Boolean).join(' • ');
-      const img=c.image?`<img src="${c.image}" alt="${esc(title)}" style="width:100%;height:150px;object-fit:cover;border-radius:12px;display:block">`:`<div style="height:150px;border-radius:12px;background:linear-gradient(135deg,#0d1722,#17283a);display:grid;place-items:center;font-size:48px">🚗</div>`;
-      const tasks=(c.tasks||[]).filter(t=>!t.done).length;
-      return `<button type="button" class="garage-car" data-garage-id="${c.id}" style="text-align:left;cursor:pointer;padding:10px;border:1px solid #26384b;background:#0b131d;border-radius:15px;color:#fff;width:100%">${img}<div style="padding:9px 2px 2px"><b style="font-size:17px">${esc(title)}</b><div class="suite-muted" style="margin-top:4px">${esc(sub||'BMW')}</div><div class="suite-muted" style="margin-top:6px">${c.mileage?esc(Number(c.mileage).toLocaleString('sv-SE'))+' mil':''}${c.reg?' • '+esc(c.reg):''}${tasks?' • '+tasks+' att göra':''}</div></div></button>`;
-    }).join('');
-    box.querySelectorAll('[data-garage-id]').forEach(b=>b.onclick=()=>openCar(b.dataset.garageId));
-  }
-  function openCar(id){
-    const c=garage.find(x=>x.id===id); if(!c)return; activeId=id;
-    $g('carProfileCard').style.display='block';
-    $g('garageCard').scrollIntoView({behavior:'smooth',block:'start'});
-    $g('profileTitle').textContent='🚗 '+(c.name||'Min BMW');
-    $g('profileSubtitle').textContent=[c.series,c.generation,c.year,c.body,c.engine,c.gear].filter(Boolean).join(' • ');
-    $g('carNameInput').value=c.name||'';$g('carMileageInput').value=c.mileage||'';$g('carRegInput').value=c.reg||'';$g('carVinInput').value=c.vin||'';$g('carConditionInput').value=c.condition||'Bra';$g('carNotesInput').value=c.notes||'';
-    renderTasks(c);renderServices(c);renderPdc(c);$g('valuationResult').style.display='none';
-  }
-  function newCar(){
-    const b=currentBuilderCar();
-    const c={id:makeId(),name:`Min ${b.generation||'BMW'}`,make:'BMW',...b,mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',tasks:[],services:[],created:Date.now()};
-    garage.unshift(c);saveGarage();renderGarage();openCar(c.id);
-  }
-  function active(){return garage.find(x=>x.id===activeId)}
-  function saveProfile(){const c=active();if(!c)return;c.name=$g('carNameInput').value.trim()||'Min BMW';c.mileage=$g('carMileageInput').value;c.reg=$g('carRegInput').value.trim().toUpperCase().replace(/\s/g,'');c.vin=$g('carVinInput').value.trim().toUpperCase();c.condition=$g('carConditionInput').value;c.notes=$g('carNotesInput').value;saveGarage();renderGarage();openCar(c.id);}
-  function renderTasks(c){const box=$g('taskList');if(!box)return;const ts=c.tasks||[];box.innerHTML=ts.length?ts.map((t,i)=>`<div class="line" style="padding:9px 0;border-top:1px solid #202b36;display:flex;gap:8px;align-items:center"><input type="checkbox" ${t.done?'checked':''} data-task="${i}"><span style="flex:1"><b>${esc(t.name)}</b><br><span class="suite-muted">${t.cost?Number(t.cost).toLocaleString('sv-SE')+' kr':''}${t.mileage?' • vid '+Number(t.mileage).toLocaleString('sv-SE')+' mil':''}${t.date?' • '+esc(t.date):''}</span></span><button type="button" class="suite-btn danger" data-del-task="${i}" style="padding:6px 9px">×</button></div>`).join(''):'<div class="suite-muted">Inga jobb planerade ännu.</div>';
-    box.querySelectorAll('[data-task]').forEach(x=>x.onchange=()=>{ts[+x.dataset.task].done=x.checked;saveGarage();renderTasks(c);});box.querySelectorAll('[data-del-task]').forEach(x=>x.onclick=()=>{ts.splice(+x.dataset.delTask,1);saveGarage();renderTasks(c);renderGarage();});
-  }
-  function addTask(){const c=active();if(!c)return;const name=$g('taskNameInput').value.trim();if(!name)return;$g('taskNameInput').value='';c.tasks=c.tasks||[];c.tasks.push({name,cost:$g('taskCostInput').value,mileage:$g('taskDueMileageInput').value,date:$g('taskDueDateInput').value,done:false});$g('taskCostInput').value='';$g('taskDueMileageInput').value='';$g('taskDueDateInput').value='';saveGarage();renderTasks(c);renderGarage();}
-  const SERVICE_DEFAULTS=[['Motorolja',1500],['Oljefilter',1500],['Luftfilter',3000],['Bränslefilter',3000],['Kupéfilter',1500],['Bromsvätska',0],['Kylvätska',0]];
-  function renderServices(c){const box=$g('serviceList');if(!box)return;const mileage=Number(c.mileage||0);const arr=c.services&&c.services.length?c.services:SERVICE_DEFAULTS.map(x=>({name:x[0],interval:x[1],last:'',next:x[1]?mileage+x[1]:0}));c.services=arr;box.innerHTML=arr.map((s,i)=>{let remaining=s.next&&mileage?Math.max(0,s.next-mileage):null;let label=remaining===null?'Ange senaste service/interval':remaining===0?'Dags nu':`ca ${remaining.toLocaleString('sv-SE')} mil kvar`;return `<div class="service-row" style="padding:10px 0;border-top:1px solid #202b36"><b>${esc(s.name)}</b><div class="suite-muted">${esc(label)}${s.interval?' • riktvärde '+Number(s.interval).toLocaleString('sv-SE')+' mil':''}</div></div>`}).join('');}
-  function addService(){const c=active();if(!c)return;const name=prompt('Vad ska servas/bytas?');if(!name)return;const interval=Number(prompt('Intervall i mil (0 om tidsbaserat/okänt):','1500')||0);const last=Number(c.mileage||0);c.services=c.services||[];c.services.push({name,interval,last,next:interval?last+interval:0});saveGarage();renderServices(c);}
-  function renderPdc(c){const box=$g('pdcStatus');if(!box)return;const gen=c.generation||'';let txt='PDC-status kan inte verifieras från sparad bil ännu.';if(gen==='E61')txt='E61: PDC kan finnas som fabriksutrustning (SA 508). Sensorer i en stötfångare bevisar inte i sig att bilen hade PDC från fabrik.';box.innerHTML=`<div class="suite-muted">${esc(txt)}</div>`;}
-  function buildPdcGuide(){const b=$g('pdcGuide');b.style.display='block';b.innerHTML='<div class="tool-result"><b>🅿️ PDC-felsökning utan felkod</b><div class="step"><b>1.</b> Slå på PDC och lägg i backen.</div><div class="step"><b>2.</b> Lyssna/känn på varje sensor efter ett svagt tick.</div><div class="step"><b>3.</b> Kontrollera säkring, matning och jord.</div><div class="step"><b>4.</b> Kontrollera kontakter och kablage i stötfångaren.</div><div class="step"><b>5.</b> Läs PDC-modulen med INPA/ISTA och kontrollera livedata.</div><div class="tool-muted" style="margin-top:8px">Guiden pekar ut nästa test – den ska inte automatiskt döma ut en sensor utan kontroll.</div></div>';}
-  function deleteCar(){const c=active();if(!c)return;if(!confirm('Ta bort bilen från garaget?'))return;garage=garage.filter(x=>x.id!==c.id);activeId=null;saveGarage();renderGarage();$g('carProfileCard').style.display='none';}
-  function valueCar(){const c=active();if(!c)return;const mileage=Number(c.mileage||0);let base=0;if(c.generation==='E61'&&/520d/i.test(c.engine))base=50000;else if(c.generation)base=65000;const adj=mileage?Math.max(-20000,Math.min(15000,(25000-mileage)*0.12)):0;const low=Math.max(5000,Math.round((base+adj)*0.9/1000)*1000),high=Math.max(low+5000,Math.round((base+adj)*1.1/1000)*1000);const out=$g('valuationResult');out.style.display='block';out.className='tool-result ok';out.innerHTML=`<b>Exempel på värdering: ${low.toLocaleString('sv-SE')}–${high.toLocaleString('sv-SE')} kr</b><div class="tool-muted" style="margin-top:6px">Detta är en preliminär appuppskattning. Riktig marknadsvärdering ska senare baseras på aktuella svenska annonser/sålda objekt, exakt utrustning, miltal och skick.</div>`;}
-  async function lookupGarage(){const reg=($g('garageRegInput').value||'').trim().toUpperCase().replace(/\s/g,'');const vin=($g('garageVinInput').value||'').trim().toUpperCase();const out=$g('garageLookupResult');if(!reg&&!vin){out.className='tool-result warn';out.innerHTML='<b>Skriv regnummer eller VIN.</b>';return;}if(reg&&!/^[A-Z0-9]{5,7}$/.test(reg)){out.className='tool-result warn';out.innerHTML='<b>Kontrollera registreringsnumret.</b>';return;}if(vin&&!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)){out.className='tool-result warn';out.innerHTML='<b>VIN ska vara 17 tecken.</b>';return;}
-    out.className='tool-result';out.innerHTML='<span class="tool-muted">Söker…</span>';
-    if(vin){try{const r=await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesExtended/'+encodeURIComponent(vin)+'?format=json');const j=await r.json();const d=j.Results&&j.Results[0];if(d&&d.Make){const info={make:d.Make,model:d.Model,year:d.ModelYear,body:d.BodyClass,engine:d.EngineModel,fuel:d.FuelTypePrimary,gear:d.TransmissionStyle,vin};out.className='tool-result ok';out.innerHTML=`<b>VIN hittad</b><div style="margin-top:6px">${[info.make,info.model,info.year,info.body,info.engine,info.fuel,info.gear].filter(Boolean).map(esc).join(' • ')}</div><div class="tool-actions"><button type="button" id="saveLookupVin">＋ Spara i garage</button></div>`;$g('saveLookupVin').onclick=()=>{const c={id:makeId(),name:`Min ${info.model||'BMW'}`,make:info.make,series:'',generation:'',year:info.year||'',body:info.body||'',engine:info.engine||'',gear:info.gear||'',drive:'',color:'',wheels:'',mileage:'',reg,vin,condition:'Bra',notes:'',image:'',tasks:[],services:[]};garage.unshift(c);saveGarage();renderGarage();openCar(c.id);};return;}}catch(e){}
-    }
-    out.className='tool-result warn';out.innerHTML=`<b>Regnummeruppslag behöver en ansluten fordonsdatakälla.</b><div class="tool-muted" style="margin-top:6px">Transportstyrelsen erbjuder sökning på registreringsnummer och tekniska fordonsuppgifter, men deras publika e-tjänst är inte ett öppet webbläsar-API för vår GitHub Pages-app. För automatisk uppslagning behöver vi koppla en API-tjänst, t.ex. en svensk fordonsdataleverantör, med API-nyckel.</div><div style="margin-top:8px"><a href="https://fordon-fu-regnr.transportstyrelsen.se/UppgifterAnnatFordon/" target="_blank" rel="noopener" style="color:#57a6ff">Öppna Transportstyrelsens sökning</a></div>`;
-  }
-  function exportGarage(){const blob=new Blob([JSON.stringify(garage,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BMW-Garage.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-  function importBuilderToGarage(){newCar();}
-  function initGarage(){loadGarage();renderGarage();
-    $g('addGarageBtn')?.addEventListener('click',importBuilderToGarage);$g('exportGarageBtn')?.addEventListener('click',exportGarage);$g('saveCarBtn')?.addEventListener('click',saveProfile);$g('deleteCarBtn')?.addEventListener('click',deleteCar);$g('valueCarBtn')?.addEventListener('click',valueCar);$g('addTaskBtn')?.addEventListener('click',addTask);$g('addServiceBtn')?.addEventListener('click',addService);$g('pdcGuideBtn')?.addEventListener('click',buildPdcGuide);$g('garageLookupBtn')?.addEventListener('click',lookupGarage);
-    $g('carImageInput')?.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f||!active())return;const r=new FileReader();r.onload=()=>{active().image=r.result;saveGarage();renderGarage();openCar(activeId)};r.readAsDataURL(f);});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initGarage);else initGarage();
-})();
-</script>
-<script>
-/* BMW Builder – pasted fault-code reader */
-(function(){
-  function byId(id){return document.getElementById(id)}
-  function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-  function parsePastedCodes(text){
-    const src=String(text||'').replace(/\r/g,'');
-    const found=[];
-    const seen=new Set();
-    const add=(code,module,desc)=>{
-      code=String(code||'').toUpperCase();
-      if(!code || seen.has(code)) return;
-      seen.add(code); found.push({code,module:module||'',desc:(desc||'').trim()});
-    };
-    // Standard OBD codes, e.g. P0299 / U0100 / B1234 / C0035
-    for(const m of src.matchAll(/\b([PBCU]\d{4})\b/gi)) add(m[1]);
-    // BMW hex fault codes, e.g. 4A63, 4083, 4B90. Avoid years/ordinary numbers by
-    // preferring 4-hex-digit tokens that occur near BMW diagnostic/module wording.
-    const lines=src.split(/\n+/);
-    for(const line of lines){
-      const module=(line.match(/\b(DDE|DME|DSC|ABS|EHC|CAS|FRM|JBBF|PDC|KOMBI|SMFA|IHKA|EGS|TCU|LM|SZL)\b/i)||[])[1]||'';
-      const hexes=[...line.matchAll(/\b([0-9A-F]{4})\b/gi)];
-      for(const m of hexes){
-        const code=m[1].toUpperCase();
-        const hasModule=!!module;
-        const hasDiagWord=/\b(fault|fehler|felkod|code|signal|dde|dme|dsc|abs|ehc|pdc|diagnos)/i.test(line);
-        // 4-digit BMW codes are accepted when the line looks diagnostic or has a module.
-        if(hasModule||hasDiagWord) add(code,module,line.replace(m[0],'').replace(/^[\s,:;\-]+|[\s,:;\-]+$/g,''));
+  const EXTRA_FAULTS={
+    /* Engine / DME / DDE */
+    '29DC':{title:'Cylinder injection cutout / combustion irregularity',risk:'Medel–hög',why:'Motorstyrningen har upptäckt avvikande förbränning/injektion.',causes:['Bränsletrycksproblem','Spridare med avvikande returflöde','Tänd-/glödsystem beroende på motor','Luft-/EGR-problem'],steps:['Läs alla följdkoder i DME/DDE.','Kontrollera railtryck och bränslefilter.','Kontrollera spridarnas korrigeringsvärden/returflöde.','Kontrollera luftmängd och EGR om andra luftrelaterade koder finns.']},
+    '29E0':{title:'Bränsleblandning – bank 1 avvikande',risk:'Medel',why:'DME ser en bränsleblandning som ligger utanför förväntat område.',causes:['Tjuvluft','MAF/MAP-fel','Bränsletryck','Lambdasensor'],steps:['Läs fuel trims/live-data.','Kontrollera insug efter läckage.','Kontrollera bränsletryck.','Kontrollera lambda/MAF innan delar byts.']},
+    '29E1':{title:'Bränsleblandning – bank 2 avvikande',risk:'Medel',why:'DME ser en avvikande blandning på bank 2.',causes:['Tjuvluft','MAF/MAP-fel','Bränsletryck','Lambda/spridare'],steps:['Läs fuel trims.','Kontrollera insug och bränsletryck.','Jämför bank 1 och bank 2.','Kontrollera lambda/spridare.']},
+    '2A82':{title:'VANOS insug – reglerfel',risk:'Medel–hög',why:'DME kan inte reglera insugskamaxeln som förväntat.',causes:['VANOS-solenoid','Olja/igensatt oljeflöde','Kamaxelgivare','Mekaniskt VANOS-/timingproblem'],steps:['Kontrollera oljenivå och rätt olja.','Läs kamaxelns begärda och faktiska vinkel.','Kontrollera/rengör VANOS-solenoid.','Om värdena fortfarande avviker: kontrollera timing mekaniskt.']},
+    '2A83':{title:'VANOS insug – reglering långsam/avvikande',risk:'Medel–hög',why:'Insugssidan når inte önskat läge inom förväntad tid.',causes:['VANOS-solenoid','Oljeflöde','Kamaxelgivare','Mekaniskt slitage'],steps:['Kontrollera olja och VANOS-solenoid.','Jämför faktisk/begärd kamvinkel.','Kontrollera givare och kablage.','Kontrollera mekanisk timing vid kvarstående fel.']},
+    '2A87':{title:'VANOS avgas – reglerfel',risk:'Medel–hög',why:'DME ser fel på regleringen av avgas-kamaxeln.',causes:['VANOS-solenoid','Oljeflöde','Kamaxelgivare','Timingproblem'],steps:['Kontrollera olja.','Testa/rengör VANOS-solenoid.','Kontrollera kamvinkel i live-data.','Kontrollera mekanisk timing vid behov.']},
+    '2A88':{title:'VANOS avgas – reglering avvikande',risk:'Medel–hög',why:'Avgassidans kamvinkel följer inte förväntad reglering.',causes:['Solenoid','Oljeflöde','Givare','Mekanisk timing'],steps:['Kontrollera olja och solenoid.','Jämför begärt/faktiskt läge.','Kontrollera kablage/givare.','Verifiera timing om felet kvarstår.']},
+    '30FF':{title:'Turbo/laddtryck – laddtryck för lågt',risk:'Medel–hög',why:'Styrsystemet ser lägre laddtryck än förväntat.',causes:['Laddluftläckage','Turbo/VGT','Vakuumstyrning','MAP-sensor'],steps:['Trycktesta laddluftsystemet.','Kontrollera vakuum och turboaktuator.','Jämför begärt/uppmätt laddtryck.','Kontrollera MAP-sensor.']},
+    '3100':{title:'Laddtrycksreglering – fel',risk:'Medel–hög',why:'Styrsystemet har upptäckt problem med laddtrycksregleringen.',causes:['Laddluftläcka','Turboaktuator/VGT','Trycksensor','Styrning'],steps:['Kontrollera slangar och intercooler.','Kontrollera aktuatorns rörelse.','Läs laddtryck live.','Kontrollera sensorn och styrningen.']},
+    '2AAF':{title:'Bränsletryck – avvikelse',risk:'Medel–hög',why:'Bränslesystemets tryck ligger utanför förväntat område.',causes:['Bränslefilter','Lågtryckspump','Regulator','Högtryckspump/spridare'],steps:['Kontrollera filter.','Mät/läs lågtryck.','Jämför begärt/uppmätt railtryck.','Kontrollera returflöde från spridare vid behov.']},
+    '2C31':{title:'Lambdasignal – bank 1',risk:'Medel',why:'Lambdasignalen ligger utanför förväntat område.',causes:['Lambda','Avgasläcka','Bränsleblandning','Kablage'],steps:['Kontrollera avgassystemet efter läckage.','Läs lambda live.','Kontrollera fuel trims.','Kontrollera kontakt och kablage.']},
+    '2C32':{title:'Lambdasignal – bank 2',risk:'Medel',why:'Lambdasignalen på bank 2 avviker.',causes:['Lambda','Avgasläcka','Blandningsproblem','Kablage'],steps:['Kontrollera läckage.','Läs lambda live.','Jämför bankerna.','Kontrollera kablage.']},
+    '2C57':{title:'Laddtryck – plausibilitet',risk:'Medel–hög',why:'Laddtryckssignalen stämmer inte mot förväntad modell.',causes:['Laddluftläcka','MAP-sensor','Turbo/VGT','Spjäll/EGR beroende på motor'],steps:['Kontrollera slangar.','Jämför MAP och laddtryck live.','Kontrollera turboaktuator.','Kontrollera andra luftrelaterade koder.']},
+    '4A62':{title:'DDE/EWS – manipulations-/startspärrrelaterat fel',risk:'Medel–hög',why:'DDE har registrerat ett problem i kommunikationen/auktoriseringen mot startspärrsystemet.',causes:['CAS/EWS-kommunikation','Låg batterispänning','Kablage/CAN','Kodning/synkronisering'],steps:['Kontrollera batterispänning.','Läs CAS och DDE tillsammans.','Kontrollera kommunikationsfel.','Gör synkronisering endast med rätt BMW-diagnos och stabil spänning.']},
+    '4A63':{title:'DDE – EWS/startspärr-synkronisering',risk:'Hög',why:'DDE och startspärrsystemet har ett synkroniserings-/auktoriseringsproblem.',causes:['CAS/EWS-synk','Låg spänning','Kommunikationsproblem','Kodnings-/modulproblem'],steps:['Kontrollera batteri och matningsspänning.','Läs CAS och DDE efter ytterligare koder.','Kontrollera CAN-kommunikation.','Utför EWS/DDE-synkronisering med BMW-diagnos först när grundorsaken är kontrollerad.']},
+    '4B90':{title:'DDE – railtryck vid start avviker',risk:'Hög',why:'Bränslerailtrycket når inte förväntat värde under start.',causes:['Bränslefilter/lågtryck','Spridare med för stort returflöde','Högtryckspump','Tryckreglering'],steps:['Kontrollera lågtryckssidan.','Kontrollera filter.','Läs railtryck under start.','Kontrollera spridarnas returflöde och högtryckssystemet.']},
+    '4083':{title:'Bromsljus-/bromstestkontakt – signal',risk:'Medel',why:'DDE ser en orimlig eller saknad signal från bromsljus-/bromstestkontakten.',causes:['Bromspedalkontakt','Brake-test switch','Feljusterad kontakt','Kablage/kontaktstycke','Säkring eller matning'],steps:['Kontrollera att bromsljusen tänds direkt när pedalen trycks.','Läs bromspedalens switch-status i live-data.','Kontrollera båda switchsignalerna om systemet har två separata signaler.','Kontrollera kontaktstycke, kablage och matning.','Byt inte kontakt innan signalen har verifierats i diagnosdata.']},
+    '51AE':{title:'Bromssignal/bromsljusswitch – avvikelse',risk:'Medel',why:'En styrmodul ser en avvikande bromssignal.',causes:['Bromsljuskontakt','Pedalkontakt','Kablage','Spännings-/matningsproblem'],steps:['Kontrollera bromsljus.','Kontrollera switchens live-status.','Jämför redundanta bromssignaler.','Kontrollera kablage och kontakt.']},
+    '4C13':{title:'DDE – statusmeddelande från DSC saknas/felaktigt',risk:'Medel–hög',why:'DDE får inte förväntad information från DSC.',causes:['DSC-fel','CAN-kommunikation','Låg spänning','Kablage'],steps:['Läs DSC efter egna felkoder.','Kontrollera batteri/spänning.','Kontrollera CAN-kommunikation.','Åtgärda DSC-felet före DDE-relaterade följdfel.']},
+    '4C23':{title:'DDE – DSC momentmeddelande felaktigt',risk:'Medel–hög',why:'DDE får ett orimligt eller saknat momentmeddelande från DSC.',causes:['DSC-fel','CAN','Spänningsproblem'],steps:['Läs DSC.','Kontrollera CAN och spänning.','Kontrollera hjulhastighets-/ABS-relaterade koder.']},
+    '4C28':{title:'DDE – hastighetsmeddelande från DSC felaktigt',risk:'Medel',why:'DDE får inte korrekt hastighetsinformation från DSC.',causes:['Hjulhastighetssensor','DSC','CAN','Kablage'],steps:['Läs DSC efter hjulhastighetskoder.','Kontrollera live-hastighet från alla hjul.','Kontrollera CAN vid behov.']},
+
+    /* DSC / ABS – MK60 family */
+    '5D90':{title:'ABS-hjulhastighet fram vänster – elektriskt fel',risk:'Hög',why:'DSC ser elektriskt fel på vänster fram hjulhastighetssensor.',causes:['Sensor','Kablage','Kontakt','Impulsring/hjullager'],steps:['Inspektera sensor och kabel.','Kontrollera kontakt och matning/signal.','Läs alla fyra hjulhastigheter i live-data.','Kontrollera impulsring/hjullager om signalen är orimlig.']},
+    '5DA0':{title:'ABS-hjulhastighet fram höger – elektriskt fel',risk:'Hög',why:'DSC ser elektriskt fel på höger fram hjulhastighetssensor.',causes:['Sensor','Kablage','Kontakt','Impulsring/hjullager'],steps:['Kontrollera sensor/kabel.','Kontrollera live-data.','Jämför med andra hjul.','Kontrollera impulsring/hjullager.']},
+    '5DB0':{title:'ABS-hjulhastighet bak vänster – elektriskt fel',risk:'Hög',why:'DSC ser elektriskt fel på vänster bak hjulhastighetssensor.',causes:['Sensor','Kablage','Kontakt','Impulsring/hjullager'],steps:['Kontrollera sensor och kabel.','Kontrollera kontakt.','Jämför hjulhastigheter i live-data.','Kontrollera givarring/hjullager.']},
+    '5DC0':{title:'ABS-hjulhastighet bak höger – elektriskt fel',risk:'Hög',why:'DSC ser elektriskt fel på höger bak hjulhastighetssensor.',causes:['Sensor','Kablage','Kontakt','Impulsring/hjullager'],steps:['Kontrollera sensor/kabel.','Kontrollera kontakt.','Jämför live-data.','Kontrollera givarring/hjullager.']},
+    '5DF0':{title:'DSC pumpenhet – fel',risk:'Hög',why:'DSC har registrerat fel i pumpenheten.',causes:['Pumpenhet','Matning','Ventilblock','Intern DSC-funktion'],steps:['Kontrollera spänning och säkringar.','Läs alla DSC-koder.','Kontrollera pumpens funktion med rätt diagnosverktyg.','Byt inte DSC-enhet utan att verifiera matning och övriga orsaker.']},
+    '5DF2':{title:'DSC ventil/ECU – hårdvarufel',risk:'Hög',why:'DSC rapporterar internt hårdvarufel.',causes:['DSC-enhet','Matning','Intern elektronik'],steps:['Kontrollera batterispänning och säkringar.','Läs om felet är aktivt.','Kontrollera kontaktstycke.','Vid kvarstående aktivt internt fel krävs normalt djupare DSC-diagnos.']},
+    '5DF4':{title:'DSC matningsspänning under 9 V',risk:'Hög',why:'DSC har registrerat för låg matningsspänning.',causes:['Svagt batteri','Generator/laddning','Dålig jord/kabel','Spänningsfall vid start'],steps:['Mät batterispänning.','Mät laddspänning.','Kontrollera jordpunkter och batterikablar.','Radera inte bara koden innan spänningsproblemet är löst.']},
+    '5DF7':{title:'DSC matningsspänning över 18 V',risk:'Hög',why:'DSC har registrerat onormalt hög spänning.',causes:['Generator/regulator','Felaktig laddning','Mät-/kablageproblem'],steps:['Mät laddspänningen direkt.','Kontrollera generator/regulator.','Kontrollera batteri och jord.','Kör inte vidare med tydligt överspänningsfel.']},
+    '5E1E':{title:'DSC – timeout mot rattvinkelsensor/LWS',risk:'Medel–hög',why:'DSC får inte förväntad kommunikation från rattvinkelsensorn.',causes:['Rattvinkelsensor','CAN','Kablage','Kalibrering'],steps:['Läs SZL/LWS efter egna koder.','Kontrollera live-vinkel.','Kontrollera kalibrering.','Kontrollera kommunikation/kablage.']},
+    '5E1F':{title:'Rattvinkel – kalibrering/VIN ej initierad',risk:'Medel',why:'DSC saknar korrekt initiering av rattvinkeldata.',causes:['Ej kalibrerad sensor','Byte av modul','Kodning','Kommunikation'],steps:['Kontrollera att ratten står rakt.','Läs rattvinkel live.','Utför korrekt kalibrering med BMW-diagnos.','Kontrollera kodning om kalibrering inte går.']},
+    '5E5B':{title:'DSC-knapp – fel/lång tryckning',risk:'Låg–medel',why:'DSC har registrerat knapptryckning längre än normalt eller knappfel.',causes:['DSC-knapp','Kablage','Knapp som fastnar'],steps:['Kontrollera knappen mekaniskt.','Kontrollera status i live-data.','Kontrollera kontakt/kablage.']},
+    '5E5D':{title:'Bromsvätskenivågivare – fel',risk:'Hög',why:'DSC registrerar problem med bromsvätskenivåsignalen.',causes:['Nivågivare','Låg bromsvätskenivå','Kontakt/kablage'],steps:['Kontrollera bromsvätskenivån.','Inspektera givare och kontakt.','Läs signalen i live-data.','Vid låg nivå: kontrollera läckage och bromssystem innan påfyllning.']},
+    '5E5E':{title:'Bromsljuskontakt – fel',risk:'Hög',why:'DSC har registrerat fel på bromsljussignalen.',causes:['Bromsljuskontakt','Pedalkontakt','Kablage','Feljustering'],steps:['Kontrollera bromsljus.','Kontrollera switchstatus i live-data.','Kontrollera redundanta signaler.','Kontrollera kontakt och kablage.']},
+
+    /* EHC / air suspension */
+    '480DB0':{title:'EHC – lyftreglering tar för lång tid',risk:'Medel–hög',why:'Luftfjädringen når inte önskad höjd inom förväntad tid.',causes:['Kompressor','Läckage','Ventilblock','Spänningsproblem','Höjdsensor'],steps:['Lyssna efter kompressorns funktion.','Kontrollera säkring och spänning.','Kontrollera bilen efter läckage.','Kontrollera båda höjdsensorernas livevärden.']},
+    '480DB3':{title:'EHC – lyftreglering bak höger tar för lång tid',risk:'Medel–hög',why:'Höger bak når inte önskad nivå inom förväntad tid.',causes:['Luftläcka höger bak','Höjdsensor','Ventilblock','Kompressor'],steps:['Kontrollera höger luftbälg/slang.','Kontrollera höger nivåsensor och länkage.','Kontrollera kompressor/ventilblock.','Jämför vänster och höger livevärden.']},
+    '480DB4':{title:'EHC – sänkning bak vänster tar för lång tid',risk:'Medel–hög',why:'Vänster bak sänks inte som förväntat.',causes:['Ventilblock','Slang','Höjdsensor','Mekaniskt fel'],steps:['Kontrollera ventilblock.','Kontrollera vänster sensor/länkage.','Kontrollera slangar.','Jämför höjdvärden.']},
+    '480DC6':{title:'EHC – låg matningsspänning',risk:'Hög',why:'EHC har registrerat för låg spänning.',causes:['Batteri','Generator','Säkring','Jord/kabel'],steps:['Mät batteri och laddning.','Kontrollera EHC-säkring.','Kontrollera jord/kablage.','Radera först efter att spänningen är stabil.']},
+    '480D90':{title:'EHC vänster bak solenoid – kortslutning/avbrott',risk:'Hög',why:'EHC ser elektriskt fel på vänster bak solenoidkrets.',causes:['Ventilblock/solenoid','Kablage','Kontakt'],steps:['Kontrollera kontaktstycke.','Mät kablage enligt elschema.','Kontrollera ventilblockets solenoid.']},
+    '480D92':{title:'EHC höger bak solenoid – kortslutning/avbrott',risk:'Hög',why:'EHC ser elektriskt fel på höger bak solenoidkrets.',causes:['Ventilblock/solenoid','Kablage','Kontakt'],steps:['Kontrollera kontaktstycke.','Mät kablage enligt elschema.','Kontrollera ventilblockets solenoid.']},
+    '480DD4':{title:'EHC – styrenheten är inte kodad för bilen',risk:'Hög',why:'EHC saknar korrekt fordonskodning.',causes:['Fel kodning','Bytt EHC-modul','Kommunikations-/spänningsproblem'],steps:['Verifiera modulens identitet.','Kontrollera kodning mot bilen.','Kontrollera spänning och kommunikation.','Koda endast med korrekt BMW-procedur.']},
+    '480DD1':{title:'EHC – ingen giltig kodning lagrad',risk:'Hög',why:'EHC saknar giltiga kodningsdata.',causes:['Kodning raderad/korrupt','Modulbyte','Spänningsproblem'],steps:['Kontrollera modulens kommunikation.','Verifiera kodningsdata.','Koda modulen korrekt om den är kompatibel.']},
+
+    /* Common generic OBD-II codes */
+    'P0171':{title:'System för magert – bank 1',risk:'Medel',why:'Motorn ser för mycket luft eller för lite bränsle på bank 1.',causes:['Tjuvluft','MAF','Bränsletryck','Lambda'],steps:['Kontrollera insugsläckage.','Läs fuel trims.','Kontrollera MAF och bränsletryck.','Kontrollera lambda.']},
+    'P0174':{title:'System för magert – bank 2',risk:'Medel',why:'Motorn ser för mager blandning på bank 2.',causes:['Tjuvluft','MAF','Bränsletryck','Lambda'],steps:['Kontrollera insug.','Läs fuel trims.','Kontrollera MAF/bränsletryck.','Kontrollera lambda.']},
+    'P0300':{title:'Slumpmässiga/flera feltändningar',risk:'Hög',why:'Styrsystemet har upptäckt feltändningar i flera cylindrar.',causes:['Tändstift/spolar','Spridare','Bränsletryck','Luftläcka','Mekaniskt motorfel'],steps:['Läs cylinderrelaterade följdkoder.','Kontrollera tändning på bensinmotor.','Kontrollera bränsletryck/spridare.','Kontrollera kompression vid kvarstående fel.']},
+    'P0301':{title:'Feltändning cylinder 1',risk:'Hög',why:'Styrsystemet har upptäckt feltändning på cylinder 1.',causes:['Tändspole/stift','Spridare','Kompression','Luft/bränsle'],steps:['Flytta tändspole/stift om motorn tillåter och se om felet flyttar sig.','Kontrollera spridare.','Kontrollera kompression vid behov.']},
+    'P0302':{title:'Feltändning cylinder 2',risk:'Hög',why:'Styrsystemet har upptäckt feltändning på cylinder 2.',causes:['Tändspole/stift','Spridare','Kompression','Luft/bränsle'],steps:['Kontrollera tändning.','Kontrollera spridare.','Kontrollera kompression vid behov.']},
+    'P0303':{title:'Feltändning cylinder 3',risk:'Hög',why:'Styrsystemet har upptäckt feltändning på cylinder 3.',causes:['Tändspole/stift','Spridare','Kompression','Luft/bränsle'],steps:['Kontrollera tändning.','Kontrollera spridare.','Kontrollera kompression vid behov.']},
+    'P0304':{title:'Feltändning cylinder 4',risk:'Hög',why:'Styrsystemet har upptäckt feltändning på cylinder 4.',causes:['Tändspole/stift','Spridare','Kompression','Luft/bränsle'],steps:['Kontrollera tändning.','Kontrollera spridare.','Kontrollera kompression vid behov.']},
+    'P0128':{title:'Kylvätsketemperatur under reglerområde',risk:'Medel',why:'Motorn når inte förväntad arbetstemperatur.',causes:['Termostat','Temperaturgivare','Kylvätska/kylsystem'],steps:['Kontrollera verklig motortemperatur i live-data.','Kontrollera termostat.','Kontrollera kylvätskenivå och läckage.']},
+    'P0234':{title:'Överladdning – laddtryck för högt',risk:'Hög',why:'Laddtrycket ligger över förväntat område.',causes:['VGT/aktuator','Styrventil','MAP-sensor','Turbo'],steps:['Kontrollera aktuatorns rörelse.','Kontrollera vakuum/styrning.','Jämför begärt/uppmätt laddtryck.','Undvik hård belastning tills orsaken är hittad.']},
+    'P0403':{title:'EGR-styrkrets fel',risk:'Medel',why:'Styrsystemet har ett elektriskt/styrrelaterat fel i EGR-kretsen.',causes:['EGR-ventil','Kablage','Kontakt','Styrning'],steps:['Kontrollera kontakt och kablage.','Läs EGR-position i live-data.','Testa aktivering med diagnosverktyg.']},
+    'P0420':{title:'Katalysator – verkningsgrad under gräns',risk:'Medel',why:'Katalysatorsystemets beräknade verkningsgrad är för låg.',causes:['Katalysator','Lambda','Avgasläcka','Motor som går fel'],steps:['Kontrollera avgassystem efter läckage.','Läs lambda live.','Åtgärda motor-/blandningsfel innan katalysatorbyte.']},
+    'P0100':{title:'MAF-krets – fel',risk:'Medel',why:'Fel i luftmassemätarens elektriska krets.',causes:['MAF','Kontakt','Kablage','Matning'],steps:['Kontrollera kontakt och matning.','Kontrollera kablage.','Jämför MAF-signal i live-data.']},
+    'P0102':{title:'MAF-signal låg',risk:'Medel',why:'Luftmassemätarens signal är för låg.',causes:['MAF','Luftläcka','Kablage','Matning'],steps:['Kontrollera MAF-kontakt och kablage.','Kontrollera insug.','Jämför signal med live-data.']},
+    'P0103':{title:'MAF-signal hög',risk:'Medel',why:'Luftmassemätarens signal är för hög.',causes:['MAF','Kablage','Insug/EGR'],steps:['Kontrollera signal och kontakt.','Kontrollera luftväg/EGR.','Jämför med live-data.']},
+    'P0089':{title:'Bränsletrycksreglering – prestanda',risk:'Hög',why:'Bränsletrycksregleringen fungerar inte som förväntat.',causes:['Regulator','Bränslefilter','Pump','Spridare'],steps:['Kontrollera lågtryck.','Kontrollera railtryck.','Kontrollera filter och returflöde.']},
+    'P0093':{title:'Stort bränslesystemläckage upptäckt',risk:'Hög',why:'Styrsystemet ser ett större avvikande bränsleflöde/tryckfall.',causes:['Bränsleläcka','Spridare','Pump','Tryckreglering'],steps:['Kontrollera efter synliga läckage.','Kontrollera railtryck.','Kontrollera spridarnas returflöde.']},
+    'P0299':{title:'Laddtryck för lågt',risk:'Medel–hög',why:'Motorn får mindre laddtryck än förväntat.',causes:['Laddluftläcka','Vakuum','Turbo/VGT','MAP'],steps:['Kontrollera slangar/intercooler.','Kontrollera vakuum/aktuator.','Jämför begärt och uppmätt laddtryck.']}
+  };
+  Object.assign(FAULT_DB,EXTRA_FAULTS);
+
+  /* Accept both 4-digit BMW hex codes and modern 6-digit BMW DTCs. */
+  const oldParser=window.parsePastedCodes;
+  // Extend the existing paste reader without replacing its UI.
+  const input=document.getElementById('codePasteInput');
+  const btn=document.getElementById('parseCodesBtn');
+  if(input && btn){
+    const parseExtended=()=>{
+      const text=input.value||''; const found=[]; const seen=new Set();
+      const add=(code,module,desc)=>{code=String(code||'').toUpperCase();if(!code||seen.has(code))return;seen.add(code);found.push({code,module:module||'',desc:(desc||'').trim()})};
+      for(const m of text.matchAll(/\b([PBCU]\d{4})\b/gi)) add(m[1]);
+      const lines=text.replace(/\r/g,'').split(/\n+/);
+      for(const line of lines){
+        const module=(line.match(/\b(DDE|DME|DSC|ABS|EHC|CAS|FRM|JBBF|PDC|KOMBI|SMFA|IHKA|EGS|TCU|LM|SZL|MRS|ACSM|EKPS|VTG)\b/i)||[])[1]||'';
+        for(const m of line.matchAll(/\b(0x)?([0-9A-F]{6})\b/gi)) add(m[2],module,line.replace(m[0],''));
+        for(const m of line.matchAll(/\b([0-9A-F]{4})\b/gi)){
+          const code=m[1].toUpperCase(); if(/^20\d{2}$/.test(code))continue;
+          if(module||/\b(fault|fehler|felkod|code|signal|diagnos|switch|pressure|timeout)\b/i.test(line)) add(code,module,line.replace(m[0],''));
+        }
       }
-    }
-    return found;
+      return found;
+    };
+    btn.onclick=()=>{
+      const codes=parseExtended(); const out=document.getElementById('parsedCodesResult');
+      if(!out)return;
+      if(!codes.length){out.innerHTML='<div class="tool-result warn"><b>Jag hittade ingen tydlig felkod.</b><div class="tool-muted" style="margin-top:6px">Klistra gärna in hela INPA/ISTA/Carly-texten, inklusive modulnamnet.</div></div>';return;}
+      out.innerHTML=`<div class="tool-result ok"><b>Hittade ${codes.length} felkod${codes.length===1?'':'er'}</b>${codes.map(c=>{const f=FAULT_DB[c.code];const title=f?` – ${escapeHtml(f.title)}`:'';const mod=c.module?` <span class="severity">${escapeHtml(c.module)}</span>`:'';const desc=c.desc?`<div class="tool-muted" style="margin-top:5px">Text från diagnosen: ${escapeHtml(c.desc)}</div>`:'';const detail=f?`<div style="margin-top:7px"><b>Felsökning</b>${f.steps.slice(0,6).map((x,i)=>`<div class="step"><b>${i+1}.</b> ${escapeHtml(x)}</div>`).join('')}</div>`:`<div class="tool-muted" style="margin-top:7px">Koden finns inte i den inbyggda verifierade databasen ännu. Appen gissar inte betydelsen. Ange alltid modul + full diagnosrad.</div>`;return `<div class="fault" style="margin-top:8px"><b>${escapeHtml(c.code)}${title}</b>${mod}${desc}${detail}</div>`}).join('')}</div>`;
+    };
   }
-  function renderParsed(){
-    const input=byId('codePasteInput'), out=byId('parsedCodesResult');
-    if(!input||!out)return;
-    const text=input.value.trim();
-    if(!text){out.innerHTML='<div class="tool-result warn"><b>Klistra in felkoder först.</b><div class="tool-muted" style="margin-top:6px">Du kan klistra in hela texten från INPA, ISTA, Carly eller OBD-läsaren.</div></div>';return;}
-    const codes=parsePastedCodes(text);
-    if(!codes.length){out.innerHTML='<div class="tool-result warn"><b>Jag hittade ingen tydlig felkod.</b><div class="tool-muted" style="margin-top:6px">För BMW kan du klistra in t.ex. <b>4083 DDE</b> eller <b>4A63 DDE</b>, eller en vanlig OBD-kod som <b>P0299</b>.</div></div>';return;}
-    out.innerHTML=`<div class="tool-result ok"><b>Hittade ${codes.length} felkod${codes.length===1?'':'er'}</b>${codes.map(c=>{
-      const f=(typeof FAULT_DB!=='undefined')?FAULT_DB[c.code]:null;
-      const title=f?` – ${escapeHtml(f.title)}`:'';
-      const module=c.module?` <span class="severity">${escapeHtml(c.module)}</span>`:'';
-      const desc=c.desc?`<div class="tool-muted" style="margin-top:5px">Text från diagnosen: ${escapeHtml(c.desc)}</div>`:'';
-      const detail=f?`<div style="margin-top:7px"><b>Felsökning</b>${f.steps.slice(0,4).map((x,i)=>`<div class="step"><b>${i+1}.</b> ${escapeHtml(x)}</div>`).join('')}</div>`:`<div class="tool-muted" style="margin-top:7px">Det här är en BMW-specifik/okänd kod i den inbyggda databasen. Appen gissar inte betydelsen. Behåll modulen och den fullständiga texten från diagnosen för nästa felsökningssteg.</div>`;
-      return `<div class="fault" style="margin-top:8px"><b>${escapeHtml(c.code)}${title}</b>${module}${desc}${detail}</div>`;
-    }).join('')}</div>`;
-  }
-  function initPastedReader(){
-    const btn=byId('parseCodesBtn'), clear=byId('clearCodesBtn'), input=byId('codePasteInput'), out=byId('parsedCodesResult');
-    if(!btn||!input)return;
-    btn.onclick=renderParsed;
-    clear.onclick=()=>{input.value=''; if(out)out.innerHTML='';};
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initPastedReader); else initPastedReader();
 })();
 </script>
 </body></html>
