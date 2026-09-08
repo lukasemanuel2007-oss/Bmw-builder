@@ -885,4 +885,51 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
   }
 })();
 </script>
+<script>
+/* Unified upper fault reader: same database as Felkodsguiden, with safe HTML escaping. */
+(function(){
+  const input=document.getElementById('codePasteInput');
+  const btn=document.getElementById('parseCodesBtn');
+  const out=document.getElementById('parsedCodesResult');
+  const clear=document.getElementById('clearCodesBtn');
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  if(!input||!btn||!out)return;
+  function parse(text){
+    const found=[],seen=new Set();
+    const add=(code,module,desc)=>{code=String(code||'').toUpperCase();if(!code||seen.has(code))return;seen.add(code);found.push({code,module:module||'',desc:(desc||'').trim()});};
+    for(const m of text.matchAll(/\b([PBCU]\d{4})\b/gi))add(m[1]);
+    for(const raw of text.replace(/\r/g,'').split(/\n+/)){
+      const line=raw.trim();if(!line)continue;
+      const mm=line.match(/\b(DDE|DME|DSC|ABS|EHC|CAS|FRM|JBBF|PDC|KOMBI|SMFA|IHKA|EGS|TCU|LM|SZL|MRS|ACSM|EKPS|VTG)\b/i);
+      const module=mm?mm[1].toUpperCase():'';
+      for(const m of line.matchAll(/\b(?:0x)?([0-9A-F]{6})\b/gi))add(m[1],module,line.replace(m[0],''));
+      for(const m of line.matchAll(/\b([0-9A-F]{4})\b/gi)){
+        const code=m[1].toUpperCase();if(/^20\d{2}$/.test(code))continue;
+        if(module||/\b(fault|fehler|felkod|code|signal|diagnos|switch|pressure|timeout|brake|broms)\b/i.test(line))add(code,module,line.replace(m[0],''));
+      }
+    }
+    return found;
+  }
+  function show(codes){
+    if(!codes.length){out.innerHTML='<div class="tool-result warn"><b>Jag hittade ingen tydlig felkod.</b><div class="tool-muted" style="margin-top:6px">Klistra in hela INPA/ISTA/Carly-texten, inklusive modulnamnet.</div></div>';return;}
+    let html='<div class="tool-result ok"><b>Hittade '+codes.length+' felkod'+(codes.length===1?'':'er')+'</b>';
+    for(const c of codes){
+      const f=FAULT_DB[c.code];
+      html+='<div class="fault" style="margin-top:8px"><b>'+esc(c.code)+(f?' – '+esc(f.title):'')+'</b>'+(c.module?' <span class="severity">'+esc(c.module)+'</span>':'');
+      if(c.desc)html+='<div class="tool-muted" style="margin-top:5px">Text från diagnosen: '+esc(c.desc)+'</div>';
+      if(f){
+        html+='<div style="margin-top:8px"><span class="severity">'+esc(f.risk)+'</span><div class="tool-muted" style="margin-top:6px">'+esc(f.why)+'</div><b style="display:block;margin-top:10px">Möjliga orsaker</b>';
+        html+=f.causes.map(x=>'<div class="step">• '+esc(x)+'</div>').join('');
+        html+='<b style="display:block;margin-top:10px">Felsök steg för steg</b>';
+        html+=f.steps.map((x,i)=>'<div class="step"><b>'+(i+1)+'.</b> '+esc(x)+'</div>').join('');
+        html+='</div>';
+      }else html+='<div class="tool-muted" style="margin-top:7px">Koden finns inte i den inbyggda verifierade databasen ännu. Appen gissar inte betydelsen. Ange modul + full diagnosrad.</div>';
+      html+='</div>';
+    }
+    out.innerHTML=html+'</div>';
+  }
+  btn.onclick=e=>{e.preventDefault();show(parse(input.value||''));};
+  if(clear)clear.onclick=()=>{input.value='';out.innerHTML='';};
+})();
+</script>
 </body></html>
