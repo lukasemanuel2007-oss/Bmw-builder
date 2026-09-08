@@ -2140,4 +2140,57 @@ body.route-build .app-only-back{display:flex}
 })();
 </script>
 
+
+<style id="bmwInteractionFixCSS">
+/* Final interaction layer: nothing invisible may sit above the controls. */
+html,body{touch-action:manipulation}
+button,select,input,textarea{pointer-events:auto!important;-webkit-user-select:auto;user-select:auto}
+#failsafeBuilder{position:relative;z-index:1000;pointer-events:auto!important}
+#failsafeBuilder .fb-card,#failsafeBuilder select,#failsafeBuilder button{pointer-events:auto!important}
+#bmwSplash{z-index:999999!important}
+</style>
+<script id="bmwInteractionFix">
+(function(){
+  'use strict';
+  function $(id){return document.getElementById(id)}
+  function hideSplashNow(){
+    var s=$('bmwSplash');
+    if(s){s.classList.add('hide');setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s)},800)}
+  }
+  function makeInteractive(){
+    document.querySelectorAll('button,select,input,textarea').forEach(function(el){
+      el.style.pointerEvents='auto';
+    });
+    var fb=$('failsafeBuilder');
+    if(fb){
+      fb.style.pointerEvents='auto';fb.style.zIndex='1000';
+      fb.querySelectorAll('select').forEach(function(s){
+        s.disabled=false;
+        s.style.pointerEvents='auto';
+        if(!s.dataset.interactionFix){
+          s.dataset.interactionFix='1';
+          s.addEventListener('change',function(){
+            var ev=new Event('change',{bubbles:true});
+            // Let the existing onchange do the real refresh; this only updates status.
+            setTimeout(function(){
+              var st=$('fbStatus');
+              if(st){var vals=['fbSeries','fbGeneration','fbYear','fbBody','fbEngine','fbGear'].map(function(id){var x=$(id);return x&&x.selectedOptions[0]?x.selectedOptions[0].text:''}).filter(Boolean);st.textContent=vals.join(' • ')}
+            },10);
+          });
+        }
+      });
+    }
+  }
+  function boot(){
+    // Never wait for window load: external images/network must not block the UI.
+    setTimeout(hideSplashNow,1400);
+    makeInteractive();
+    var mo=new MutationObserver(function(){makeInteractive()});
+    mo.observe(document.body,{childList:true,subtree:true});
+    setTimeout(function(){mo.disconnect()},10000);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+
 </body></html>
