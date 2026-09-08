@@ -255,6 +255,17 @@ header,.header,.topbar{position:sticky;top:0;z-index:500;backdrop-filter:blur(18
 #bmwSplash .splashGlow{position:absolute;width:min(230px,54vw);height:min(230px,54vw);border:1px solid rgba(180,205,230,.22);border-radius:50%;transform:scale(.35);opacity:0;animation:bmwSplashRing 1.1s ease-out .15s forwards}
 @keyframes bmwSplashIn{0%{transform:scale(.18) rotate(-25deg);opacity:0}55%{transform:scale(1.08) rotate(4deg);opacity:1}78%{transform:scale(.96) rotate(0)}100%{transform:scale(1) rotate(0);opacity:1}}
 @keyframes bmwSplashRing{0%{transform:scale(.35);opacity:0}35%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+</style><style id="bmwUltraLuxuryCSS">
+#premiumVisualHost{margin-top:16px!important;border-radius:26px!important;border:1px solid #31485f!important;background:linear-gradient(145deg,#111c28,#080d13 58%,#0d1722)!important;box-shadow:0 28px 80px #0009,inset 0 1px 0 #fff1!important;overflow:hidden!important}
+#premiumVisualHost:before{content:"";display:block;height:2px;background:linear-gradient(90deg,transparent,#3d9aff,#d7ecff,#3d9aff,transparent);opacity:.85}
+#premiumVisualHost .pv-head{padding:20px!important}.pv-title{letter-spacing:-.03em}.pv-price{text-shadow:0 0 18px #2877ff55}
+#premiumVisualHost .pv-tabs{padding:8px 20px 12px!important}.pv-tab{transition:.18s;box-shadow:inset 0 1px 0 #fff1}.pv-tab.on{background:linear-gradient(180deg,#267fe9,#155bb6)!important;box-shadow:0 8px 25px #1766c944}
+#premiumVisualHost .pv-main{background:radial-gradient(circle at 50% 35%,#20384e,#05090d 70%)!important}.pv-image{transition:transform .35s ease,filter .35s ease!important}.pv-main:hover .pv-image{transform:scale(1.012);filter:saturate(1.04) contrast(1.02)}
+#premiumVisualHost .pv-credit{background:#070c12!important}.pv-thumbs{background:linear-gradient(180deg,#0a1118,#080d13)!important;padding:11px 14px 14px!important}.pv-thumb{flex-basis:96px!important;height:67px!important;transition:.16s}.pv-thumb:hover{transform:translateY(-2px);border-color:#5c9be2}
+#premiumVisualHost .pv-interior{padding:15px 16px 17px!important;background:radial-gradient(circle at 50% 0,#1a2a39,#080d13 70%)}
+#premiumVisualHost .pv-chip{background:linear-gradient(145deg,#141f2a,#0a1118)!important;border-color:#30465a!important;box-shadow:inset 0 1px 0 #fff1}
+#premiumVisualHost .pv-cabin{min-height:285px!important;background:radial-gradient(ellipse at 50% -10%,#52687b,#202e3a 27%,#0a1118 65%,#04070a)!important;box-shadow:inset 0 0 80px #000b,0 16px 40px #0008!important}
+#premiumVisualHost .pv-seat{box-shadow:0 16px 28px #000b,inset 0 1px 0 #fff2!important}.pv-config-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:11px 14px;background:#080e14;border-top:1px solid #1d2c3a;border-bottom:1px solid #1d2c3a}.pv-config-item{min-width:0;background:#0d151e;border:1px solid #263a4c;border-radius:12px;padding:9px 8px}.pv-config-item span{display:block;color:#71869a;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.pv-config-item b{display:block;margin-top:3px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pv-color-dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;border:1px solid #fff6;margin-right:5px;box-shadow:0 1px 5px #0008}.pv-photo-note{padding:10px 14px;color:#7e91a3;font-size:10px;line-height:1.45;background:#070c12}@media(max-width:640px){.pv-config-strip{grid-template-columns:1fr 1fr}#premiumVisualHost .pv-cabin{min-height:245px!important}}
 </style></head>
 <body>
 <div id="installHint" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;max-width:520px;margin:auto;background:#182330;border:1px solid #3d5269;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 10px 35px #0008;font-size:13px">
@@ -1463,8 +1474,8 @@ body.route-build .app-only-back{display:flex}
     $('valueCarBtn').onclick=()=>{$('valuationResult').style.display='block';$('valuationResult').innerHTML='<b>Värdering</b><div class="suite-muted" style="margin-top:6px">Ange miltal, skick och marknadsdata för en mer användbar värdering. Appen gissar inte ett exakt marknadsvärde utan underlag.</div>'};
     $('exportGarageBtn').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(garage,null,2)],{type:'application/json'}));a.download='BMW-Garage.json';a.click()};
     $('carImageInput').onchange=e=>{const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const c=garage.find(x=>x.id===activeId);if(c){c.image=reader.result;write();renderGarage();profile(c)}};reader.readAsDataURL(file)};
-    if(!$('garageBackBtn')){
-      const b=document.createElement('button');b.id='garageBackBtn';b.type='button';b.className='suite-btn profile-back';b.textContent='← Garage';
+    if(!$('garageBackBtnLegacy')){
+      const b=document.createElement('button');b.id='garageBackBtnLegacy';b.type='button';b.className='suite-btn profile-back';b.textContent='← Garage';
       b.onclick=closeProfile;$('profileTitle').before(b);
     }
     if($('sbGarage'))$('sbGarage').onclick=()=>{const c=addBuild();showGarageToast();};
@@ -1691,4 +1702,198 @@ body:has(#garageSuite:target) #garageSuite{display:grid!important}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
 })();
 </script>
+
+<style id="bmwPremiumVisuals">
+/* BMW Builder Premium Visuals v1 */
+.premium-visuals{margin-top:18px;border:1px solid rgba(92,128,164,.42);border-radius:24px;overflow:hidden;background:linear-gradient(145deg,#111b26,#080d13 70%);box-shadow:0 20px 55px #0008}
+.pv-head{padding:18px 18px 10px;display:flex;justify-content:space-between;gap:12px;align-items:flex-end}
+.pv-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7f9ab5;font-weight:800}.pv-title{font-size:23px;font-weight:900;margin-top:3px}.pv-sub{color:#91a3b5;font-size:12px;margin-top:3px}.pv-price{font-weight:900;font-size:18px;color:#fff;white-space:nowrap}
+.pv-tabs{display:flex;gap:7px;padding:8px 18px;overflow:auto}.pv-tab{border:1px solid #2b4055;background:#0d151e;color:#9fb0c1;border-radius:999px;padding:9px 13px;font-weight:800;white-space:nowrap}.pv-tab.on{background:#172d45;border-color:#4c82b3;color:#fff}
+.pv-main{position:relative;background:#05090d}.pv-image{width:100%;aspect-ratio:16/10;display:block;object-fit:cover;background:#0a1119}.pv-loading{aspect-ratio:16/10;display:grid;place-items:center;color:#91a3b5;padding:30px;text-align:center}.pv-badge{position:absolute;left:12px;top:12px;background:#071019cc;border:1px solid #6e8da955;backdrop-filter:blur(12px);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;color:#eaf2f8}.pv-credit{padding:7px 12px;color:#6f8294;font-size:10px}.pv-thumbs{display:flex;gap:8px;overflow:auto;padding:10px 12px 13px;background:#0a1017}.pv-thumb{flex:0 0 92px;height:64px;border-radius:11px;overflow:hidden;border:1px solid #26394b;background:#0d151e;padding:0}.pv-thumb.on{border-color:#4d8ee1;box-shadow:0 0 0 2px #2d80ff44}.pv-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pv-interior{padding:14px}.pv-spec{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}.pv-chip{background:#0d151e;border:1px solid #26394b;border-radius:13px;padding:10px}.pv-chip span{display:block;color:#74889c;font-size:10px;text-transform:uppercase;letter-spacing:.08em}.pv-chip b{display:block;margin-top:3px;font-size:13px}.pv-cabin{position:relative;min-height:230px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 50% 0%,#334252,#0b1118 52%,#05080c);border:1px solid #33485d;box-shadow:inset 0 0 60px #0008}.pv-windshield{position:absolute;left:20%;right:20%;top:14px;height:74px;border-radius:8px 8px 45% 45%;background:linear-gradient(180deg,#66849b55,#0d1720);border:1px solid #7691a855;transform:perspective(300px) rotateX(-12deg)}
+.pv-dash{position:absolute;left:8%;right:8%;top:76px;height:55px;border-radius:16px 16px 9px 9px;background:linear-gradient(180deg,#252d35,#11171e);border:1px solid #49545f}.pv-screen{position:absolute;left:42%;top:88px;width:16%;height:30px;border-radius:4px;background:#101c29;border:1px solid #57718a;box-shadow:0 0 18px #2e8cff33}.pv-seat{position:absolute;bottom:18px;width:24%;height:105px;border-radius:32px 32px 14px 14px;background:var(--seat,#222);border:1px solid #ffffff22;box-shadow:0 12px 22px #0008}.pv-seat.left{left:18%;transform:rotate(-5deg)}.pv-seat.right{right:18%;transform:rotate(5deg)}.pv-console{position:absolute;left:43%;bottom:0;width:14%;height:125px;background:linear-gradient(90deg,#171d24,#303942,#171d24);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);opacity:.95}.pv-wheel{position:absolute;left:35%;top:93px;width:13%;aspect-ratio:1;border:7px solid #151b22;border-radius:50%;box-shadow:inset 0 0 0 2px #88939d}.pv-list{padding:0 14px 15px;color:#91a3b5;font-size:11px;line-height:1.5}.pv-note{padding:10px 14px 14px;color:#6f8294;font-size:10px}.luxury-glow{height:1px;background:linear-gradient(90deg,transparent,#4c8fd0,transparent);opacity:.7}
+@media(max-width:640px){.pv-head{padding:15px}.pv-title{font-size:20px}.pv-price{font-size:15px}.pv-spec{grid-template-columns:1fr 1fr}.pv-seat{height:92px}.pv-cabin{min-height:215px}}
+</style>
+<script id="bmwPremiumVisualsScript">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id); let timer=0, cache=new Map(), currentPhotos=[], photoIndex=0, mode='exterior';
+const interiorColors={
+ 'Tyg':'#31373c','Tyg/Alcantara':'#20262c','Dakota-läder':'#4b3428','Nappa-läder':'#292a2b','Merino-läder':'#5b3c2d','Sensatec':'#25282b'
+};
+const trimColors={'Svart':'#25282b','Beige':'#9a8060','Grå':'#656a6d','Brun':'#57392b','Aluminium':'#9ba4aa','Pianolack':'#17191b','Fineline-trä':'#60442e','Individual':'#3e4b56'};
+function val(id){const e=$(id);return e&&e.options[e.selectedIndex]?e.options[e.selectedIndex].text:''}
+function info(){const s=$('series'),g=$('generation'),y=$('year'),b=$('body');return {series:val('series')||'BMW',gen:val('generation')||'',year:val('year')||'',body:val('body')||'',engine:val('engine')||'',up:val('upholstery')||'Tyg',trim:val('interior')||'Svart'}}
+function key(i){return [i.gen,i.year,i.body].join('|')}
+function queryFor(i,inside){let q='BMW '+i.gen+' '+i.body+' '+i.year;if(inside)q+=' interior dashboard cockpit';else q+=' '+(val('color')||'')+' front side rear';return q.replace(/\s+/g,' ').trim()}
+async function fetchCommons(q){if(cache.has(q))return cache.get(q); const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(q)+'&gsrnamespace=6&gsrlimit=10&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1100&format=json&origin=*';
+ try{const r=await fetch(url,{cache:'force-cache'});const j=await r.json();const pages=Object.values(j.query?.pages||{});const out=pages.map(p=>({title:p.title||'',url:p.imageinfo?.[0]?.thumburl||p.imageinfo?.[0]?.url||'',page:'https://commons.wikimedia.org/wiki/'+encodeURIComponent((p.title||'').replace(/^File:/,''))})).filter(x=>x.url&&/\.(jpe?g|png|webp)(\?|$)/i.test(x.url));cache.set(q,out);return out}catch(e){return []}}
+function pickPhotos(arr,inside){const words=inside?['interior','cockpit','dashboard','innenraum','innenansicht','armaturenbrett']:['front','side','rear','touring','sedan','coupe','limousine','avant','view']; const scored=arr.map(x=>{let t=x.title.toLowerCase(),score=0;words.forEach(w=>{if(t.includes(w))score+=2});if(t.includes(info().gen.toLowerCase()))score+=7;if(t.includes(info().body.toLowerCase()))score+=4;if(t.includes(info().year))score+=2;if(t.includes(info().series.toLowerCase()))score+=1;return {...x,score}}).sort((a,b)=>b.score-a.score); return scored.slice(0,6)}
+function buildPanel(){let host=$('premiumVisualHost');if(host)return host; const g=$('gallery'); if(!g)return null; host=document.createElement('section');host.id='premiumVisualHost';host.className='premium-visuals'; const anchor=$('previewBox'); anchor.insertAdjacentElement('afterend',host); return host}
+function renderShell(i){const host=buildPanel();if(!host)return null; const price=$('visualPrice')?.textContent||''; host.innerHTML=`<div class="pv-head"><div><div class="pv-kicker">Premium visualisering</div><div class="pv-title">BMW ${i.series} ${i.gen}</div><div class="pv-sub">${i.year} • ${i.body} • ${i.engine}</div></div><div class="pv-price">${price}</div></div><div class="luxury-glow"></div><div class="pv-tabs"><button class="pv-tab ${mode==='exterior'?'on':''}" data-pv="exterior">Exteriör</button><button class="pv-tab ${mode==='interior'?'on':''}" data-pv="interior">Interiör</button></div><div id="pvContent"><div class="pv-loading">Hämtar modellbilder för exakt generation…</div></div><div class="pv-note">Bildmatchning: modell + generation + karosstyp + år. Originalbilder kan skilja i färg, fälg och exakt utrustningsnivå.</div>`;
+ host.querySelectorAll('.pv-tab').forEach(b=>b.onclick=()=>{mode=b.dataset.pv;render()}); return host}
+function colorHex(n){const m={"Alpinvit":"#f4f4f2","Jet Black":"#15171a","Black Sapphire":"#101923","Space Grey":"#68727c","Titan Silver":"#b7bec5","Sparkling Graphite":"#4f5962","Le Mans Blue":"#2459a6","Monaco Blue":"#172f57","Deep Green":"#274a36","Imolaröd":"#8f1720","Melbourne Red":"#a51d26","Mineral White":"#e8e8e3","Mineral Grey":"#6d747b","Estoril Blue":"#2d68c0","San Marino Blue":"#173e8a","Tanzanite Blue":"#183b61","Frozen Grey":"#7b8185"};return m[n]||"#5b6570"}
+function renderConfigStrip(i){const host=$('pvContent');if(!host)return;host.querySelector('.pv-config-strip')?.remove();const x=document.createElement('div');x.className='pv-config-strip';x.innerHTML=`<div class="pv-config-item"><span>Färg</span><b><i class="pv-color-dot" style="background:${colorHex(val('color'))}"></i>${val('color')}</b></div><div class="pv-config-item"><span>Fälg</span><b>${val('wheels')}</b></div><div class="pv-config-item"><span>Klädsel</span><b>${i.up}</b></div><div class="pv-config-item"><span>List</span><b>${i.trim}</b></div>`;host.appendChild(x)}
+function renderPhotos(photos,i){const host=$('pvContent');if(!host)return;if(!photos.length){host.innerHTML='<div class="pv-loading">Inga matchande modellbilder hittades just nu.</div>';return}photoIndex=Math.min(photoIndex,photos.length-1);const p=photos[photoIndex];host.innerHTML=`<div class="pv-main"><img class="pv-image" src="${p.url}" alt="BMW ${i.gen} ${i.year} ${i.body}" loading="eager"><div class="pv-badge">${mode==='interior'?'Interiör':'Exteriör'} • ${i.gen} • ${i.body}</div></div><div class="pv-credit">Källa: Wikimedia Commons • <a href="${p.page}" target="_blank" rel="noopener">Visa original</a></div><div class="pv-thumbs">${photos.map((x,n)=>`<button class="pv-thumb ${n===photoIndex?'on':''}" data-pv-photo="${n}"><img src="${x.url}" alt="Vy ${n+1}" loading="lazy"></button>`).join('')}</div>`;host.querySelectorAll('[data-pv-photo]').forEach(b=>b.onclick=()=>{photoIndex=+b.dataset.pvPhoto;renderPhotos(photos,i)});renderConfigStrip(i)}
+function renderInteriorPreview(i){const host=$('pvContent');if(!host)return;const seat=interiorColors[i.up]||'#25282b',trim=trimColors[i.trim]||'#333';host.innerHTML=`<div class="pv-interior"><div class="pv-spec"><div class="pv-chip"><span>Klädsel</span><b>${i.up}</b></div><div class="pv-chip"><span>Interiörlist</span><b>${i.trim}</b></div></div><div class="pv-cabin" style="--seat:${seat}"><div class="pv-windshield"></div><div class="pv-dash" style="background:linear-gradient(180deg,${trim},#11171e)"></div><div class="pv-screen"></div><div class="pv-wheel"></div><div class="pv-seat left"></div><div class="pv-seat right"></div><div class="pv-console"></div></div><div class="pv-list"><b style="color:#fff">Din interiör</b><br>${i.up} • ${i.trim}<br>Previewen ändras direkt när du väljer klädsel eller interiörlist.</div></div>`;renderConfigStrip(i)}
+async function render(){const i=info();const host=renderShell(i);if(!host)return;photoIndex=0;const arr=pickPhotos(await fetchCommons(queryFor(i,mode==='interior')),mode==='interior');if(mode==='interior'&&!arr.length){renderInteriorPreview(i)}else if(arr.length){renderPhotos(arr,i)}else{renderInteriorPreview(i)}}
+function schedule(){clearTimeout(timer);timer=setTimeout(render,180)}
+function bind(){['series','generation','year','body','engine','color','upholstery','wheels','interior','trim'].forEach(id=>{const e=$(id);if(e)e.addEventListener('change',schedule)});document.addEventListener('DOMContentLoaded',()=>schedule());if(document.readyState!=='loading')schedule()}
+bind();
+window.bmwPremiumVisuals={refresh:schedule};
+})();
+</script>
+
 </body></html>
+
+
+<!-- BMW BUILDER FINAL POLISH / SINGLE ROUTER -->
+<style id="bmwFinalLuxuryPolish">
+:root{--lux-bg:#070b10;--lux-card:#0e151d;--lux-card2:#111b25;--lux-line:#26384b;--lux-blue:#2f86ff;--lux-blue2:#6db5ff;--lux-text:#f5f8fb;--lux-muted:#8294a7}
+html{background:var(--lux-bg);scroll-behavior:smooth}
+body{background:radial-gradient(900px 500px at 50% -180px,#1b3148 0%,#0a1017 45%,#060a0f 100%) fixed!important;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 12% 20%,#2b80ff0b,transparent 28%),radial-gradient(circle at 88% 72%,#ffffff06,transparent 30%)}
+#appHome{max-width:1040px!important;margin:0 auto!important;padding:28px 16px 90px!important}
+#appHome:before{content:"";display:block;height:1px;background:linear-gradient(90deg,transparent,#5b86aa55,transparent);margin:0 5% 24px}
+.app-home-title{font-size:clamp(30px,7vw,48px)!important;letter-spacing:-.045em!important;line-height:1!important;margin:0!important;background:linear-gradient(100deg,#fff 15%,#d7e7f7 50%,#75b8ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.app-home-title:after{content:"PREMIUM CONFIGURATOR";display:block;font-size:9px;letter-spacing:.24em;color:#6e91b1;margin-top:10px;font-weight:900}
+.app-home-sub{font-size:14px!important;color:#8ea1b5!important;margin:11px 0 20px!important}
+.home-grid{gap:14px!important}
+.home-choice{position:relative!important;overflow:hidden!important;min-height:174px!important;padding:22px 19px!important;border-radius:24px!important;border:1px solid #2b4155!important;background:linear-gradient(145deg,#142230 0%,#0d151e 48%,#090e14 100%)!important;box-shadow:0 18px 50px #0008,inset 0 1px 0 #ffffff0a!important;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease!important}
+.home-choice:before{content:"";position:absolute;inset:-1px;background:linear-gradient(120deg,transparent 25%,#7fc2ff12 48%,transparent 68%);transform:translateX(-120%);transition:transform .55s ease;pointer-events:none}
+.home-choice:hover{transform:translateY(-4px)!important;border-color:#4e86b7!important;box-shadow:0 25px 65px #000a,0 0 0 1px #5b9ddd1c,inset 0 1px 0 #ffffff12!important}
+.home-choice:hover:before{transform:translateX(120%)}
+.home-choice:active{transform:scale(.985)!important}
+.home-choice .ico{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;margin-bottom:16px!important;font-size:26px!important;background:linear-gradient(145deg,#1d3650,#0d1721);border:1px solid #36536d;box-shadow:inset 0 1px 0 #fff1,0 10px 24px #0006}
+.home-choice b{font-size:20px!important;letter-spacing:-.02em}.home-choice span{font-size:12px!important;color:#8da0b3!important;max-width:520px}
+.home-choice[data-route="build"]{grid-column:span 2;min-height:196px;background:radial-gradient(500px 180px at 80% 0,#1e4f7b55,transparent 65%),linear-gradient(145deg,#16283a,#0b121a)!important}
+.home-choice[data-route="build"] b:after{content:"  ›";color:#75baff}
+.app-screen{max-width:1040px!important;padding:0 16px 80px!important}
+.app-screen-head{padding:10px 0 15px!important;position:sticky;top:0;z-index:30;background:linear-gradient(#080d13f2 70%,transparent);backdrop-filter:blur(14px)}
+.app-back{border:1px solid #30485d!important;background:linear-gradient(145deg,#162431,#0d151d)!important;box-shadow:0 8px 25px #0006,inset 0 1px 0 #fff1!important;transition:.18s}.app-back:active{transform:scale(.97)}
+.app-screen-title{font-size:20px!important;letter-spacing:-.02em}
+#stepBuilder,#garageSuite,#diagScreen,#lookupScreen{min-height:calc(100vh - 20px)}
+#installHint{pointer-events:none!important}
+#bmwSplash{pointer-events:none!important}
+/* Make all interactive controls feel native on iPhone */
+button,a,select,input,textarea{ -webkit-tap-highlight-color:transparent }
+button{touch-action:manipulation}
+@media(max-width:650px){
+ #appHome{padding:20px 13px 70px!important}.home-grid{grid-template-columns:1fr!important}.home-choice[data-route="build"]{grid-column:auto;min-height:184px!important}.home-choice{min-height:148px!important}.home-choice .ico{width:48px;height:48px}.app-screen{padding-left:13px!important;padding-right:13px!important}
+}
+</style>
+<script id="bmwFinalSingleRouter">
+(function(){
+  'use strict';
+  var routes={build:'stepBuilder',garage:'garageSuite',diag:'diagScreen',lookup:'lookupScreen'};
+  var oldRoute=(typeof window.bmwRoute==='function')?window.bmwRoute:null;
+  function by(id){return document.getElementById(id)}
+  function hideAll(){Object.keys(routes).forEach(function(k){var e=by(routes[k]);if(e)e.style.display='none'});var h=by('appHome');if(h)h.style.display='none'}
+  function setBody(r){document.body.classList.remove('route-build','route-garage','route-diag','route-lookup');if(r)document.body.classList.add('route-'+r)}
+  function route(r,fromClick){
+    r=routes[r]?r:'';hideAll();setBody(r);
+    if(!r){var h=by('appHome');if(h)h.style.display='block';try{history.replaceState(null,'','#')}catch(e){};window.scrollTo(0,0);return}
+    var e=by(routes[r]);if(e)e.style.display=r==='garage'?'grid':'block';
+    try{if(oldRoute)oldRoute(r)}catch(e){}
+    try{if(r==='garage'&&typeof window.bmwGarageAPI==='object'&&window.bmwGarageAPI.refresh)window.bmwGarageAPI.refresh()}catch(e){}
+    window.scrollTo(0,0);
+  }
+  window.bmwRoute=route;
+  window.bmwGoHome=function(){route('')};
+  window.bmwGoBuild=function(){route('build')};
+  function wireHome(){
+    document.querySelectorAll('#appHome .home-choice').forEach(function(b){
+      b.removeAttribute('onclick');
+      b.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();route(b.getAttribute('data-route')||'');},true);
+      b.addEventListener('touchend',function(e){e.preventDefault();e.stopImmediatePropagation();route(b.getAttribute('data-route')||'');},true);
+    });
+    document.querySelectorAll('.app-back,[data-home]').forEach(function(b){
+      b.removeAttribute('onclick');
+      b.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();route('')},true);
+      b.addEventListener('touchend',function(e){e.preventDefault();e.stopImmediatePropagation();route('')},true);
+    });
+  }
+  function addLuxuryHomeDetails(){
+    var h=by('appHome');if(!h||h.querySelector('.lux-home-foot'))return;
+    var f=document.createElement('div');f.className='lux-home-foot';f.innerHTML='<div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;color:#64788c;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-top:20px"><span>BMW Builder</span><span>•</span><span>Garage</span><span>•</span><span>Diagnosis</span><span>•</span><span>Configurator</span></div>';
+    h.appendChild(f);
+  }
+  function start(){
+    addLuxuryHomeDetails();wireHome();
+    route('');
+    setTimeout(function(){var s=by('bmwSplash');if(s)s.classList.add('hide')},1550);
+    setTimeout(function(){wireHome();},120);
+    setTimeout(function(){wireHome();},700);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+</script>
+<style id="bmwV2PremiumUpgrade">
+/* BMW BUILDER V2 — premium configurator layer */
+#stepBuilder{max-width:1100px!important;margin:0 auto!important}
+#stepBuilder .sb-preview{position:sticky;top:8px;z-index:8}
+#stepBuilder .sb-card{background:linear-gradient(145deg,#121e2a,#091018)!important;border:1px solid #2a4054!important;box-shadow:0 22px 70px #0009,inset 0 1px 0 #fff1!important}
+#stepBuilder .sb-title{letter-spacing:-.035em}
+#stepBuilder .sb-mini-summary{grid-template-columns:repeat(4,1fr)!important}
+#stepBuilder .sb-mini{background:linear-gradient(145deg,#13202c,#0b1219)!important;border:1px solid #263b4e!important;border-radius:14px!important;padding:11px!important}
+#stepBuilder .sb-choice{min-height:48px!important;border-radius:14px!important;background:linear-gradient(145deg,#142331,#0b1219)!important;border:1px solid #294257!important;color:#eaf3fb!important;box-shadow:inset 0 1px 0 #fff1!important;transition:.18s!important}
+#stepBuilder .sb-choice.on{border-color:#55aaff!important;box-shadow:0 0 0 1px #55aaff33,0 8px 24px #0006!important;background:linear-gradient(145deg,#183957,#0d1924)!important}
+#stepBuilder .sb-choice:active{transform:scale(.98)}
+#stepBuilder .sb-progress{position:relative}
+#stepBuilder .sb-dot.done{color:#8dc7ff!important}
+#stepBuilder .sb-dot.done b{background:#2677c9!important}
+#stepBuilder .sb-dot.on b{box-shadow:0 0 0 4px #2f86ff20,0 0 22px #2f86ff55}
+.v2-config-showcase{margin-top:14px;border:1px solid #294156;border-radius:22px;background:linear-gradient(145deg,#101b25,#080e14);overflow:hidden;box-shadow:0 20px 55px #0008}
+.v2-config-head{padding:16px 17px 11px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.v2-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.22em;color:#7294b3;font-weight:900}
+.v2-name{font-size:23px;font-weight:900;letter-spacing:-.04em;margin-top:4px}
+.v2-price{font-size:18px;font-weight:900;white-space:nowrap}
+.v2-preview{position:relative;min-height:215px;display:grid;place-items:center;background:radial-gradient(450px 170px at 50% 70%,#2b5e8730,transparent 65%)}
+.v2-preview img{max-width:92%;max-height:225px;object-fit:contain;border-radius:16px;filter:drop-shadow(0 22px 22px #000b);transition:transform .35s ease,opacity .25s ease}
+.v2-preview img.v2-turn{transform:perspective(700px) rotateY(14deg) scale(1.015)}
+.v2-placeholder{width:86%;height:150px;border-radius:22px;display:grid;place-items:center;color:#71879b;border:1px dashed #2b455b;background:radial-gradient(circle,#1a3042,#0b1219)}
+.v2-viewbar{display:flex;gap:8px;padding:10px 13px;border-top:1px solid #203446;overflow:auto}
+.v2-viewbar button{flex:0 0 auto;border:1px solid #294156;background:#0b141d;color:#9fb4c8;border-radius:11px;padding:9px 12px;font-weight:800;font-size:11px}
+.v2-viewbar button.on{color:#fff;border-color:#4b91d1;background:#14304a}
+.v2-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:12px 13px 15px}
+.v2-summary-item{padding:10px 11px;border:1px solid #1f3447;border-radius:12px;background:#0b131b}.v2-summary-item span{display:block;color:#6f8498;font-size:9px;text-transform:uppercase;letter-spacing:.12em}.v2-summary-item b{display:block;margin-top:3px;font-size:12px}
+.v2-final{margin:14px 0;padding:18px;border:1px solid #33516a;border-radius:22px;background:radial-gradient(500px 150px at 85% 0,#1c5b8c35,transparent 60%),linear-gradient(145deg,#111f2b,#090f15);box-shadow:0 20px 60px #0009}
+.v2-final h3{margin:0;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#75b9ef}.v2-final .big{font-size:25px;font-weight:950;letter-spacing:-.04em;margin:6px 0 13px}.v2-final-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.v2-final-row{padding:9px 10px;background:#0a121a;border:1px solid #203448;border-radius:11px}.v2-final-row span{display:block;font-size:8px;text-transform:uppercase;color:#71869a;letter-spacing:.1em}.v2-final-row b{font-size:11px}.v2-actions{display:flex;gap:8px;margin-top:12px}.v2-actions button{flex:1;border:1px solid #36556d;border-radius:13px;padding:12px;font-weight:900;background:#102131;color:#fff}.v2-actions .primary{background:linear-gradient(145deg,#2386e7,#1459a0);border-color:#61b3ff}
+.v2-360{position:relative;touch-action:pan-y;cursor:grab}.v2-360:active{cursor:grabbing}.v2-360-hint{position:absolute;left:50%;bottom:9px;transform:translateX(-50%);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#c3d8ea;background:#071019d9;padding:6px 9px;border:1px solid #ffffff12;border-radius:99px;white-space:nowrap;pointer-events:none}
+.v2-equipment{margin-top:14px;padding:14px;border:1px solid #263d51;border-radius:20px;background:#0b141d}.v2-equipment h4{margin:0 0 10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#7897b1}.v2-equipment-list{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.v2-eq{padding:9px;border-radius:11px;border:1px solid #20364a;background:#0a1118;font-size:11px}.v2-eq:before{content:'✓';color:#6ebcff;font-weight:900;margin-right:7px}
+@media(max-width:760px){#stepBuilder .sb-preview{position:relative;top:auto}.v2-config-head{padding:14px}.v2-preview{min-height:190px}.v2-preview img{max-height:195px}.v2-final-grid,.v2-equipment-list{grid-template-columns:1fr}.v2-actions{position:sticky;bottom:8px;z-index:20}.v2-actions button{box-shadow:0 10px 30px #0009}}
+</style>
+<script id="bmwV2PremiumUpgradeScript">
+(function(){
+'use strict';
+var q=function(s,r){return (r||document).querySelector(s)}, qa=function(s,r){return Array.from((r||document).querySelectorAll(s))};
+function text(id){var e=document.getElementById(id);return e?e.textContent.trim():'—'}
+function val(id){var e=document.getElementById(id);if(!e)return '—';var o=e.options&&e.options[e.selectedIndex];return (o?o.text:e.value||'—').trim()||'—'}
+function imgSources(){return qa('#premiumVisualHost .pv-thumb img').map(function(x){return x.src}).filter(Boolean)}
+function currentImage(){var x=q('#premiumVisualHost .pv-image');return x?x.src:''}
+function makeShowcase(){var root=document.getElementById('stepBuilder');if(!root||q('.v2-config-showcase',root))return;
+ var anchor=q('.sb-preview',root);if(!anchor)return;
+ var box=document.createElement('div');box.className='v2-config-showcase';box.innerHTML='<div class="v2-config-head"><div><div class="v2-kicker">Din BMW • Premium preview</div><div class="v2-name" id="v2Name">BMW</div></div><div class="v2-price" id="v2Price">0 kr</div></div><div class="v2-preview v2-360" id="v2Preview"><div class="v2-placeholder">Laddar bilens modellbild…</div><div class="v2-360-hint">Svep / dra för att byta vy</div></div><div class="v2-viewbar"><button class="on" data-v2-view="exterior">Exteriör</button><button data-v2-view="interior">Interiör</button><button data-v2-view="360">360° vy</button></div><div class="v2-summary" id="v2Summary"></div></div>';
+ anchor.appendChild(box);
+ var pv=q('#v2Preview');pv.addEventListener('pointerdown',function(e){pv.dataset.x=e.clientX;pv.dataset.drag='1'});pv.addEventListener('pointerup',function(e){if(pv.dataset.drag!=='1')return;var dx=e.clientX-(+pv.dataset.x||e.clientX);pv.dataset.drag='';if(Math.abs(dx)>25) rotate(dx<0?1:-1)});
+ qa('[data-v2-view]',box).forEach(function(b){b.addEventListener('click',function(){qa('[data-v2-view]',box).forEach(x=>x.classList.remove('on'));b.classList.add('on');var m=b.dataset.v2View;if(m==='interior'){var t=q('#premiumVisualHost [data-pv-tab="interior"]');if(t)t.click();}else{var t=q('#premiumVisualHost [data-pv-tab="exterior"]');if(t)t.click();}if(m==='360')setTimeout(function(){render360(true)},180);else setTimeout(update,250)})});
+}
+var turnIndex=0;
+function render360(force){var pv=q('#v2Preview');if(!pv)return;var arr=imgSources();if(currentImage()&&!arr.includes(currentImage()))arr.unshift(currentImage());if(!arr.length){update();return}if(force)turnIndex=0;turnIndex=(turnIndex+arr.length)%arr.length;pv.innerHTML='<img class="v2-turn" src="'+arr[turnIndex]+'" alt="BMW vy '+(turnIndex+1)+'"><div class="v2-360-hint">360° • svep för nästa vy</div>';}
+function rotate(dir){var arr=imgSources();if(arr.length){turnIndex+=dir;render360(false);return}var im=q('#v2Preview img');if(im){im.classList.toggle('v2-turn',dir>0)}}
+function update(){var pv=q('#v2Preview');if(!pv)return;var src=currentImage()||imgSources()[0];var title=[val('series'),val('generation'),val('year')].filter(x=>x!=='—').join(' ');
+ q('#v2Name').textContent=title||'BMW';q('#v2Price').textContent=text('total')||'0 kr';
+ var items=[['Motor',val('engine')],['Kaross',val('body')],['Drivning',val('drive')],['Växellåda',val('gear')],['Färg',val('color')],['Fälg',val('wheels')],['Klädsel',val('upholstery')],['Interiörlist',val('interior')]];
+ q('#v2Summary').innerHTML=items.map(function(a){return '<div class="v2-summary-item"><span>'+a[0]+'</span><b>'+a[1]+'</b></div>'}).join('');
+ if(!pv.classList.contains('v2-360-active'))pv.innerHTML=src?'<img src="'+src+'" alt="'+title+'"><div class="v2-360-hint">Tryck 360° för fler vyer</div>':'<div class="v2-placeholder">Välj BMW för att visa modellbild</div>';
+}
+function makeFinal(){var step=q('.sb-step[data-step="5"]');if(!step||q('.v2-final',step))return;var old=q('#sbSummaryMount',step);if(!old)return;var box=document.createElement('div');box.className='v2-final';box.innerHTML='<h3>Din BMW</h3><div class="big" id="v2FinalName">BMW</div><div class="v2-final-grid" id="v2FinalGrid"></div><div class="v2-actions"><button type="button" id="v2BackHome">← Startsida</button><button type="button" class="primary" id="v2SaveNow">💾 Spara till Garage</button></div>';old.parentNode.insertBefore(box,old);q('#v2BackHome').onclick=function(){if(window.bmwGoHome)window.bmwGoHome()};q('#v2SaveNow').onclick=function(){var b=q('#sbGarage');if(b)b.click();else if(window.save)window.save()};}
+function finalUpdate(){var name=[val('series'),val('generation'),val('year')].filter(x=>x!=='—').join(' ');var n=q('#v2FinalName');if(n)n.textContent=name||'BMW';var g=q('#v2FinalGrid');if(g){var a=[['Motor',val('engine')],['Kaross',val('body')],['Färg',val('color')],['Fälg',val('wheels')],['Klädsel',val('upholstery')],['Interiör',val('interior')],['Växellåda',val('gear')],['Pris',text('total')||'0 kr']];g.innerHTML=a.map(x=>'<div class="v2-final-row"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('')}}
+function eq(){var step=q('.sb-step[data-step="4"]');if(!step||q('.v2-equipment',step))return;var wrap=q('#sbOptionsMount',step);if(!wrap)return;var e=document.createElement('div');e.className='v2-equipment';e.innerHTML='<h4>Vald fabriksutrustning</h4><div class="v2-equipment-list" id="v2EqList"><div class="v2-eq">Välj tillval ovan</div></div>';wrap.parentNode.appendChild(e);}
+function eqUpdate(){var l=q('#v2EqList');if(!l)return;var checked=qa('#sbOptionsMount input[type="checkbox"]:checked');l.innerHTML=checked.length?checked.map(x=>{var lab=x.closest('label');return '<div class="v2-eq">'+(lab?lab.textContent.trim():x.value)+'</div>'}).join(''):'<div class="v2-eq">Inga extra tillval valda</div>'}
+function bind(){makeShowcase();makeFinal();eq();update();finalUpdate();eqUpdate();qa('#series,#generation,#year,#body,#engine,#drive,#gear,#trim,#color,#upholstery,#wheels,#interior').forEach(function(e){e.addEventListener('change',function(){setTimeout(function(){update();finalUpdate();eqUpdate()},100)})});document.addEventListener('click',function(e){if(e.target.closest('#sbOptionsMount'))setTimeout(eqUpdate,80)});}
+function start(){setTimeout(bind,500);setTimeout(bind,1500);setInterval(function(){if(document.getElementById('stepBuilder')){update();finalUpdate();eqUpdate()}},1800)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+window.bmwV2Premium={refresh:function(){update();finalUpdate();eqUpdate()}};
+})();
+</script>
