@@ -159,6 +159,14 @@ button{border-radius:10px}
   .swatch .dot{width:30px;height:30px}.wheel-art{width:50px;height:50px}
 }
 
+
+.vehicle-tools{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.tool-card{background:linear-gradient(180deg,#121b25,#0b1118);border:1px solid #273443;border-radius:16px;padding:16px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.tool-card h2{margin:0 0 6px;font-size:20px}.tool-card p{margin:6px 0;color:#93a0b1;font-size:13px;line-height:1.45}
+.tool-tabs{display:flex;gap:7px;margin:12px 0;flex-wrap:wrap}.tool-tab{border:1px solid #334152;background:#17212d;color:#c9d2dc;border-radius:10px;padding:8px 11px;cursor:pointer}.tool-tab.on{background:#1877ff;border-color:#1877ff;color:#fff}
+.tool-input{width:100%;padding:12px 13px;border:1px solid #344253;background:#080e15;color:#f3f6fa;border-radius:11px;font-size:16px;outline:none}.tool-input:focus{border-color:#2585ff;box-shadow:0 0 0 2px rgba(37,133,255,.15)}
+.tool-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.tool-actions button{margin:0}.tool-result{margin-top:12px;padding:12px;border:1px solid #263342;background:#0a1119;border-radius:12px;min-height:46px}.tool-result.ok{border-color:#1f8f5f}.tool-result.warn{border-color:#9a7620}.tool-result b{color:#fff}.tool-muted{color:#8d99a8;font-size:12px}.fault-search{display:grid;grid-template-columns:1fr auto;gap:8px}.fault-list{margin-top:10px}.fault-detail{margin-top:10px}.step{padding:9px 0;border-top:1px solid #252f3b}.step:first-child{border-top:0}.severity{display:inline-block;padding:3px 7px;border-radius:999px;background:#4a3217;color:#ffbf68;font-size:11px;font-weight:700;margin-left:5px}
+@media(max-width:850px){.vehicle-tools{grid-template-columns:1fr}}
 </style>
 <style id="big-update-css">
 .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.info-card{background:linear-gradient(180deg,#151a21,#10141a);border:1px solid #252d38;border-radius:16px;padding:14px}.info-card h3{margin:0 0 10px;font-size:14px}.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.spec{background:#0b0f14;border-radius:11px;padding:9px}.spec b{display:block;font-size:15px}.spec span{font-size:11px;color:#8e98a6}.fault{padding:10px 0;border-top:1px solid #252d38}.fault:first-child{border-top:0}.fault .risk{font-size:11px;font-weight:700}.locked-choice{opacity:.42;filter:saturate(.2)}.photo-stage-img{width:100%;height:100%;object-fit:cover;display:block}.photo-note{font-size:11px;color:#8994a3;margin-top:8px}.source-pill{font-size:10px;color:#8da1b8}
@@ -172,6 +180,21 @@ button{border-radius:10px}
 <meta name="apple-mobile-web-app-title" content="BMW Builder">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon.svg">
+
+<style>
+/* === BMW Builder vNext: Garage + Smart Diagnostics === */
+.app-suite{display:grid;gap:14px;margin-top:14px}
+.suite-card{background:linear-gradient(180deg,#111923,#0c1219);border:1px solid #263545;border-radius:20px;padding:16px;box-shadow:0 12px 32px #0006}
+.suite-card h2{margin:0 0 6px;font-size:19px}.suite-card h3{margin:0 0 8px;font-size:15px}.suite-muted{color:#91a1b2;font-size:12px;line-height:1.45}.suite-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.suite-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.suite-input,.suite-select,.suite-textarea{width:100%;box-sizing:border-box;background:#0a1017;color:#eef4fb;border:1px solid #304254;border-radius:12px;padding:11px 12px;outline:none}.suite-textarea{min-height:80px;resize:vertical}.suite-input:focus,.suite-select:focus,.suite-textarea:focus{border-color:#2877ff;box-shadow:0 0 0 3px #2877ff22}
+.suite-btn{border:0;border-radius:12px;padding:11px 14px;background:#2877ff;color:white;font-weight:700;cursor:pointer}.suite-btn.secondary{background:#182330;border:1px solid #304254}.suite-btn.danger{background:#4b1e25}.suite-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.car-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.car-item{border:1px solid #2a3a4b;background:#0b131c;border-radius:16px;overflow:hidden}.car-item img{width:100%;height:115px;object-fit:cover;display:block;background:#111}.car-body{padding:10px}.car-title{font-weight:800}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#15253a;color:#8ec1ff;font-size:11px;margin:4px 3px 0 0}.status-ok{color:#6fe0a5}.status-warn{color:#ffd166}.status-bad{color:#ff7b7b}
+.task{display:flex;align-items:flex-start;gap:9px;padding:10px 0;border-bottom:1px solid #22303e}.task:last-child{border-bottom:0}.task input{margin-top:4px}.task .grow{flex:1}.task.done .grow{text-decoration:line-through;opacity:.55}.cost{font-weight:800;white-space:nowrap}.mini{font-size:11px;color:#8fa0b1}.metric{background:#0a1118;border:1px solid #243443;border-radius:14px;padding:11px}.metric b{display:block;font-size:18px;margin-top:3px}.progress{height:8px;background:#1a2530;border-radius:999px;overflow:hidden;margin-top:7px}.progress span{display:block;height:100%;background:#2877ff;border-radius:999px}
+.diag-step{padding:11px;border:1px solid #273849;border-radius:14px;margin-top:8px;background:#0b131c}.diag-step .num{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;background:#2877ff;color:#fff;font-weight:800;margin-right:7px}.source-badge{font-size:10px;padding:3px 6px;border-radius:6px;background:#203040;color:#9bcaff}.lock-note{font-size:11px;color:#8798aa;margin-top:5px}
+.pdc-box{border:1px solid #33475b;background:#0c151e;border-radius:14px;padding:12px}.confidence{font-size:11px;padding:3px 7px;border-radius:7px;background:#183525;color:#7ee2a8}.confidence.unknown{background:#332d19;color:#ffd36e}
+@media(max-width:620px){.suite-grid,.suite-grid.three,.car-grid{grid-template-columns:1fr}.suite-card{padding:13px}}
+</style>
+
 </head>
 <body>
 <div id="installHint" style="position:fixed;left:10px;right:10px;bottom:12px;z-index:9999;background:#182330;border:1px solid #3d5269;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 10px 35px #0008;font-size:13px">
@@ -194,6 +217,28 @@ button{border-radius:10px}
   <div class="model-head"><strong id="headerModel">BMW</strong><span>Konfigurator</span></div>
 </header>
 <div class="wrap"><div class="grid"><main id="config">
+<section class="vehicle-tools">
+  <div class="tool-card" id="myCarTool">
+    <h2>🔎 Hitta min BMW</h2>
+    <p>Skriv registreringsnummer, VIN eller båda. När fordonsdata är ansluten kan appen fylla i rätt bil automatiskt och visa verifierad utrustning.</p>
+    <div class="tool-tabs">
+      <button type="button" class="tool-tab on" data-lookup="reg">Registreringsnummer</button>
+      <button type="button" class="tool-tab" data-lookup="vin">VIN / chassinummer</button>
+      <button type="button" class="tool-tab" data-lookup="both">Båda</button>
+    </div>
+    <input id="regInput" class="tool-input" maxlength="7" placeholder="ABC123" autocomplete="off">
+    <input id="vinInput" class="tool-input" maxlength="17" placeholder="17-teckens VIN/chassinummer" autocomplete="off" style="display:none;margin-top:8px;text-transform:uppercase">
+    <div class="tool-actions"><button type="button" id="lookupCarBtn">🔍 Hitta bilen</button><button type="button" class="dark" id="clearLookupBtn">Rensa</button></div>
+    <div id="lookupResult" class="tool-result"><span class="tool-muted">Ingen bil sökt ännu.</span></div>
+  </div>
+  <div class="tool-card" id="faultTool">
+    <h2>🛠️ Felkodsguiden</h2>
+    <p>Skriv en OBD-/BMW-felkod så får du betydelse, möjliga orsaker och en steg-för-steg-plan. Resultatet anpassas efter vald BMW och motor när det finns data.</p>
+    <div class="fault-search"><input id="faultInput" class="tool-input" placeholder="T.ex. P0299, P0401 eller BMW-kod" autocomplete="off"><button type="button" id="faultBtn">Sök</button></div>
+    <div id="faultResult" class="tool-result"><span class="tool-muted">Exempel: P0299</span></div>
+  </div>
+</section>
+
 <div class="card"><h2>1. Bil</h2><div class="form">
 <div><label>Serie / modell</label><select id="series">
 <option value="0">1-serie</option><option value="1">2-serie</option><option value="2">3-serie</option><option value="3">4-serie</option><option value="4">5-serie</option><option value="5">6-serie</option><option value="6">7-serie</option><option value="7">8-serie</option><option value="8">X1</option><option value="9">X2</option><option value="10">X3</option><option value="11">X4</option><option value="12">X5</option><option value="13">X6</option><option value="14">X7</option><option value="15">Z-serie</option><option value="16">i-serie</option>
@@ -258,7 +303,7 @@ button{border-radius:10px}
 <div class="opt"><label><input type="checkbox" data-code="3AC"><span><b>3AC – Dragkrok</b><div class="price">+ 11 500 kr</div></span></label></div>
 <div class="opt"><label><input type="checkbox" data-code="337"><span><b>337 – M Sportpaket</b><div class="price">+ 28 000 kr</div></span></label></div>
 </div></div>
-<div class="card"><div class="note"><b>Så fungerar databasen:</b> Modellspecifika val är nu separerade per generation. E61-data följer BMW:s officiella E61 Product Library där tillgänglighet anges per modell. citeturn0search24turn0search25  valen byggs dynamiskt efter serie, generation, årsmodell, kaross, motor och utrustningsnivå. Jag har hellre gjort en stor fungerande databas än en sida där ett tomt "inga alternativ" visas. Historiska priser är speldata och måste verifieras mot rätt svensk BMW-prislista för att kunna kallas exakta.</div></div>
+<div class="card"><div class="note"><b>Så fungerar databasen:</b> Modellspecifika val byggs dynamiskt efter serie, generation, årsmodell, kaross, motor och utrustningsnivå. Historiska priser visas som referens och ska verifieras mot rätt svensk BMW-prislista innan de behandlas som exakta.</div></div>
 </main>
 <aside>
 <div class="card"><h2>Din BMW</h2><div id="summary" class="muted"></div><div class="total" id="total">0 kr</div><div id="selected"></div><br>
@@ -320,7 +365,7 @@ function currentGears(){let g=cur(),y=g.years[S.year]||g.years[0];return isE61()
 
 let S={si:0,gi:0,year:0,body:0,engine:0,drive:0,gear:0,trim:0,cat:"Alla",chosen:new Set()};
 const $=x=>document.getElementById(x), cur=()=>DB[S.si][1][S.gi];
-function set(id,a){$(id).innerHTML=a.map((x,i)=>`<option value="${i}">${x}</option>`).join("")}
+function set(id,a){$(id).innerHTML=a.map((x,i)=>`<option value="${i}">${x}</option>`).join("");const idxMap={series:S.si,generation:S.gi,year:S.year,body:S.body,engine:S.engine,drive:S.drive,gear:S.gear,trim:S.trim,color:S.color,upholstery:S.upholstery,wheels:S.wheels,interior:S.interior};if($(id)&&idxMap[id]!=null&&$(id).options[idxMap[id]])$(id).value=idxMap[id]}
 function init(){set("series",DB.map(x=>x[0]));refreshG();refreshUI()}
 
 const MODEL_RULES = {
@@ -600,9 +645,28 @@ function updateImage(){
   </svg>`;
   $("imageCaption").innerHTML=`<span class="status-ok">● Visar bygget:</span> ${series} ${gen} — ${year} — ${body} — ${colorName} — ${wheelName}${sun?" — Taklucka":""}`;
 }
+
+const FAULT_DB={
+ 'P0299':{title:'Laddtryck för lågt',risk:'Medel–hög',why:'Motorn får mindre laddtryck än styrsystemet förväntar sig.',causes:['Läckage i laddluftslang/intercooler','Vakuumläcka eller fel på styrning av turbo','VGT/turbo som kärvar eller är sliten','MAP/trycksensor som visar fel'],steps:['Läs av koden igen och notera freeze-frame om diagnosverktyget visar det.','Kontrollera alla laddluftslangar, intercooler och slanganslutningar efter oljefukt, sprickor och lösa klämmor.','Kontrollera vakuumslangar och turboaktuator där motorn använder vakuumstyrning.','Jämför begärt och uppmätt laddtryck under provkörning.','Om allt ovan är normalt: kontrollera MAP-sensor och turbo/VGT mer ingående.']},
+ 'P0401':{title:'EGR-flöde för lågt',risk:'Medel',why:'Styrsystemet ser mindre EGR-flöde än väntat.',causes:['Igensatt EGR/insug','EGR-ventil som kärvar','Vakuum eller elektriskt styrfel','Felaktig luftmätning från MAF'],steps:['Kontrollera om EGR/insug är kraftigt sotigt.','Kontrollera slangar, kontaktstycken och eventuell vakuumstyrning.','Jämför begärt/uppmätt EGR- eller luftflöde med diagnosverktyg.','Rengör eller byt först när orsaken är verifierad.']},
+ 'P2002':{title:'Partikelfilter – verkningsgrad under gräns',risk:'Medel–hög',why:'Systemet bedömer att DPF inte renar avgaserna som förväntat.',causes:['Igensatt eller askfyllt DPF','Regenerering som inte genomförs','Felaktig differenstryckssensor/slangar','Motorproblem som skapar för mycket sot'],steps:['Läs av sot-/askbelastning och senaste regenerering.','Kontrollera differenstryckssensor och dess slangar.','Kontrollera att motorn når rätt arbetstemperatur.','Åtgärda grundfelet innan tvingad regenerering.','Om filtret är askfyllt kan rengöring eller byte behövas.']},
+ 'P0101':{title:'MAF – orimligt luftflöde',risk:'Medel',why:'Luftmassmätningen stämmer inte mot vad styrsystemet förväntar sig.',causes:['Smutsig/defekt MAF','Luftläcka efter MAF','Igensatt luftfilter','EGR-/laddtrycksproblem'],steps:['Kontrollera luftfilter och insug efter luftmassemätaren.','Kontrollera slangar efter MAF efter sprickor/läckage.','Jämför MAF-värden med diagnosdata vid tomgång och belastning.','Kontrollera EGR och laddtryck om MAF-värdet avviker.']},
+ 'P0087':{title:'Bränslerailtryck för lågt',risk:'Hög',why:'Bränsletrycket i railen är lägre än det ska vara.',causes:['Igensatt bränslefilter','Bränslematningsproblem','Högtryckspump','Spridare med för stort returflöde'],steps:['Kontrollera bränslefilter och servicehistorik.','Läs begärt och uppmätt railtryck vid start och belastning.','Kontrollera lågtryckssidan.','Om trycket fortfarande faller: kontrollera spridarnas returflöde och högtryckssystemet.']},
+ 'P0420':{title:'Katalysator – verkningsgrad under gräns',risk:'Medel',why:'Styrsystemet ser för liten skillnad mellan främre och bakre lambdasignal.',causes:['Sliten katalysator','Läckage i avgassystemet','Fel på lambda-/syresensor','Motor som går för fett/magert'],steps:['Kontrollera avgassystemet efter läckage.','Läs lambdasensorernas signaler med diagnosverktyg.','Kontrollera att motorn går korrekt innan katalysatorn döms ut.']}
+};
+function selectedCarContext(){try{const g=cur();return `${DB[S.si][0]} ${g.id} • ${g.years[S.year]} • ${g.bodies[S.body]} • ${getSelectedText('engine')} • ${getSelectedText('gear')}`}catch(e){return 'Vald BMW'}}
+function renderFault(code){code=(code||'').trim().toUpperCase();const out=$('faultResult');if(!code){out.innerHTML='<span class="tool-muted">Skriv en felkod först.</span>';return}const f=FAULT_DB[code];if(!f){out.className='tool-result warn';out.innerHTML=`<b>${code}</b> – ingen detaljerad kod i den inbyggda databasen ännu.<div class="tool-muted" style="margin-top:6px">För BMW-specifika DME/DDE/DSC-koder behöver appen även veta vilken styrenhet som gav koden. Skriv gärna kod + modul, t.ex. “4A63 DDE”.</div><div class="tool-muted" style="margin-top:6px">Vald bil: ${selectedCarContext()}</div>`;return}out.className='tool-result ok';out.innerHTML=`<b>${code} – ${f.title}</b> <span class="severity">${f.risk}</span><div class="tool-muted" style="margin-top:6px">${f.why}</div><div class="fault-detail"><b>Möjliga orsaker</b>${f.causes.map(x=>`<div class="step">• ${x}</div>`).join('')}<b style="display:block;margin-top:10px">Felsök steg för steg</b>${f.steps.map((x,i)=>`<div class="step"><b>${i+1}.</b> ${x}</div>`).join('')}<div class="tool-muted" style="margin-top:10px">Vald bil: ${selectedCarContext()}</div></div>`}
+let lookupMode='reg';
+function setLookupMode(mode){lookupMode=mode;document.querySelectorAll('[data-lookup]').forEach(b=>b.classList.toggle('on',b.dataset.lookup===mode));$('regInput').style.display=mode==='vin'?'none':'block';$('vinInput').style.display=mode==='reg'?'none':'block';if(mode==='both'){$('vinInput').style.display='block';$('vinInput').style.marginTop='8px'}}
+async function lookupCar(){const reg=$('regInput').value.trim().toUpperCase().replace(/\s/g,'');const vin=$('vinInput').value.trim().toUpperCase();const out=$('lookupResult');if((lookupMode==='reg'||lookupMode==='both')&&!/^[A-Z0-9]{5,7}$/.test(reg)){out.className='tool-result warn';out.innerHTML='<b>Kontrollera registreringsnumret.</b><div class="tool-muted">Skriv t.ex. ABC123.</div>';return}if((lookupMode==='vin'||lookupMode==='both')&&!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)){out.className='tool-result warn';out.innerHTML='<b>VIN ska vara 17 tecken.</b>';return}
+out.className='tool-result';out.innerHTML='<span class="tool-muted">Söker fordonsdata…</span>';
+if(lookupMode==='vin'||lookupMode==='both'){try{const r=await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesExtended/'+encodeURIComponent(vin)+'?format=json');const j=await r.json();const d=j.Results&&j.Results[0];if(d){const vals=[d.Make,d.Model,d.ModelYear,d.BodyClass,d.EngineModel,d.EngineCylinders,d.FuelTypePrimary,d.TransmissionStyle].filter(Boolean);if(vals.length){out.className='tool-result ok';out.innerHTML=`<b>VIN hittad</b><div style="margin-top:6px">${vals.join(' • ')}</div><div class="tool-muted" style="margin-top:7px">VIN-avkodning är en referens. För svensk registreringsdata och full fabriksutrustning behövs en svensk fordonsdatakälla.</div>`;return}}}catch(e){}}
+out.className='tool-result warn';out.innerHTML=`<b>Fordonsdata är inte ansluten ännu.</b><div class="tool-muted" style="margin-top:6px">Regnummeruppslag i Sverige kräver en fordonsdatakälla/API. När vi kopplar in den fyller appen automatiskt i modell, motor, årsmodell och tillgänglig utrustning. VIN kan redan testas med VIN-läget.</div><div style="margin-top:8px"><a href="https://www.transportstyrelsen.se/sv/vagtrafik/fordon/fordons-agaruppgift/sok-fordons-och-agaruppgifter/" target="_blank" rel="noopener" style="color:#57a6ff">Öppna Transportstyrelsens fordonsuppgifter</a></div>`}
+function initTools(){document.querySelectorAll('[data-lookup]').forEach(b=>b.onclick=()=>setLookupMode(b.dataset.lookup));$('lookupCarBtn').onclick=lookupCar;$('clearLookupBtn').onclick=()=>{$('regInput').value='';$('vinInput').value='';$('lookupResult').className='tool-result';$('lookupResult').innerHTML='<span class="tool-muted">Ingen bil sökt ännu.</span>'};$('faultBtn').onclick=()=>renderFault($('faultInput').value);$('faultInput').addEventListener('keydown',e=>{if(e.key==='Enter')renderFault(e.target.value)})}
+
 function save(){let a=document.createElement("a"),txt=$("summary").innerText+"\\n\\n"+$("selected").innerText+"\\n\\nTOTAL: "+$("total").innerText;a.href=URL.createObjectURL(new Blob([txt],{type:"text/plain"}));a.download="BMW-bygge.txt";a.click()}
 function reset(){S.chosen.clear();S.cat="Alla";init()}
-$("series").onchange=()=>{S.si=+$("series").value;refreshG()};$("generation").onchange=()=>{S.gi=+$("generation").value;S.year=0;S.chosen.clear();refreshData()};["year","body","engine","drive","gear","trim","color","upholstery","wheels","interior"].forEach(id=>$(id).onchange=()=>{if(["year","body","engine"].includes(id))S[id]=+$(`${id}`).value;if(id==="year"&&isE61()){S.engine=0;S.gear=0;refreshData();return}refreshUI();updateImage()});
+$("series").onchange=()=>{S.si=+$("series").value;refreshG()};$("generation").onchange=()=>{S.gi=+$("generation").value;S.year=0;S.chosen.clear();refreshData()};["year","body","engine","drive","gear","trim","color","upholstery","wheels","interior"].forEach(id=>$(id).onchange=()=>{if(["year","body","engine"].includes(id))S[id]=+$(`${id}`).value;if(id==="year"){refreshData();return}refreshUI();updateImage()});
 
 function buildVisualPickers(){
   const colorSel=document.getElementById("color");
@@ -634,10 +698,81 @@ function buildVisualPickers(){
   sync();
 }
 
-try{init();buildVisualPickers();updateImage();}catch(e){
+
+function normalizeCurrentSelection(){try{const g=cur();const ys=g.years;const targetYear=ys.includes(2008)?2008:ys[0];if(isE61()&&ys.includes(2008))S.year=ys.indexOf(2008);else S.year=Math.max(0,Math.min(S.year,ys.length-1));refreshData();const engines=currentEngines();if(isE61()){const i=engines.indexOf('520d');if(i>=0){S.engine=i;set('engine',engines)}}const gears=currentGears();S.gear=Math.max(0,Math.min(S.gear,gears.length-1));set('gear',gears);refreshUI()}catch(e){}}
+
+try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelection();}catch(e){
   // Keep the visible fallback options if dynamic database initialization fails.
   document.querySelectorAll("#options input").forEach(i=>i.onchange=summary);
   summary();
 }
 </script>
+
+
+<section class="app-suite" id="garageSuite">
+  <div class="suite-card" id="garageCard">
+    <h2>🏠 Mitt Garage</h2>
+    <div class="suite-muted">Spara flera BMW samtidigt. Varje bil får sin egen bild, sina egna anteckningar, service, fel och kostnader.</div>
+    <div class="suite-actions"><button class="suite-btn" type="button" id="addGarageBtn">＋ Lägg till BMW</button><button class="suite-btn secondary" type="button" id="exportGarageBtn">Exportera garage</button></div>
+    <div id="garageList" class="car-grid" style="margin-top:12px"></div>
+  </div>
+
+  <div class="suite-card" id="carProfileCard" style="display:none">
+    <h2 id="profileTitle">🚗 Min BMW</h2>
+    <div class="suite-muted" id="profileSubtitle"></div>
+    <div class="suite-grid" style="margin-top:10px">
+      <div><label class="mini">Namn på bilen</label><input id="carNameInput" class="suite-input" placeholder="Min BMW"></div>
+      <div><label class="mini">Miltal</label><input id="carMileageInput" class="suite-input" type="number" min="0" placeholder="31200"></div>
+      <div><label class="mini">Regnummer</label><input id="carRegInput" class="suite-input" maxlength="7" placeholder="ABC123"></div>
+      <div><label class="mini">VIN</label><input id="carVinInput" class="suite-input" maxlength="17" placeholder="17 tecken"></div>
+      <div><label class="mini">Bild på bilen</label><input id="carImageInput" class="suite-input" type="file" accept="image/*"></div>
+      <div><label class="mini">Skick</label><select id="carConditionInput" class="suite-select"><option>Mycket bra</option><option selected>Bra</option><option>Normalt</option><option>Slitet</option><option>Projekt</option></select></div>
+    </div>
+    <div style="margin-top:10px"><label class="mini">Anteckningar</label><textarea id="carNotesInput" class="suite-textarea" placeholder="Skriv vad du vill om bilen..."></textarea></div>
+    <div class="suite-actions"><button class="suite-btn" id="saveCarBtn">Spara ändringar</button><button class="suite-btn secondary" id="valueCarBtn">💰 Värdera bilen</button><button class="suite-btn danger" id="deleteCarBtn">Ta bort bilen</button></div>
+    <div id="valuationResult" class="tool-result" style="margin-top:10px;display:none"></div>
+
+    <div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
+      <h3>📝 Att göra</h3><div class="suite-grid"><input id="taskNameInput" class="suite-input" placeholder="T.ex. byta bromsar"><input id="taskCostInput" class="suite-input" type="number" min="0" placeholder="Kostnad kr"></div>
+      <div class="suite-grid" style="margin-top:8px"><input id="taskDueMileageInput" class="suite-input" type="number" min="0" placeholder="Gör vid miltal"><input id="taskDueDateInput" class="suite-input" type="date"></div>
+      <div class="suite-actions"><button class="suite-btn" id="addTaskBtn">＋ Lägg till</button></div><div id="taskList"></div>
+    </div>
+
+    <div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
+      <h3>🛢️ Service & slitdelar</h3>
+      <div id="serviceList"></div>
+      <div class="suite-actions"><button class="suite-btn secondary" id="addServiceBtn">＋ Lägg till service</button></div>
+      <div class="suite-muted" style="margin-top:8px">Intervall är riktvärden. Appen ska inte låtsas att ett intervall är en garanti; körning, motor och servicehistorik påverkar.</div>
+    </div>
+
+    <div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
+      <h3>🅿️ PDC / parkeringssensorer</h3><div id="pdcStatus" class="pdc-box"></div>
+      <div class="suite-actions"><button class="suite-btn secondary" id="pdcGuideBtn">🔧 Felsök PDC utan felkod</button></div><div id="pdcGuide" style="display:none"></div>
+    </div>
+  </div>
+
+  <div class="suite-card" id="smartDiagCard">
+    <h2>🧠 Smart felsökning</h2>
+    <div class="suite-muted">Har du ett problem men ingen felkod? Beskriv symptomen så bygger appen en kontrollista. Du kan också välja INPA/ISTA och få en guide för vad du ska kontrollera.</div>
+    <textarea id="symptomInput" class="suite-textarea" style="margin-top:10px" placeholder="T.ex. Mina baksensorer fungerar inte men jag får inga felkoder..."></textarea>
+    <div class="suite-grid" style="margin-top:8px"><select id="diagToolInput" class="suite-select"><option>Ingen diagnosläsare</option><option>INPA</option><option>ISTA</option><option>Carly</option><option>OBD-läsare</option><option>Annat</option></select><select id="diagModuleInput" class="suite-select"><option>Automatiskt</option><option>PDC</option><option>DDE</option><option>DSC/ABS</option><option>EHC</option><option>CAS</option><option>FRM</option></select></div>
+    <div class="suite-actions"><button class="suite-btn" id="buildDiagBtn">🔍 Bygg felsökning</button></div>
+    <div id="diagResult"></div>
+  </div>
+
+  <div class="suite-card" id="codePasteCard">
+    <h2>📋 Klistra in felkoder</h2>
+    <div class="suite-muted">Kopiera från INPA, ISTA, Carly eller en OBD-läsare och klistra in här. Appen försöker hitta flera koder automatiskt.</div>
+    <textarea id="codePasteInput" class="suite-textarea" style="margin-top:10px" placeholder="Klistra in hela texten från diagnosen här..."></textarea>
+    <div class="suite-actions"><button class="suite-btn" id="parseCodesBtn">Läs felkoder</button><button class="suite-btn secondary" id="clearCodesBtn">Rensa</button></div><div id="parsedCodesResult"></div>
+  </div>
+
+  <div class="suite-card" id="garageImportCard">
+    <h2>🔐 Regnummer / VIN</h2>
+    <div class="suite-muted">Regnummeruppslag i Sverige kräver en ansluten fordonsdatakälla. VIN kan avkodas med en extern referenstjänst, men full svensk BMW-fabriksutrustning kräver en separat datakälla. Appen visar tydligt när något är verifierat och när det inte kan verifieras.</div>
+    <div class="suite-grid" style="margin-top:10px"><input id="garageRegInput" class="suite-input" placeholder="ABC123"><input id="garageVinInput" class="suite-input" maxlength="17" placeholder="VIN 17 tecken"></div>
+    <div class="suite-actions"><button class="suite-btn" id="garageLookupBtn">🔎 Sök bil</button></div><div id="garageLookupResult" class="tool-result" style="margin-top:10px"></div>
+  </div>
+</section>
+
 <noscript><div style="position:fixed;bottom:0;left:0;right:0;background:#b33;color:white;padding:10px;text-align:center">JavaScript är avstängt. Alla val finns ändå tillgängliga.</div></noscript></body></html>
