@@ -877,10 +877,10 @@ body.route-build .app-only-back{display:flex}
 <div class="app-home-title">BMW Builder</div>
 <div class="app-home-sub">Vad vill du göra?</div>
 <div class="home-grid">
-<button class="home-choice" data-route="build" onclick="window.bmwRoute('build')" type="button"><div class="ico">🚘</div><b>Bygg BMW</b><span>Bygg en BMW steg för steg med rätt modell, motor, färg, fälgar och tillval.</span></button>
-<button class="home-choice" data-route="diag" onclick="window.bmwRoute('diag')" type="button"><div class="ico">🔧</div><b>Felsökning &amp; diagnos</b><span>Sök felkod, klistra in INPA/ISTA/Carly-koder eller få hjälp utan felkod.</span></button>
-<button class="home-choice" data-route="garage" onclick="window.bmwRoute('garage')" type="button"><div class="ico">🚗</div><b>Mitt Garage</b><span>Samla dina BMW, service, miltal, kostnader, fel och anteckningar.</span></button>
-<button class="home-choice" data-route="lookup" onclick="window.bmwRoute('lookup')" type="button"><div class="ico">🔎</div><b>Sök regnummer / VIN</b><span>Slå upp en bil och använd uppgifterna i appen.</span></button>
+<a class="home-choice" data-route="build" href="#stepBuilder"><div class="ico">🚘</div><b>Bygg BMW</b><span>Bygg en BMW steg för steg med rätt modell, motor, färg, fälgar och tillval.</span></a>
+<a class="home-choice" data-route="diag" href="#diagScreen"><div class="ico">🔧</div><b>Felsökning &amp; diagnos</b><span>Sök felkod, klistra in INPA/ISTA/Carly-koder eller få hjälp utan felkod.</span></a>
+<a class="home-choice" data-route="garage" href="#garageSuite"><div class="ico">🚗</div><b>Mitt Garage</b><span>Samla dina BMW, service, miltal, kostnader, fel och anteckningar.</span></a>
+<a class="home-choice" data-route="lookup" href="#lookupScreen"><div class="ico">🔎</div><b>Sök regnummer / VIN</b><span>Slå upp en bil och använd uppgifterna i appen.</span></a>
 </div>
 </div>
 <div class="app-screen" id="diagScreen">
@@ -1658,11 +1658,37 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     });
     document.addEventListener('click',function(e){
       var b=e.target.closest&&e.target.closest('.home-choice');
-      if(b){e.preventDefault();e.stopImmediatePropagation();go(b.getAttribute('data-route')||'');}
+      if(b){return;}
     },true);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
   setTimeout(bind,250);setTimeout(bind,1000);
+})();
+</script>
+
+<style id="guaranteedMainMenuFix">
+.home-choice{display:block;text-decoration:none!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation!important;position:relative;z-index:100!important;pointer-events:auto!important;}
+#installHint{pointer-events:none!important;}
+#bmwSplash{pointer-events:none!important;}
+/* Native hash navigation fallback: the menu still works even if another JS block fails. */
+body:has(#stepBuilder:target) #appHome,
+body:has(#diagScreen:target) #appHome,
+body:has(#garageSuite:target) #appHome,
+body:has(#lookupScreen:target) #appHome{display:none!important}
+body:has(#stepBuilder:target) #stepBuilder{display:block!important}
+body:has(#diagScreen:target) #diagScreen{display:block!important}
+body:has(#lookupScreen:target) #lookupScreen{display:block!important}
+body:has(#garageSuite:target) #garageSuite{display:grid!important}
+</style>
+<script id="guaranteedMainMenuRouter">
+(function(){
+  function apply(){
+    var h=location.hash||'';
+    var route=h==='#stepBuilder'?'build':h==='#diagScreen'?'diag':h==='#garageSuite'?'garage':h==='#lookupScreen'?'lookup':'';
+    try{ if(route && typeof window.bmwRoute==='function') window.bmwRoute(route); else if(!route && typeof window.bmwGoHome==='function') window.bmwGoHome(); }catch(e){}
+  }
+  window.addEventListener('hashchange',apply,false);
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
 })();
 </script>
 </body></html>
