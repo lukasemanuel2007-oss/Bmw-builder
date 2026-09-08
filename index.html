@@ -1635,4 +1635,34 @@ function boot(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
+<style id="finalHomeClickFix">
+#bmwSplash{pointer-events:none!important}
+#appHome{position:relative;z-index:10;pointer-events:auto!important}
+#appHome .home-choice{position:relative;z-index:11;pointer-events:auto!important;touch-action:manipulation}
+</style>
+<script id="finalHomeClickFixScript">
+(function(){
+  function go(r){
+    try{ if(typeof window.bmwRoute==='function'){window.bmwRoute(r);return;} }catch(e){}
+    ['appHome','stepBuilder','garageSuite','diagScreen','lookupScreen'].forEach(function(id){var x=document.getElementById(id);if(x)x.style.display='none'});
+    var id={build:'stepBuilder',garage:'garageSuite',diag:'diagScreen',lookup:'lookupScreen'}[r];
+    var x=id&&document.getElementById(id), h=document.getElementById('appHome');
+    if(x)x.style.display=r==='garage'?'grid':'block'; else if(h)h.style.display='block';
+    window.scrollTo(0,0);
+  }
+  function home(){go('')}
+  function bind(){
+    document.querySelectorAll('.home-choice').forEach(function(b){
+      b.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();go(b.getAttribute('data-route')||'')},{passive:false,capture:true});
+      b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();go(b.getAttribute('data-route')||'')},{capture:true});
+    });
+    document.addEventListener('click',function(e){
+      var b=e.target.closest&&e.target.closest('.home-choice');
+      if(b){e.preventDefault();e.stopImmediatePropagation();go(b.getAttribute('data-route')||'');}
+    },true);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
+  setTimeout(bind,250);setTimeout(bind,1000);
+})();
+</script>
 </body></html>
