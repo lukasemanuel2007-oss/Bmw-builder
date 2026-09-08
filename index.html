@@ -932,4 +932,121 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
   if(clear)clear.onclick=()=>{input.value='';out.innerHTML='';};
 })();
 </script>
+<script>
+/* Smart troubleshooting button – standalone fallback so it works even when no other
+   diagnostic handler has been loaded. */
+(function(){
+  const btn=document.getElementById('buildDiagBtn');
+  const input=document.getElementById('symptomInput');
+  const tool=document.getElementById('diagToolInput');
+  const mod=document.getElementById('diagModuleInput');
+  const out=document.getElementById('diagResult');
+  if(!btn || !input || !out) return;
+
+  function esc(v){
+    return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function build(){
+    const text=(input.value||'').trim();
+    const module=(mod?.value||'Automatiskt').toUpperCase();
+    const diagTool=tool?.value||'Ingen diagnosläsare';
+    if(!text){
+      out.innerHTML='<div class="tool-result warn"><b>Skriv först vad som är fel.</b><div class="tool-muted" style="margin-top:6px">Beskriv symptom, när felet uppstår och vad som redan är kontrollerat.</div></div>';
+      return;
+    }
+    const t=text.toLowerCase();
+    let title='Allmän felsökning';
+    let causes=['Matning eller säkring','Kablage/kontakt','Sensor eller givare','Styrenhet/kommunikation'];
+    let steps=[
+      'Kontrollera batterispänning och att relevanta säkringar är hela.',
+      'Läs felkoder i berörd styrenhet och spara hela diagnosraden.',
+      'Kontrollera kontakter, jordpunkter och kablage visuellt innan delar byts.',
+      'Kontrollera live-data/aktivering om diagnosverktyget stöder det.',
+      'Åtgärda grundfelet och radera sedan felkoder för att kontrollera om felet återkommer.'
+    ];
+
+    const pdc=t.includes('pdc')||t.includes('parkerings')||t.includes('sensor')&& (t.includes('bak')||t.includes('fram'));
+    const brake=t.includes('broms')||t.includes('bromsljus')||t.includes('brake')||t.includes('pedal');
+    const air=t.includes('luftfjädr')||t.includes('luft')&&t.includes('bak')||t.includes('nivå')||t.includes('ehc');
+    const abs=t.includes('abs')||t.includes('antisladd')||t.includes('dsc')||t.includes('hjulhastighet');
+    const noStart=t.includes('startar inte')||t.includes('startar ej')||t.includes('svårstart')||t.includes('ingen start');
+    const turbo=t.includes('laddtryck')||t.includes('turbo')||t.includes('effekt')||t.includes('reduce power');
+
+    if(module==='PDC'||pdc){
+      title='PDC / parkeringssensorer';
+      causes=['En sensor är defekt eller blockerad','Kablage/kontakt i stötfångaren','PDC-styrenhet eller matning','Eftermonterad/bytt stötfångare eller sensor med fel typ'];
+      steps=[
+        'Kontrollera om PDC-knappen blinkar eller lyser fast när systemet aktiveras.',
+        'Med tändning och PDC aktiverat: lyssna/känn försiktigt på varje sensor efter tickande aktivitet.',
+        'Kontrollera alla sensorers kontakter och kablage bakom stötfångaren.',
+        'Läs PDC-styrenheten med INPA/ISTA/Carly och spara exakt felkod + modultext.',
+        'Om en sensor saknar aktivitet: kontrollera matning/kablage innan sensorn byts.',
+        'Verifiera därefter om PDC var fabriksmonterat eller om sensorer/stötfångare har bytts.'
+      ];
+    } else if(module==='EHC'||air){
+      title='EHC / luftfjädring bak';
+      causes=['Nivåsensor eller länkage','Luftbälg/slang med läckage','Ventilblock','Kompressor eller säkring/matning'];
+      steps=[
+        'Mät bilens höjd vänster/höger och kontrollera om bilen står snett.',
+        'Kontrollera nivåsensorernas länkage och kontaktstycken.',
+        'Kontrollera luftbälgar och slangar efter läckage.',
+        'Kontrollera kompressorns säkring, matning och om den startar vid behov.',
+        'Läs EHC-felkoder och livevärden för båda nivåsensorerna.',
+        'Kalibrera först när mekaniken och sensorerna fungerar.'
+      ];
+    } else if(module==='DSC/ABS'||abs){
+      title='DSC / ABS';
+      causes=['Hjulhastighetssensor','Kablage/kontakt','Rattvinkelsensor/SZL','Spänning eller DSC-styrenhet'];
+      steps=[
+        'Läs DSC/ABS-felkoder och spara hela texten.',
+        'Kontrollera livevärden från alla fyra hjulhastighetssensorer under körning.',
+        'Kontrollera sensor, kabel och kontakt på hjulet som avviker.',
+        'Om rattvinkelrelaterat: kontrollera SZL/rattvinkelvärde och kalibrering.',
+        'Kontrollera batteri/laddspänning om flera moduler har kommunikationsfel.'
+      ];
+    } else if(module==='DDE'||turbo){
+      title='DDE / motor – luft, laddtryck och effekt';
+      causes=['Laddluftläcka','Vakuum/aktuator','MAP/MAF-sensor','EGR/DPF eller turbo'];
+      steps=[
+        'Läs alla DDE-felkoder och spara fullständig text.',
+        'Kontrollera laddluftslangar och intercooler efter läckage.',
+        'Kontrollera vakuumslangar och turboaktuator om motorn använder vakuumstyrning.',
+        'Jämför begärt och uppmätt laddtryck i live-data.',
+        'Kontrollera MAF/MAP och EGR/DPF om relaterade värden eller koder avviker.'
+      ];
+    } else if(module==='CAS'||noStart){
+      title='Startproblem / CAS-DDE';
+      causes=['Batterispänning','Startspärr/CAS','Startmotor','Bränsle eller motorstyrning'];
+      steps=[
+        'Kontrollera batterispänning före och under startförsök.',
+        'Läs CAS och DDE och jämför startspärr-/kommunikationsrelaterade koder.',
+        'Kontrollera om startmotorn går runt normalt.',
+        'Om motorn går runt: kontrollera bränsletryck och relevanta livevärden.',
+        'Gör inte kodning/synkronisering innan spänning och kommunikation är stabila.'
+      ];
+    } else if(brake){
+      title='Bromspedal / bromsljussignal';
+      causes=['Bromspedalkontakt','Brake-test switch','Kablage/kontakt','Säkring/matning'];
+      steps=[
+        'Kontrollera att bromsljusen tänds direkt när pedalen trycks.',
+        'Läs bromspedalens switch-status i live-data.',
+        'Kontrollera båda switchsignalerna om systemet har två separata signaler.',
+        'Kontrollera kontaktstycke, kablage och matning.',
+        'Radera felkoden först efter att signalerna fungerar och kontrollera om den återkommer.'
+      ];
+    }
+
+    out.innerHTML='<div class="tool-result ok">'+
+      '<h3 style="margin:0 0 8px">'+esc(title)+'</h3>'+
+      '<div class="tool-muted">Diagnosverktyg: <b>'+esc(diagTool)+'</b> · Modul: <b>'+esc(mod?.value||'Automatiskt')+'</b></div>'+
+      '<h3 style="margin-top:14px">Möjliga orsaker</h3>'+
+      causes.map(x=>'<div class="step">• '+esc(x)+'</div>').join('')+
+      '<h3 style="margin-top:14px">Felsök steg för steg</h3>'+
+      steps.map((x,i)=>'<div class="step"><b>'+(i+1)+'.</b> '+esc(x)+'</div>').join('')+
+      '<div class="tool-muted" style="margin-top:12px"><b>Symptom:</b> '+esc(text)+'</div>'+
+      '</div>';
+  }
+  btn.addEventListener('click',build);
+})();
+</script>
 </body></html>
