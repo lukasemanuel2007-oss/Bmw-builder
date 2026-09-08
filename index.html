@@ -264,7 +264,7 @@ header,.header,.topbar{position:sticky;top:0;z-index:500;backdrop-filter:blur(18
 
 <header class="builder-header">
   <div class="brand">
-    <div class="bmw-roundel"><span>BMW</span></div>
+    <button type="button" class="bmw-roundel" aria-label="Till startsidan" onclick="window.bmwGoHome&&window.bmwGoHome()"><span>BMW</span></button>
     <div><strong>BMW Builder</strong><small>Bygg din drömbil</small></div>
   </div>
   <nav class="top-nav" aria-label="Huvudmeny">
@@ -879,6 +879,8 @@ body.route-build .app-only-back{display:flex}
     if(target){target.style.display=(route==='garage'?'grid':'block'); target.scrollIntoView({behavior:'smooth',block:'start'});}
     else if(home){home.style.display='block';window.scrollTo(0,0);}
   };
+  window.bmwGoHome=function(){window.bmwRoute('')};
+  window.bmwGoBuild=function(){window.bmwRoute('build')};
 })();
 </script>
 <div id="appHome">
@@ -1483,7 +1485,7 @@ body.route-build .app-only-back{display:flex}
   }
 
   function wire(){
-    $('addGarageBtn').onclick=()=>{const c=addBuild();if(c)alert('BMW:n lades till i ditt Garage.');};
+    $('addGarageBtn').onclick=()=>{if(window.bmwGoBuild)window.bmwGoBuild();else if(window.bmwRoute)window.bmwRoute('build');};
     $('saveCarBtn').onclick=saveProfile;
     $('addTaskBtn').onclick=addTask;
     $('deleteCarBtn').onclick=()=>{if(!activeId)return;if(confirm('Ta bort bilen från Garage?')){garage=garage.filter(x=>x.id!==activeId);write();activeId=null;closeProfile();}};
@@ -1530,35 +1532,44 @@ body.route-build .app-only-back{display:flex}
   function $x(id){return document.getElementById(id)}
   function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
   function currentBuildFixed(){
-    const g=typeof cur==='function'?cur():null;
-    if(!g)return null;
-    const series=DB[S.si][0];
-    const year=g.years[S.year] ?? g.years[0];
-    const engines=typeof currentEngines==='function'?currentEngines():g.engines;
-    const gears=typeof currentGears==='function'?currentGears():g.gear;
-    const engine=engines[S.engine] ?? engines[0];
-    const gear=gears[S.gear] ?? gears[0];
-    let total=Number(g.base)||0;
-    const selected=[];
-    if(S.chosen&&typeof allowed==='function'){
-      S.chosen.forEach(code=>{
-        const o=OPTS.find(x=>x[1]===code);
-        if(o&&allowed(o)){total+=Number(o[3])||0;selected.push(code)}
-      });
+    let g=null;
+    try{g=typeof cur==='function'?cur():null;}catch(e){g=null;}
+    let series='BMW',generation='',year='',body='',engine='',gear='';
+    try{
+      if(g){
+        series=DB[S.si][0]; generation=g.id;
+        year=g.years[S.year] ?? g.years[0];
+        body=g.bodies[S.body] ?? g.bodies[0];
+        const engines=typeof currentEngines==='function'?currentEngines():g.engines;
+        const gears=typeof currentGears==='function'?currentGears():g.gear;
+        engine=engines[S.engine] ?? engines[0]; gear=gears[S.gear] ?? gears[0];
+      }
+    }catch(e){g=null;}
+    // Fallback to the actual selected controls. This prevents the false "Välj BMW först" state.
+    const text=id=>document.getElementById(id)?.selectedOptions?.[0]?.text||'';
+    if(!g){
+      series=text('series')||series; generation=text('generation')||generation; year=text('year')||year;
+      body=text('body')||body; engine=text('engine')||engine; gear=text('gear')||gear;
     }
-    return {
-      series,generation:g.id,year,body:g.bodies[S.body]??g.bodies[0],
-      engine,drive:$x('drive')?.selectedOptions?.[0]?.text||'',
-      gear,trim:$x('trim')?.selectedOptions?.[0]?.text||'',
-      color:$x('color')?.selectedOptions?.[0]?.text||'',
-      upholstery:$x('upholstery')?.selectedOptions?.[0]?.text||'',
-      wheels:$x('wheels')?.selectedOptions?.[0]?.text||'',
-      interior:$x('interior')?.selectedOptions?.[0]?.text||'',
-      price:total,options:selected
+    if(!generation && window.bmwCurrentBuild) return window.bmwCurrentBuild;
+    let total=0, selected=[];
+    try{
+      const base=Number(g?.base)||0; total=base;
+      if(S?.chosen&&typeof allowed==='function') S.chosen.forEach(code=>{const o=OPTS.find(x=>x[1]===code);if(o&&allowed(o)){total+=Number(o[3])||0;selected.push(code)}});
+    }catch(e){
+      total=0; selected=[];
+    }
+    const b={
+      series,generation,year,body,engine,drive:text('drive'),gear,trim:text('trim'),color:text('color'),
+      upholstery:text('upholstery'),wheels:text('wheels'),interior:text('interior'),price:total,options:selected
     };
+    return (generation||engine||series!=='BMW')?b:null;
   }
+
   function saveToGarageFixed(){
-    const b=currentBuildFixed();
+    let b=null;
+    try{b=currentBuildFixed();}catch(e){b=null;}
+    if(!b && window.bmwCurrentBuild)b=window.bmwCurrentBuild;
     if(!b){alert('Välj BMW först.');return}
     const key='bmwBuilderGarageV2';
     let cars=[];try{cars=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
@@ -1571,15 +1582,16 @@ body.route-build .app-only-back{display:flex}
     };
     cars.unshift(car);
     localStorage.setItem(key,JSON.stringify(cars));
-    // Use the existing renderer/profile if available.
     try{
+      if(window.bmwRoute)window.bmwRoute('garage');
       if(window.bmwGarageAPI){window.bmwGarageAPI.refresh();window.bmwGarageAPI.open(car.id)}
-    }catch(e){}
+    }catch(e){if(window.bmwRoute)window.bmwRoute('garage');}
     const n=document.createElement('div');
     n.textContent='✓ BMW sparad i Garage';
     n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:10000;background:#168b61;color:#fff;padding:13px 18px;border-radius:13px;font-weight:850;box-shadow:0 10px 30px #0008';
     document.body.appendChild(n);setTimeout(()=>n.remove(),1800);
   }
+
   function forcePrice(){
     const b=currentBuildFixed();if(!b)return;
     const p=b.price.toLocaleString('sv-SE')+' kr';
@@ -1634,7 +1646,6 @@ body.route-build .app-only-back{display:flex}
  route('');
 })();
 </script>
-</body></html>
 
 <style id="failsafeBuilderCSS">
 /* FINAL FAILSAFE - independent touch controls */
@@ -1756,18 +1767,31 @@ body.route-build .app-only-back{display:flex}
       window.scrollTo(0,0);
       refreshSeries();
     }
+    function captureCompactBuild(){
+      var si=+sel.series.value, gi=+sel.generation.value, yi=+sel.year.value, bi=+sel.body.value, ei=+sel.engine.value, geari=+sel.gear.value;
+      window.bmwCurrentBuild={
+        series:sel.series.options[si]?.text||'BMW',generation:sel.generation.options[gi]?.text||'',
+        year:sel.year.options[yi]?.text||'',body:sel.body.options[bi]?.text||'',engine:sel.engine.options[ei]?.text||'',
+        drive:'',gear:sel.gear.options[geari]?.text||'',trim:'',color:'',upholstery:'',wheels:'',interior:'',price:0,options:[]
+      };
+      try{localStorage.setItem('bmwBuilderCurrent',JSON.stringify(window.bmwCurrentBuild));}catch(e){}
+      return window.bmwCurrentBuild;
+    }
     function goHome(){fb.style.display='none';home.style.display='block';window.scrollTo(0,0)}
+    window.bmwGoHome=goHome;
+    window.bmwGoBuild=showBuild;
     sel.series.onchange=refreshGeneration; sel.generation.onchange=refreshDetails; sel.year.onchange=refreshDetails;
     sel.body.onchange=updateStatus; sel.engine.onchange=updateStatus; sel.gear.onchange=updateStatus;
     fb.querySelector('#fbBack').onclick=goHome;
-    fb.querySelector('#fbContinue').onclick=function(){syncOld();fb.querySelector('#fbStatus').textContent+=' ✓ Vald';};
+    fb.querySelector('#fbContinue').onclick=function(){captureCompactBuild();syncOld();fb.querySelector('#fbStatus').textContent+=' ✓ Vald';};
     fb.addEventListener('click',function(e){
       var q=e.target.closest('.fb-choice');if(!q)return;
       var v=q.textContent.trim();
-      [sel.series,sel.generation,sel.year,sel.engine,sel.gear].some(function(s){var i=Array.from(s.options).findIndex(function(o){return o.text===v});if(i>=0){s.value=String(i);s.dispatchEvent(new Event('change'));return true}return false});
+      [sel.series,sel.generation,sel.year,sel.engine,sel.gear].some(function(s){var i=Array.from(s.options).findIndex(function(o){return o.text===v});if(i>=0){s.value=String(i);s.dispatchEvent(new Event('change'));captureCompactBuild();return true}return false});
     });
     refreshSeries();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
 </script>
+</body></html>
