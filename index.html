@@ -1,7 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="sv">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>BMW Car Builder – Full Version</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#0a0e13;color:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
@@ -172,15 +173,12 @@ button{border-radius:10px}
 .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.info-card{background:linear-gradient(180deg,#151a21,#10141a);border:1px solid #252d38;border-radius:16px;padding:14px}.info-card h3{margin:0 0 10px;font-size:14px}.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.spec{background:#0b0f14;border-radius:11px;padding:9px}.spec b{display:block;font-size:15px}.spec span{font-size:11px;color:#8e98a6}.fault{padding:10px 0;border-top:1px solid #252d38}.fault:first-child{border-top:0}.fault .risk{font-size:11px;font-weight:700}.locked-choice{opacity:.42;filter:saturate(.2)}.photo-stage-img{width:100%;height:100%;object-fit:cover;display:block}.photo-note{font-size:11px;color:#8994a3;margin-top:8px}.source-pill{font-size:10px;color:#8da1b8}
 @media(max-width:700px){.info-grid{grid-template-columns:1fr}}
 </style>
-
-
-<meta name="theme-color" content="#0a0e13">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BMW Builder">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon.svg">
-
+<meta content="#0a0e13" name="theme-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="BMW Builder" name="apple-mobile-web-app-title"/>
+<link href="manifest.webmanifest" rel="manifest"/>
+<link href="icon.svg" rel="apple-touch-icon"/>
 <style>
 /* === BMW Builder vNext: Garage + Smart Diagnostics === */
 .app-suite{display:grid;gap:14px;margin-top:14px}
@@ -194,8 +192,6 @@ button{border-radius:10px}
 .pdc-box{border:1px solid #33475b;background:#0c151e;border-radius:14px;padding:12px}.confidence{font-size:11px;padding:3px 7px;border-radius:7px;background:#183525;color:#7ee2a8}.confidence.unknown{background:#332d19;color:#ffd36e}
 @media(max-width:620px){.suite-grid,.suite-grid.three,.car-grid{grid-template-columns:1fr}.suite-card{padding:13px}}
 </style>
-
-
 <style id="garage-polish-css">
 /* Premium app-like Garage */
 #garageSuite{max-width:980px;margin:18px auto 40px}
@@ -230,7 +226,6 @@ button{border-radius:10px}
 .quick-metric span{color:#8295a8;font-size:10px}
 @media(max-width:620px){.garage-card .hero{height:135px}.quick-metrics{grid-template-columns:1fr 1fr}.garage-head{align-items:flex-start;flex-direction:column}}
 </style>
-
 <style id="appStyleUpgrade">
 html{scroll-behavior:smooth}
 body{padding-bottom:80px}
@@ -250,54 +245,58 @@ header,.header,.topbar{position:sticky;top:0;z-index:500;backdrop-filter:blur(18
  #appNav button span{font-size:17px}
 }
 </style>
-
 <style id="yearAccuracyNote">
 #sbYear:after{content:"E61: 2004–2010";display:block;color:#7890a5;font-size:10px;margin-top:5px}
 </style>
-</head>
+<style id="bmwCleanFinalCSS">
+#bmwSplash{position:fixed;inset:0;z-index:2147483647;background:#05080c;display:flex;align-items:center;justify-content:center;opacity:1;visibility:visible;transition:opacity .65s ease,visibility .65s ease}
+#bmwSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
+#bmwSplash .splashLogo{width:min(190px,45vw);height:min(190px,45vw);transform:scale(.18) rotate(-25deg);opacity:0;animation:bmwSplashIn 1.15s cubic-bezier(.17,.89,.25,1.18) forwards}
+#bmwSplash .splashGlow{position:absolute;width:min(230px,54vw);height:min(230px,54vw);border:1px solid rgba(180,205,230,.22);border-radius:50%;transform:scale(.35);opacity:0;animation:bmwSplashRing 1.1s ease-out .15s forwards}
+@keyframes bmwSplashIn{0%{transform:scale(.18) rotate(-25deg);opacity:0}55%{transform:scale(1.08) rotate(4deg);opacity:1}78%{transform:scale(.96) rotate(0)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes bmwSplashRing{0%{transform:scale(.35);opacity:0}35%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+</style></head>
 <body>
 <div id="installHint" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;max-width:520px;margin:auto;background:#182330;border:1px solid #3d5269;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 10px 35px #0008;font-size:13px">
-  <b>📱 BMW Builder</b><br>
+<b>📱 BMW Builder</b><br/>
   Öppna denna sida i Safari och välj <b>Dela → Lägg till på hemskärmen → Öppna som webbapp</b>.
   <button onclick="this.parentElement.remove()" style="float:right;margin-top:-22px;background:#2877ff;color:white;border:0;border-radius:8px;padding:5px 9px">OK</button>
 </div>
-
 <header class="builder-header">
-  <div class="brand">
-    <button type="button" class="bmw-roundel" aria-label="Till startsidan" onclick="window.bmwGoHome&&window.bmwGoHome()"><span>BMW</span></button>
-    <div><strong>BMW Builder</strong><small>Bygg din drömbil</small></div>
-  </div>
-  <nav class="top-nav" aria-label="Huvudmeny">
-    <a class="active" href="#config">🚘 Konfigurera</a>
-    <a href="#gallery">▧ Galleri</a>
-    <a href="#gallery">◌ 360°</a>
-    <a href="#about">ⓘ Om</a>
-  </nav>
-  <div class="model-head"><strong id="headerModel">BMW</strong><span>Konfigurator</span></div>
+<div class="brand">
+<button aria-label="Till startsidan" class="bmw-roundel" onclick="window.bmwGoHome&amp;&amp;window.bmwGoHome()" type="button"><span>BMW</span></button>
+<div><strong>BMW Builder</strong><small>Bygg din drömbil</small></div>
+</div>
+<nav aria-label="Huvudmeny" class="top-nav">
+<a class="active" href="#config">🚘 Konfigurera</a>
+<a href="#gallery">▧ Galleri</a>
+<a href="#gallery">◌ 360°</a>
+<a href="#about">ⓘ Om</a>
+</nav>
+<div class="model-head"><strong id="headerModel">BMW</strong><span>Konfigurator</span></div>
 </header>
 <div class="wrap"><div class="grid"><main id="config">
 <section class="vehicle-tools">
-  <div class="tool-card" id="myCarTool">
-    <h2>🔎 Hitta min BMW</h2>
-    <p>Skriv registreringsnummer, VIN eller båda. När fordonsdata är ansluten kan appen fylla i rätt bil automatiskt och visa verifierad utrustning.</p>
-    <div class="tool-tabs">
-      <button type="button" class="tool-tab on" data-lookup="reg">Registreringsnummer</button>
-      <button type="button" class="tool-tab" data-lookup="vin">VIN / chassinummer</button>
-      <button type="button" class="tool-tab" data-lookup="both">Båda</button>
-    </div>
-    <input id="regInput" class="tool-input" maxlength="7" placeholder="ABC123" autocomplete="off">
-    <input id="vinInput" class="tool-input" maxlength="17" placeholder="17-teckens VIN/chassinummer" autocomplete="off" style="display:none;margin-top:8px;text-transform:uppercase">
-    <div class="tool-actions"><button type="button" id="lookupCarBtn">🔍 Hitta bilen</button><button type="button" class="dark" id="clearLookupBtn">Rensa</button></div>
-    <div id="lookupResult" class="tool-result"><span class="tool-muted">Ingen bil sökt ännu.</span></div>
-  </div>
-  <div class="tool-card" id="faultTool">
-    <h2>🛠️ Felkodsguiden</h2>
-    <p>Skriv en OBD-/BMW-felkod så får du betydelse, möjliga orsaker och en steg-för-steg-plan. Resultatet anpassas efter vald BMW och motor när det finns data.</p>
-    <div class="fault-search"><input id="faultInput" class="tool-input" placeholder="T.ex. P0299, P0401 eller BMW-kod" autocomplete="off"><button type="button" id="faultBtn">Sök</button></div>
-    <div id="faultResult" class="tool-result"><span class="tool-muted">Exempel: P0299</span></div>
-  </div>
+<div class="tool-card" id="myCarTool">
+<h2>🔎 Hitta min BMW</h2>
+<p>Skriv registreringsnummer, VIN eller båda. När fordonsdata är ansluten kan appen fylla i rätt bil automatiskt och visa verifierad utrustning.</p>
+<div class="tool-tabs">
+<button class="tool-tab on" data-lookup="reg" type="button">Registreringsnummer</button>
+<button class="tool-tab" data-lookup="vin" type="button">VIN / chassinummer</button>
+<button class="tool-tab" data-lookup="both" type="button">Båda</button>
+</div>
+<input autocomplete="off" class="tool-input" id="regInput" maxlength="7" placeholder="ABC123"/>
+<input autocomplete="off" class="tool-input" id="vinInput" maxlength="17" placeholder="17-teckens VIN/chassinummer" style="display:none;margin-top:8px;text-transform:uppercase"/>
+<div class="tool-actions"><button id="lookupCarBtn" type="button">🔍 Hitta bilen</button><button class="dark" id="clearLookupBtn" type="button">Rensa</button></div>
+<div class="tool-result" id="lookupResult"><span class="tool-muted">Ingen bil sökt ännu.</span></div>
+</div>
+<div class="tool-card" id="faultTool">
+<h2>🛠️ Felkodsguiden</h2>
+<p>Skriv en OBD-/BMW-felkod så får du betydelse, möjliga orsaker och en steg-för-steg-plan. Resultatet anpassas efter vald BMW och motor när det finns data.</p>
+<div class="fault-search"><input autocomplete="off" class="tool-input" id="faultInput" placeholder="T.ex. P0299, P0401 eller BMW-kod"/><button id="faultBtn" type="button">Sök</button></div>
+<div class="tool-result" id="faultResult"><span class="tool-muted">Exempel: P0299</span></div>
+</div>
 </section>
-
 <div class="card"><h2>1. Bil</h2><div class="form">
 <div><label>Serie / modell</label><select id="series">
 <option value="0">1-serie</option><option value="1">2-serie</option><option value="2">3-serie</option><option value="3">4-serie</option><option value="4">5-serie</option><option value="5">6-serie</option><option value="6">7-serie</option><option value="7">8-serie</option><option value="8">X1</option><option value="9">X2</option><option value="10">X3</option><option value="11">X4</option><option value="12">X5</option><option value="13">X6</option><option value="14">X7</option><option value="15">Z-serie</option><option value="16">i-serie</option>
@@ -311,15 +310,13 @@ header,.header,.topbar{position:sticky;top:0;z-index:500;backdrop-filter:blur(18
 <div><label>Utrustningsnivå</label><select id="trim"><option value="0">Standard</option><option value="1">SE</option><option value="2">Advantage</option><option value="3">Luxury Line</option><option value="4">Sport Line</option><option value="5">M Sport</option><option value="6">M Performance</option><option value="7">Individual</option></select></div>
 </div></div>
 <div class="card vehicle-preview" id="gallery">
-<div style="display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:10px"><div><div class="muted" style="text-transform:uppercase;letter-spacing:.08em">Konfiguration</div><h2 style="margin:2px 0 0">Vald BMW</h2></div><div id="visualPrice" class="muted"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:10px"><div><div class="muted" style="text-transform:uppercase;letter-spacing:.08em">Konfiguration</div><h2 style="margin:2px 0 0">Vald BMW</h2></div><div class="muted" id="visualPrice"></div></div>
 <div class="build-label">🚗 VALD BIL – färg och fälgar ändras direkt</div>
-<div id="previewBox" class="preview-box" style="min-height:280px"></div>
-<div id="imageCaption" class="muted"></div>
-<div id="photoViewer" class="photo360"></div><div id="vehicleDetails" class="info-grid"></div>
-
+<div class="preview-box" id="previewBox" style="min-height:280px"></div>
+<div class="muted" id="imageCaption"></div>
+<div class="photo360" id="photoViewer"></div><div class="info-grid" id="vehicleDetails"></div>
 <div class="photo-note">Riktiga modellbilder visas när vi har ett fotopaket för vald generation. Dra på bilden eller använd pilarna för att byta vy. För riktig 360° där färg, fälgar och tillval ändras på själva bilen behövs ett matchande 3D/360-paket för modellen.</div>
 </div>
-
 <div class="card"><h2>2. Färg, interiör och hjul</h2><div class="form">
 <div><label>Exteriörfärg</label><select id="color"><option value="0">Alpinvit</option><option value="1">Jet Black</option><option value="2">Black Sapphire</option><option value="3">Space Grey</option><option value="4">Titan Silver</option><option value="5">Sparkling Graphite</option><option value="6">Le Mans Blue</option><option value="7">Monaco Blue</option><option value="8">Deep Green</option><option value="9">Imolaröd</option><option value="10">Melbourne Red</option><option value="11">Mineral White</option><option value="12">Mineral Grey</option><option value="13">Estoril Blue</option><option value="14">San Marino Blue</option><option value="15">Tanzanite Blue</option><option value="16">Frozen Grey</option></select></div>
 <div><label>Klädsel</label><select id="upholstery"><option value="0">Tyg</option><option value="1">Tyg/Alcantara</option><option value="2">Dakota-läder</option><option value="3">Nappa-läder</option><option value="4">Merino-läder</option><option value="5">Sensatec</option></select></div>
@@ -336,41 +333,39 @@ header,.header,.topbar{position:sticky;top:0;z-index:500;backdrop-filter:blur(18
 <div><label>Interiörlist</label><select id="interior"><option value="0">Svart</option><option value="1">Beige</option><option value="2">Grå</option><option value="3">Brun</option><option value="4">Aluminium</option><option value="5">Pianolack</option><option value="6">Fineline-trä</option><option value="7">Individual</option></select></div>
 </div>
 <div class="visual-pickers">
-  <section class="picker-block">
-    <div class="picker-title"><b>Färgval</b><span>BMW Original</span></div>
-    <div class="swatches" id="colorSwatches"></div>
-  </section>
-  <section class="picker-block">
-    <div class="picker-title"><b>Originalfälgar</b><span>17–20"</span></div>
-    <div class="wheel-grid" id="wheelSwatches"></div>
-  </section>
-  <section class="picker-block">
-    <div class="picker-title"><b>M Sport-fälgar</b><span>17–20"</span></div>
-    <div class="wheel-grid" id="msportSwatches"></div>
-  </section>
+<section class="picker-block">
+<div class="picker-title"><b>Färgval</b><span>BMW Original</span></div>
+<div class="swatches" id="colorSwatches"></div>
+</section>
+<section class="picker-block">
+<div class="picker-title"><b>Originalfälgar</b><span>17–20"</span></div>
+<div class="wheel-grid" id="wheelSwatches"></div>
+</section>
+<section class="picker-block">
+<div class="picker-title"><b>M Sport-fälgar</b><span>17–20"</span></div>
+<div class="wheel-grid" id="msportSwatches"></div>
+</section>
 </div></div>
-
 <div class="card"><h2>3. Fabrikstillval</h2><div class="tabs" id="tabs"></div><div class="options" id="options">
-<div class="opt"><label><input type="checkbox" data-code="403"><span><b>403 – Elektrisk taklucka</b><div class="price">+ 11 500 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="456"><span><b>456 – Komfortstolar el + minne</b><div class="price">+ 21 800 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="459"><span><b>459 – Elstolar med minne</b><div class="price">+ 9 700 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="494"><span><b>494 – Stolvärme fram</b><div class="price">+ 4 300 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="508"><span><b>508 – PDC parkeringssensorer</b><div class="price">+ 7 200 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="522"><span><b>522 – Xenonljus</b><div class="price">+ 8 500 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="609"><span><b>609 – Navigation Professional</b><div class="price">+ 18 000 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="677"><span><b>677 – HiFi Professional</b><div class="price">+ 10 500 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="3AC"><span><b>3AC – Dragkrok</b><div class="price">+ 11 500 kr</div></span></label></div>
-<div class="opt"><label><input type="checkbox" data-code="337"><span><b>337 – M Sportpaket</b><div class="price">+ 28 000 kr</div></span></label></div>
+<div class="opt"><label><input data-code="403" type="checkbox"/><span><b>403 – Elektrisk taklucka</b><div class="price">+ 11 500 kr</div></span></label></div>
+<div class="opt"><label><input data-code="456" type="checkbox"/><span><b>456 – Komfortstolar el + minne</b><div class="price">+ 21 800 kr</div></span></label></div>
+<div class="opt"><label><input data-code="459" type="checkbox"/><span><b>459 – Elstolar med minne</b><div class="price">+ 9 700 kr</div></span></label></div>
+<div class="opt"><label><input data-code="494" type="checkbox"/><span><b>494 – Stolvärme fram</b><div class="price">+ 4 300 kr</div></span></label></div>
+<div class="opt"><label><input data-code="508" type="checkbox"/><span><b>508 – PDC parkeringssensorer</b><div class="price">+ 7 200 kr</div></span></label></div>
+<div class="opt"><label><input data-code="522" type="checkbox"/><span><b>522 – Xenonljus</b><div class="price">+ 8 500 kr</div></span></label></div>
+<div class="opt"><label><input data-code="609" type="checkbox"/><span><b>609 – Navigation Professional</b><div class="price">+ 18 000 kr</div></span></label></div>
+<div class="opt"><label><input data-code="677" type="checkbox"/><span><b>677 – HiFi Professional</b><div class="price">+ 10 500 kr</div></span></label></div>
+<div class="opt"><label><input data-code="3AC" type="checkbox"/><span><b>3AC – Dragkrok</b><div class="price">+ 11 500 kr</div></span></label></div>
+<div class="opt"><label><input data-code="337" type="checkbox"/><span><b>337 – M Sportpaket</b><div class="price">+ 28 000 kr</div></span></label></div>
 </div></div>
 <div class="card"><div class="note"><b>Så fungerar databasen:</b> Modellspecifika val byggs dynamiskt efter serie, generation, årsmodell, kaross, motor och utrustningsnivå. Historiska priser visas som referens och ska verifieras mot rätt svensk BMW-prislista innan de behandlas som exakta.</div></div>
 </main>
 <aside>
-<div class="card"><h2>Din BMW</h2><div id="summary" class="muted"></div><div class="total" id="total">0 kr</div><div id="selected"></div><br>
+<div class="card"><h2>Din BMW</h2><div class="muted" id="summary"></div><div class="total" id="total">0 kr</div><div id="selected"></div><br/>
 <button onclick="save()">💾 Spara bygge</button><button class="dark" onclick="reset()">↻ Nollställ</button>
 </div>
 <div class="card"><h2>Spelidé</h2><div class="muted">Nästa lager kan vara pengar/budget, bilköp, inbyte, begagnatmarknad, lån, försäkring, service och möjlighet att sälja bilen vidare.</div></div>
 </aside></div></div>
-
 <script>
 const colors=["Alpinvit","Jet Black","Black Sapphire","Space Grey","Titan Silver","Sparkling Graphite","Le Mans Blue","Monaco Blue","Deep Green","Imolaröd","Melbourne Red","Mineral White","Mineral Grey","Estoril Blue","San Marino Blue","Tanzanite Blue","Frozen Grey"];
 const uphol=["Tyg","Tyg/Alcantara","Dakota-läder","Nappa-läder","Merino-läder","Sensatec"];
@@ -507,6 +502,21 @@ const EXTRA_GENERATIONS = {
   "X7":[["G07",[2018,2019,2020,2021,2022,2023,2024,2025,2026],["SUV"],["xDrive40i","xDrive40d","M60i","X7 M60i"],["Automat"]]]
 };
 
+
+/* FULL REVIEW FIX: merge every extra generation into the main database once. */
+(function mergeExtraGenerations(){
+  if(typeof EXTRA_GENERATIONS==='undefined' || typeof DB==='undefined') return;
+  Object.keys(EXTRA_GENERATIONS).forEach(function(seriesName){
+    const series=DB.find(x=>x[0]===seriesName);
+    if(!series) return;
+    EXTRA_GENERATIONS[seriesName].forEach(function(item){
+      const id=item[0];
+      if(series[1].some(g=>g.id===id)) return;
+      series[1].push(gen(id,item[1],item[2],item[3],item[4],0));
+    });
+  });
+})();
+
 function getModelRule(g){
   if(MODEL_RULES[g.id]) return MODEL_RULES[g.id];
   return null;
@@ -518,18 +528,22 @@ function refreshG(){
 }
 function refreshData(){
   setTimeout(buildVisualPickers,0);
-  let g=cur(), rule=getModelRule(g);
-  let years=(rule&&rule.years)||g.years;
-  let bodies=(rule&&rule.bodies)||g.bodies;
+  const g=cur();
+  const rule=getModelRule(g);
+  const years=(rule&&rule.years)||g.years;
+  const bodies=(rule&&rule.bodies)||g.bodies;
+  S.year=Math.max(0,Math.min(S.year,years.length-1));
+  S.body=Math.max(0,Math.min(S.body,bodies.length-1));
   set("year",years);
   set("body",bodies);
-  let y=years[S.year]||years[0];
-  let engines=(rule&&rule.enginesByYear&&rule.enginesByYear[y]) || (rule&&rule.engines) || g.engines;
-  let selectedEngine=engines[S.engine] || engines[0];
-  let gears=(rule&&rule.gearsByEngine&&rule.gearsByEngine[selectedEngine]) || (rule&&rule.gear) || g.gear;
+  const engines=currentEngines();
   S.engine=Math.max(0,Math.min(S.engine,engines.length-1));
+  set("engine",engines);
+  const selectedEngine=engines[S.engine]||engines[0];
+  const gears=currentGears();
   S.gear=Math.max(0,Math.min(S.gear,gears.length-1));
-  set("engine",engines);set("drive",engines.map(x=>x.includes("xDrive")||x.includes("eDrive")||x.includes("iX")?"xDrive":"Bakhjulsdrift"));set("gear",gears);
+  set("drive",engines.map(x=>x.includes("xDrive")||x.includes("eDrive")||x.includes("iX")?"xDrive":"Bakhjulsdrift"));
+  set("gear",gears);
   set("trim",["Standard","SE","Advantage","Luxury Line","Sport Line","M Sport","M Performance","Individual"]);
   set("color",colors);set("upholstery",uphol);set("wheels",wheels);set("interior",interiors);
   updateImage();refreshUI();
@@ -769,9 +783,6 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
   summary();
 }
 </script>
-
-
-
 <style id="stepBuilderStyles">
 /* BMW Builder – compact step-by-step builder */
 .step-builder{margin-top:14px}
@@ -824,7 +835,6 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
   .sb-preview .sb-card{min-height:250px}
 }
 </style>
-
 <style id="stepBuilderLegacyHide">
 .sb-legacy-hidden{display:none!important}
 #stepBuilder .tabs{display:flex;gap:7px;overflow:auto;padding-bottom:5px}
@@ -836,9 +846,6 @@ try{init();buildVisualPickers();updateImage();initTools();normalizeCurrentSelect
 #stepBuilder .tool-result{margin-top:8px}
 #stepBuilder .sb-native-select{width:100%;background:#111c27;border:1px solid #31485c;color:#fff;border-radius:10px;padding:11px;font-size:15px}
 </style>
-
-
-
 <style id="cleanAppLayout">
 /* Ren appstruktur: startsida -> en funktion i taget */
 body>.wrap{display:none!important}
@@ -866,137 +873,111 @@ body.route-build .app-only-back{display:flex}
 #diagScreen .suite-card,#lookupScreen .suite-card{margin:0}
 @media(max-width:650px){.home-grid{grid-template-columns:1fr}.home-choice{min-height:125px}.app-home-title{font-size:24px}}
 </style>
-<script id="bmwReliableRouter">
-(function(){
-  window.bmwRoute=function(route){
-    var home=document.getElementById('appHome');
-    var build=document.getElementById('stepBuilder');
-    var garage=document.getElementById('garageSuite');
-    var diag=document.getElementById('diagScreen');
-    var lookup=document.getElementById('lookupScreen');
-    [home,build,garage,diag,lookup].forEach(function(el){if(el)el.style.display='none';});
-    var target={build:build,garage:garage,diag:diag,lookup:lookup}[route];
-    if(target){target.style.display=(route==='garage'?'grid':'block'); target.scrollIntoView({behavior:'smooth',block:'start'});}
-    else if(home){home.style.display='block';window.scrollTo(0,0);}
-  };
-  window.bmwGoHome=function(){window.bmwRoute('')};
-  window.bmwGoBuild=function(){window.bmwRoute('build')};
-})();
-</script>
 <div id="appHome">
-  <div class="app-home-title">BMW Builder</div>
-  <div class="app-home-sub">Vad vill du göra?</div>
-  <div class="home-grid">
-    <button type="button" class="home-choice" data-route="build" onclick="window.bmwRoute('build')"><div class="ico">🚘</div><b>Bygg BMW</b><span>Bygg en BMW steg för steg med rätt modell, motor, färg, fälgar och tillval.</span></button>
-    <button type="button" class="home-choice" data-route="diag" onclick="window.bmwRoute('diag')"><div class="ico">🔧</div><b>Felsökning & diagnos</b><span>Sök felkod, klistra in INPA/ISTA/Carly-koder eller få hjälp utan felkod.</span></button>
-    <button type="button" class="home-choice" data-route="garage" onclick="window.bmwRoute('garage')"><div class="ico">🚗</div><b>Mitt Garage</b><span>Samla dina BMW, service, miltal, kostnader, fel och anteckningar.</span></button>
-    <button type="button" class="home-choice" data-route="lookup" onclick="window.bmwRoute('lookup')"><div class="ico">🔎</div><b>Sök regnummer / VIN</b><span>Slå upp en bil och använd uppgifterna i appen.</span></button>
-  </div>
+<div class="app-home-title">BMW Builder</div>
+<div class="app-home-sub">Vad vill du göra?</div>
+<div class="home-grid">
+<button class="home-choice" data-route="build" onclick="window.bmwRoute('build')" type="button"><div class="ico">🚘</div><b>Bygg BMW</b><span>Bygg en BMW steg för steg med rätt modell, motor, färg, fälgar och tillval.</span></button>
+<button class="home-choice" data-route="diag" onclick="window.bmwRoute('diag')" type="button"><div class="ico">🔧</div><b>Felsökning &amp; diagnos</b><span>Sök felkod, klistra in INPA/ISTA/Carly-koder eller få hjälp utan felkod.</span></button>
+<button class="home-choice" data-route="garage" onclick="window.bmwRoute('garage')" type="button"><div class="ico">🚗</div><b>Mitt Garage</b><span>Samla dina BMW, service, miltal, kostnader, fel och anteckningar.</span></button>
+<button class="home-choice" data-route="lookup" onclick="window.bmwRoute('lookup')" type="button"><div class="ico">🔎</div><b>Sök regnummer / VIN</b><span>Slå upp en bil och använd uppgifterna i appen.</span></button>
 </div>
-<div id="diagScreen" class="app-screen">
-  <div class="app-screen-head"><button type="button" class="app-back" data-home onclick="window.bmwRoute('')">← Till startsidan</button><div class="app-screen-title">🔧 Felsökning & diagnos</div></div>
-  <div class="diag-wrap"><div id="diagMountSmart"></div><div id="diagMountCodes"></div></div>
 </div>
-<div id="lookupScreen" class="app-screen">
-  <div class="app-screen-head"><button type="button" class="app-back" data-home onclick="window.bmwRoute('')">← Till startsidan</button><div class="app-screen-title">🔎 Sök regnummer / VIN</div></div>
-  <div id="lookupMount"></div>
+<div class="app-screen" id="diagScreen">
+<div class="app-screen-head"><button class="app-back" data-home="" onclick="window.bmwRoute('')" type="button">← Till startsidan</button><div class="app-screen-title">🔧 Felsökning &amp; diagnos</div></div>
+<div class="diag-wrap"><div id="diagMountSmart"></div><div id="diagMountCodes"></div></div>
 </div>
-<nav id="appNav" aria-label="Huvudmeny">
- <button class="active" data-target="stepBuilder"><span>🚘</span>BYGG BMW</button>
- <button data-target="garageSuite"><span>🚗</span>MITT GARAGE</button>
- <button data-target="garageImportCard"><span>🔎</span>SÖK REG/VIN</button>
- <button data-target="smartDiagCard"><span>🔧</span>DIAGNOS</button>
+<div class="app-screen" id="lookupScreen">
+<div class="app-screen-head"><button class="app-back" data-home="" onclick="window.bmwRoute('')" type="button">← Till startsidan</button><div class="app-screen-title">🔎 Sök regnummer / VIN</div></div>
+<div id="lookupMount"></div>
+</div>
+<nav aria-label="Huvudmeny" id="appNav">
+<button class="active" data-target="stepBuilder"><span>🚘</span>BYGG BMW</button>
+<button data-target="garageSuite"><span>🚗</span>MITT GARAGE</button>
+<button data-target="garageImportCard"><span>🔎</span>SÖK REG/VIN</button>
+<button data-target="smartDiagCard"><span>🔧</span>DIAGNOS</button>
 </nav>
-<section id="stepBuilder" class="step-builder" aria-label="Bygg BMW steg för steg">
-  <div class="sb-preview">
-    <div class="sb-card">
-      <div class="muted" style="text-transform:uppercase;letter-spacing:.08em;font-size:11px">Din BMW</div>
-      <div class="sb-title" id="sbCarTitle">BMW</div>
-      <div class="sb-sub" id="sbCarSub">Välj bilens grundmodell för att börja.</div>
-      <div id="sbPreviewMount"></div>
-      <div class="sb-mini-summary">
-        <div class="sb-mini"><b id="sbMiniModel">—</b>Modell</div>
-        <div class="sb-mini"><b id="sbMiniPower">—</b>Motor</div>
-        <div class="sb-mini"><b id="sbMiniDrive">—</b>Drivning</div>
-        <div class="sb-mini"><b id="sbMiniPrice">0 kr</b>Pris</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sb-card">
-    <div class="sb-progress" id="sbProgress">
-      <div class="sb-dot on"><b>1</b>Bil</div>
-      <div class="sb-dot"><b>2</b>Motor</div>
-      <div class="sb-dot"><b>3</b>Utseende</div>
-      <div class="sb-dot"><b>4</b>Interiör</div>
-      <div class="sb-dot"><b>5</b>Tillval</div>
-      <div class="sb-dot"><b>6</b>Klar</div>
-    </div>
-
-    <div class="sb-step on" data-step="0">
-      <div class="sb-title">Välj BMW</div>
-      <div class="sb-sub">Vi tar en sak i taget. Bara ett steg visas åt gången.</div>
-      <div class="sb-fields">
-        <div class="sb-field"><label>Serie / modell</label><div id="sbSeries"></div></div>
-        <div class="sb-field"><label>Generation</label><div id="sbGeneration"></div></div>
-        <div class="sb-field"><label>Årsmodell</label><div id="sbYear"></div></div>
-        <div class="sb-field"><label>Kaross</label><div id="sbBody"></div></div>
-      </div>
-    </div>
-
-    <div class="sb-step" data-step="1">
-      <div class="sb-title">Motor & drivlina</div>
-      <div class="sb-sub">Ogiltiga kombinationer ska inte kunna väljas när databasen har rätt modellinformation.</div>
-      <div class="sb-fields">
-        <div class="sb-field full"><label>Motor / version</label><div id="sbEngine"></div></div>
-        <div class="sb-field"><label>Drivning</label><div id="sbDrive"></div></div>
-        <div class="sb-field"><label>Växellåda</label><div id="sbGear"></div></div>
-        <div class="sb-field full"><label>Utrustningsnivå</label><div id="sbTrim"></div></div>
-      </div>
-    </div>
-
-    <div class="sb-step" data-step="2">
-      <div class="sb-title">Färg & hjul</div>
-      <div class="sb-sub">Tryck på ett alternativ. Valet ändras direkt på bilen.</div>
-      <div class="sb-fields">
-        <div class="sb-field full"><label>Exteriörfärg</label><div id="sbColor"></div></div>
-        <div class="sb-field"><label>Klädsel</label><div id="sbUpholstery"></div></div>
-        <div class="sb-field"><label>Fälgar</label><div id="sbWheels"></div></div>
-      </div>
-    </div>
-
-    <div class="sb-step" data-step="3">
-      <div class="sb-title">Interiör</div>
-      <div class="sb-sub">Välj interiörlist. Färg- och fälgval finns kvar från föregående steg.</div>
-      <div class="sb-field full"><label>Interiörlist</label><div id="sbInterior"></div></div>
-    </div>
-
-    <div class="sb-step" data-step="4">
-      <div class="sb-title">Fabrikstillval</div>
-      <div class="sb-sub">Välj bara det du vill ha. Tillgängliga val uppdateras efter bilen du byggt.</div>
-      <div class="sb-options-wrap">
-        <div id="sbTabsMount"></div>
-        <div id="sbOptionsMount"></div>
-      </div>
-    </div>
-
-    <div class="sb-step" data-step="5">
-      <div class="sb-title">Din BMW är klar</div>
-      <div class="sb-sub">Kontrollera bygget innan du sparar det.</div>
-      <div class="sb-summary-box">
-        <div id="sbSummaryMount"></div>
-        <div id="sbTotalMount"></div>
-      </div>
-    </div>
-
-    <div class="sb-actions">
-      <button type="button" class="sb-back" id="sbBack">← Tillbaka</button>
-      <button type="button" class="sb-next" id="sbNext">Nästa →</button>
-      <button type="button" class="sb-finish" id="sbSave" style="display:none">💾 Spara bygge</button><button type="button" class="sb-finish" id="sbGarage" style="display:none;background:#168b61">＋ Lägg i Garage</button>
-    </div>
-  </div>
+<section aria-label="Bygg BMW steg för steg" class="step-builder" id="stepBuilder">
+<div class="sb-preview">
+<div class="sb-card">
+<div class="muted" style="text-transform:uppercase;letter-spacing:.08em;font-size:11px">Din BMW</div>
+<div class="sb-title" id="sbCarTitle">BMW</div>
+<div class="sb-sub" id="sbCarSub">Välj bilens grundmodell för att börja.</div>
+<div id="sbPreviewMount"></div>
+<div class="sb-mini-summary">
+<div class="sb-mini"><b id="sbMiniModel">—</b>Modell</div>
+<div class="sb-mini"><b id="sbMiniPower">—</b>Motor</div>
+<div class="sb-mini"><b id="sbMiniDrive">—</b>Drivning</div>
+<div class="sb-mini"><b id="sbMiniPrice">0 kr</b>Pris</div>
+</div>
+</div>
+</div>
+<div class="sb-card">
+<div class="sb-progress" id="sbProgress">
+<div class="sb-dot on"><b>1</b>Bil</div>
+<div class="sb-dot"><b>2</b>Motor</div>
+<div class="sb-dot"><b>3</b>Utseende</div>
+<div class="sb-dot"><b>4</b>Interiör</div>
+<div class="sb-dot"><b>5</b>Tillval</div>
+<div class="sb-dot"><b>6</b>Klar</div>
+</div>
+<div class="sb-step on" data-step="0">
+<div class="sb-title">Välj BMW</div>
+<div class="sb-sub">Vi tar en sak i taget. Bara ett steg visas åt gången.</div>
+<div class="sb-fields">
+<div class="sb-field"><label>Serie / modell</label><div id="sbSeries"></div></div>
+<div class="sb-field"><label>Generation</label><div id="sbGeneration"></div></div>
+<div class="sb-field"><label>Årsmodell</label><div id="sbYear"></div></div>
+<div class="sb-field"><label>Kaross</label><div id="sbBody"></div></div>
+</div>
+</div>
+<div class="sb-step" data-step="1">
+<div class="sb-title">Motor &amp; drivlina</div>
+<div class="sb-sub">Ogiltiga kombinationer ska inte kunna väljas när databasen har rätt modellinformation.</div>
+<div class="sb-fields">
+<div class="sb-field full"><label>Motor / version</label><div id="sbEngine"></div></div>
+<div class="sb-field"><label>Drivning</label><div id="sbDrive"></div></div>
+<div class="sb-field"><label>Växellåda</label><div id="sbGear"></div></div>
+<div class="sb-field full"><label>Utrustningsnivå</label><div id="sbTrim"></div></div>
+</div>
+</div>
+<div class="sb-step" data-step="2">
+<div class="sb-title">Färg &amp; hjul</div>
+<div class="sb-sub">Tryck på ett alternativ. Valet ändras direkt på bilen.</div>
+<div class="sb-fields">
+<div class="sb-field full"><label>Exteriörfärg</label><div id="sbColor"></div></div>
+<div class="sb-field"><label>Klädsel</label><div id="sbUpholstery"></div></div>
+<div class="sb-field"><label>Fälgar</label><div id="sbWheels"></div></div>
+</div>
+</div>
+<div class="sb-step" data-step="3">
+<div class="sb-title">Interiör</div>
+<div class="sb-sub">Välj interiörlist. Färg- och fälgval finns kvar från föregående steg.</div>
+<div class="sb-field full"><label>Interiörlist</label><div id="sbInterior"></div></div>
+</div>
+<div class="sb-step" data-step="4">
+<div class="sb-title">Fabrikstillval</div>
+<div class="sb-sub">Välj bara det du vill ha. Tillgängliga val uppdateras efter bilen du byggt.</div>
+<div class="sb-options-wrap">
+<div id="sbTabsMount"></div>
+<div id="sbOptionsMount"></div>
+</div>
+</div>
+<div class="sb-step" data-step="5">
+<div class="sb-title">Din BMW är klar</div>
+<div class="sb-sub">Kontrollera bygget innan du sparar det.</div>
+<div class="sb-summary-box">
+<div id="sbSummaryMount"></div>
+<div id="sbTotalMount"></div>
+</div>
+</div>
+<div class="sb-actions">
+<button class="sb-back" id="sbBack" type="button">← Tillbaka</button>
+<button class="sb-next" id="sbNext" type="button">Nästa →</button>
+<button class="sb-finish" id="sbSave" style="display:none" type="button">💾 Spara bygge</button><button class="sb-finish" id="sbGarage" style="display:none;background:#168b61" type="button">＋ Lägg i Garage</button>
+</div>
+</div>
 </section>
-
 <script id="stepBuilderScript">
 (function(){
   function initStepBuilder(){
@@ -1132,73 +1113,64 @@ body.route-build .app-only-back{display:flex}
   else initStepBuilder();
 })();
 </script>
-
 <section class="app-suite" id="garageSuite">
-  <div class="suite-card" id="garageCard">
-    <h2>🏠 Mitt Garage</h2>
-    <div class="suite-muted">Spara flera BMW samtidigt. Varje bil får sin egen bild, sina egna anteckningar, service, fel och kostnader.</div>
-    <div class="suite-actions"><button class="suite-btn" type="button" id="addGarageBtn">＋ Lägg till BMW</button><button class="suite-btn secondary" type="button" id="exportGarageBtn">Exportera garage</button></div>
-    <div id="garageList" class="car-grid" style="margin-top:12px"></div>
-  </div>
-
-  <div class="suite-card" id="carProfileCard" style="display:none">
-    <h2 id="profileTitle">🚗 Min BMW</h2>
-    <div class="suite-muted" id="profileSubtitle"></div>
-    <div class="suite-grid" style="margin-top:10px">
-      <div><label class="mini">Namn på bilen</label><input id="carNameInput" class="suite-input" placeholder="Min BMW"></div>
-      <div><label class="mini">Miltal</label><input id="carMileageInput" class="suite-input" type="number" min="0" placeholder="31200"></div>
-      <div><label class="mini">Regnummer</label><input id="carRegInput" class="suite-input" maxlength="7" placeholder="ABC123"></div>
-      <div><label class="mini">VIN</label><input id="carVinInput" class="suite-input" maxlength="17" placeholder="17 tecken"></div>
-      <div><label class="mini">Bild på bilen</label><input id="carImageInput" class="suite-input" type="file" accept="image/*"></div>
-      <div><label class="mini">Skick</label><select id="carConditionInput" class="suite-select"><option>Mycket bra</option><option selected>Bra</option><option>Normalt</option><option>Slitet</option><option>Projekt</option></select></div>
-    </div>
-    <div style="margin-top:10px"><label class="mini">Anteckningar</label><textarea id="carNotesInput" class="suite-textarea" placeholder="Skriv vad du vill om bilen..."></textarea></div>
-    <div class="suite-actions"><button class="suite-btn" id="saveCarBtn">Spara ändringar</button><button class="suite-btn secondary" id="valueCarBtn">💰 Värdera bilen</button><button class="suite-btn danger" id="deleteCarBtn">Ta bort bilen</button></div>
-    <div id="valuationResult" class="tool-result" style="margin-top:10px;display:none"></div>
-
-    <div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
-      <h3>📝 Att göra</h3><div class="suite-grid"><input id="taskNameInput" class="suite-input" placeholder="T.ex. byta bromsar"><input id="taskCostInput" class="suite-input" type="number" min="0" placeholder="Kostnad kr"></div>
-      <div class="suite-grid" style="margin-top:8px"><input id="taskDueMileageInput" class="suite-input" type="number" min="0" placeholder="Gör vid miltal"><input id="taskDueDateInput" class="suite-input" type="date"></div>
-      <div class="suite-actions"><button class="suite-btn" id="addTaskBtn">＋ Lägg till</button></div><div id="taskList"></div>
-    </div>
-
-    <div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
-      <h3>🛢️ Service & slitdelar</h3>
-      <div id="serviceList"></div>
-      <div class="suite-actions"><button class="suite-btn secondary" id="addServiceBtn">＋ Lägg till service</button></div>
-      <div class="suite-muted" style="margin-top:8px">Intervall är riktvärden. Appen ska inte låtsas att ett intervall är en garanti; körning, motor och servicehistorik påverkar.</div>
-    </div>
-
-    <div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
-      <h3>🅿️ PDC / parkeringssensorer</h3><div id="pdcStatus" class="pdc-box"></div>
-      <div class="suite-actions"><button class="suite-btn secondary" id="pdcGuideBtn">🔧 Felsök PDC utan felkod</button></div><div id="pdcGuide" style="display:none"></div>
-    </div>
-  </div>
-
-  <div class="suite-card" id="smartDiagCard">
-    <h2>🧠 Smart felsökning</h2>
-    <div class="suite-muted">Har du ett problem men ingen felkod? Beskriv symptomen så bygger appen en kontrollista. Du kan också välja INPA/ISTA och få en guide för vad du ska kontrollera.</div>
-    <textarea id="symptomInput" class="suite-textarea" style="margin-top:10px" placeholder="T.ex. Mina baksensorer fungerar inte men jag får inga felkoder..."></textarea>
-    <div class="suite-grid" style="margin-top:8px"><select id="diagToolInput" class="suite-select"><option>Ingen diagnosläsare</option><option>INPA</option><option>ISTA</option><option>Carly</option><option>OBD-läsare</option><option>Annat</option></select><select id="diagModuleInput" class="suite-select"><option>Automatiskt</option><option>PDC</option><option>DDE</option><option>DSC/ABS</option><option>EHC</option><option>CAS</option><option>FRM</option></select></div>
-    <div class="suite-actions"><button class="suite-btn" id="buildDiagBtn">🔍 Bygg felsökning</button></div>
-    <div id="diagResult"></div>
-  </div>
-
-  <div class="suite-card" id="codePasteCard">
-    <h2>📋 Klistra in felkoder</h2>
-    <div class="suite-muted">Kopiera från INPA, ISTA, Carly eller en OBD-läsare och klistra in här. Appen försöker hitta flera koder automatiskt.</div>
-    <textarea id="codePasteInput" class="suite-textarea" style="margin-top:10px" placeholder="Klistra in hela texten från diagnosen här..."></textarea>
-    <div class="suite-actions"><button class="suite-btn" id="parseCodesBtn">Läs felkoder</button><button class="suite-btn secondary" id="clearCodesBtn">Rensa</button></div><div id="parsedCodesResult"></div>
-  </div>
-
-  <div class="suite-card" id="garageImportCard">
-    <h2>🔐 Regnummer / VIN</h2>
-    <div class="suite-muted">Regnummeruppslag i Sverige kräver en ansluten fordonsdatakälla. VIN kan avkodas med en extern referenstjänst, men full svensk BMW-fabriksutrustning kräver en separat datakälla. Appen visar tydligt när något är verifierat och när det inte kan verifieras.</div>
-    <div class="suite-grid" style="margin-top:10px"><input id="garageRegInput" class="suite-input" placeholder="ABC123"><input id="garageVinInput" class="suite-input" maxlength="17" placeholder="VIN 17 tecken"></div>
-    <div class="suite-actions"><button class="suite-btn" id="garageLookupBtn">🔎 Sök bil</button></div><div id="garageLookupResult" class="tool-result" style="margin-top:10px"></div>
-  </div>
+<div class="suite-card" id="garageCard">
+<h2>🏠 Mitt Garage</h2>
+<div class="suite-muted">Spara flera BMW samtidigt. Varje bil får sin egen bild, sina egna anteckningar, service, fel och kostnader.</div>
+<div class="suite-actions"><button class="suite-btn" id="addGarageBtn" type="button">＋ Lägg till BMW</button><button class="suite-btn secondary" id="exportGarageBtn" type="button">Exportera garage</button></div>
+<div class="car-grid" id="garageList" style="margin-top:12px"></div>
+</div>
+<div class="suite-card" id="carProfileCard" style="display:none">
+<h2 id="profileTitle">🚗 Min BMW</h2>
+<div class="suite-muted" id="profileSubtitle"></div>
+<div class="suite-grid" style="margin-top:10px">
+<div><label class="mini">Namn på bilen</label><input class="suite-input" id="carNameInput" placeholder="Min BMW"/></div>
+<div><label class="mini">Miltal</label><input class="suite-input" id="carMileageInput" min="0" placeholder="31200" type="number"/></div>
+<div><label class="mini">Regnummer</label><input class="suite-input" id="carRegInput" maxlength="7" placeholder="ABC123"/></div>
+<div><label class="mini">VIN</label><input class="suite-input" id="carVinInput" maxlength="17" placeholder="17 tecken"/></div>
+<div><label class="mini">Bild på bilen</label><input accept="image/*" class="suite-input" id="carImageInput" type="file"/></div>
+<div><label class="mini">Skick</label><select class="suite-select" id="carConditionInput"><option>Mycket bra</option><option selected="">Bra</option><option>Normalt</option><option>Slitet</option><option>Projekt</option></select></div>
+</div>
+<div style="margin-top:10px"><label class="mini">Anteckningar</label><textarea class="suite-textarea" id="carNotesInput" placeholder="Skriv vad du vill om bilen..."></textarea></div>
+<div class="suite-actions"><button class="suite-btn" id="saveCarBtn">Spara ändringar</button><button class="suite-btn secondary" id="valueCarBtn">💰 Värdera bilen</button><button class="suite-btn danger" id="deleteCarBtn">Ta bort bilen</button></div>
+<div class="tool-result" id="valuationResult" style="margin-top:10px;display:none"></div>
+<div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
+<h3>📝 Att göra</h3><div class="suite-grid"><input class="suite-input" id="taskNameInput" placeholder="T.ex. byta bromsar"/><input class="suite-input" id="taskCostInput" min="0" placeholder="Kostnad kr" type="number"/></div>
+<div class="suite-grid" style="margin-top:8px"><input class="suite-input" id="taskDueMileageInput" min="0" placeholder="Gör vid miltal" type="number"/><input class="suite-input" id="taskDueDateInput" type="date"/></div>
+<div class="suite-actions"><button class="suite-btn" id="addTaskBtn">＋ Lägg till</button></div><div id="taskList"></div>
+</div>
+<div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
+<h3>🛢️ Service &amp; slitdelar</h3>
+<div id="serviceList"></div>
+<div class="suite-actions"><button class="suite-btn secondary" id="addServiceBtn">＋ Lägg till service</button></div>
+<div class="suite-muted" style="margin-top:8px">Intervall är riktvärden. Appen ska inte låtsas att ett intervall är en garanti; körning, motor och servicehistorik påverkar.</div>
+</div>
+<div class="suite-card" style="margin-top:12px;padding:13px;background:#0a1118">
+<h3>🅿️ PDC / parkeringssensorer</h3><div class="pdc-box" id="pdcStatus"></div>
+<div class="suite-actions"><button class="suite-btn secondary" id="pdcGuideBtn">🔧 Felsök PDC utan felkod</button></div><div id="pdcGuide" style="display:none"></div>
+</div>
+</div>
+<div class="suite-card" id="smartDiagCard">
+<h2>🧠 Smart felsökning</h2>
+<div class="suite-muted">Har du ett problem men ingen felkod? Beskriv symptomen så bygger appen en kontrollista. Du kan också välja INPA/ISTA och få en guide för vad du ska kontrollera.</div>
+<textarea class="suite-textarea" id="symptomInput" placeholder="T.ex. Mina baksensorer fungerar inte men jag får inga felkoder..." style="margin-top:10px"></textarea>
+<div class="suite-grid" style="margin-top:8px"><select class="suite-select" id="diagToolInput"><option>Ingen diagnosläsare</option><option>INPA</option><option>ISTA</option><option>Carly</option><option>OBD-läsare</option><option>Annat</option></select><select class="suite-select" id="diagModuleInput"><option>Automatiskt</option><option>PDC</option><option>DDE</option><option>DSC/ABS</option><option>EHC</option><option>CAS</option><option>FRM</option></select></div>
+<div class="suite-actions"><button class="suite-btn" id="buildDiagBtn">🔍 Bygg felsökning</button></div>
+<div id="diagResult"></div>
+</div>
+<div class="suite-card" id="codePasteCard">
+<h2>📋 Klistra in felkoder</h2>
+<div class="suite-muted">Kopiera från INPA, ISTA, Carly eller en OBD-läsare och klistra in här. Appen försöker hitta flera koder automatiskt.</div>
+<textarea class="suite-textarea" id="codePasteInput" placeholder="Klistra in hela texten från diagnosen här..." style="margin-top:10px"></textarea>
+<div class="suite-actions"><button class="suite-btn" id="parseCodesBtn">Läs felkoder</button><button class="suite-btn secondary" id="clearCodesBtn">Rensa</button></div><div id="parsedCodesResult"></div>
+</div>
+<div class="suite-card" id="garageImportCard">
+<h2>🔐 Regnummer / VIN</h2>
+<div class="suite-muted">Regnummeruppslag i Sverige kräver en ansluten fordonsdatakälla. VIN kan avkodas med en extern referenstjänst, men full svensk BMW-fabriksutrustning kräver en separat datakälla. Appen visar tydligt när något är verifierat och när det inte kan verifieras.</div>
+<div class="suite-grid" style="margin-top:10px"><input class="suite-input" id="garageRegInput" placeholder="ABC123"/><input class="suite-input" id="garageVinInput" maxlength="17" placeholder="VIN 17 tecken"/></div>
+<div class="suite-actions"><button class="suite-btn" id="garageLookupBtn">🔎 Sök bil</button></div><div class="tool-result" id="garageLookupResult" style="margin-top:10px"></div>
+</div>
 </section>
-
 <noscript><div style="position:fixed;bottom:0;left:0;right:0;background:#b33;color:white;padding:10px;text-align:center">JavaScript är avstängt. Alla val finns ändå tillgängliga.</div></noscript>
 <script>
 /* BMW Builder – expanded BMW fault-code pack.
@@ -1354,7 +1326,6 @@ body.route-build .app-only-back{display:flex}
   if(clear)clear.onclick=()=>{input.value='';out.innerHTML='';};
 })();
 </script>
-
 <script id="garageFunctionalScript">
 (function(){
   const KEY='bmwBuilderGarageV2';
@@ -1506,691 +1477,162 @@ body.route-build .app-only-back{display:flex}
 })();
 </script>
 
-<script id="finalAppPatch">
+
+
+
+<script id="bmwFullReviewMaster">
 (function(){
- const q=id=>document.getElementById(id);
- const nav=q('appNav');
- if(nav){
-  nav.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{
-   nav.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
-   btn.classList.add('active');
-   const el=q(btn.dataset.target);
-   if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+'use strict';
+const $=id=>document.getElementById(id);
+const KEY='bmwBuilderGarageV2';
+let activeGarageId=null;
+let editingGarageId=null;
+
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function hideScreens(){['appHome','stepBuilder','garageSuite','diagScreen','lookupScreen'].forEach(id=>{const e=$(id);if(e)e.style.display='none'});}
+function home(){hideScreens();const e=$('appHome');if(e)e.style.display='block';window.scrollTo(0,0);}
+function build(){hideScreens();const e=$('stepBuilder');if(e){e.style.display='block';window.scrollTo(0,0);syncStepBuilder();}}
+function route(r){
+  if(r==='build'){build();return}
+  if(r==='garage'){hideScreens();const e=$('garageSuite');if(e)e.style.display='grid';window.scrollTo(0,0);renderGarage();return}
+  if(r==='diag'){hideScreens();const e=$('diagScreen');if(e)e.style.display='block';window.scrollTo(0,0);renderDiag();return}
+  if(r==='lookup'){hideScreens();const e=$('lookupScreen');if(e)e.style.display='block';window.scrollTo(0,0);renderLookup();return}
+  home();
+}
+window.bmwRoute=route;window.bmwGoHome=home;window.bmwGoBuild=build;
+
+function mergeExtras(){
+  if(typeof EXTRA_GENERATIONS==='undefined'||typeof DB==='undefined')return;
+  Object.keys(EXTRA_GENERATIONS).forEach(name=>{
+    const series=DB.find(x=>x[0]===name);if(!series)return;
+    EXTRA_GENERATIONS[name].forEach(item=>{if(!series[1].some(g=>g.id===item[0]))series[1].push(gen(item[0],item[1],item[2],item[3],item[4],0));});
   });
- }
- // Ensure the step-builder final action is visible and has a clear Garage action.
- const finish=q('sbSave'), garage=q('sbGarage');
- if(finish) finish.textContent='💾 Spara bygge';
- if(garage){garage.style.display='block';garage.textContent='＋ Lägg i Garage';}
- // Bridge to the robust Garage script already present in this file.
- window.addEventListener('bmw:garage-ready',()=>{});
+}
+
+function syncStepBuilder(){
+  ['series','generation','year','body','engine','drive','gear','trim','color','upholstery','wheels','interior'].forEach(id=>{
+    const e=$(id);if(e)e.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+  // Make sure the compact step-builder mirrors the current data after a model/year change.
+  setTimeout(()=>{document.querySelectorAll('#stepBuilder .sb-native-select').forEach(sel=>{const idMap={};});},30);
+}
+
+/* ---------- Start animation ---------- */
+function splash(){
+  if($('bmwSplash'))return;
+  const st=document.createElement('style');st.textContent=`
+  #bmwSplash{position:fixed;inset:0;z-index:2147483647;background:#05080c;display:flex;align-items:center;justify-content:center;opacity:1;visibility:visible;transition:opacity .65s ease,visibility .65s ease}
+  #bmwSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
+  #bmwSplash .logo{width:min(190px,45vw);height:min(190px,45vw);transform:scale(.15) rotate(-25deg);opacity:0;animation:bmwIntro 1.15s cubic-bezier(.17,.89,.25,1.18) forwards}
+  #bmwSplash .ring{position:absolute;width:min(230px,54vw);height:min(230px,54vw);border:1px solid rgba(180,205,230,.24);border-radius:50%;transform:scale(.35);opacity:0;animation:bmwRing 1.1s ease-out .12s forwards}
+  @keyframes bmwIntro{0%{transform:scale(.15) rotate(-25deg);opacity:0}55%{transform:scale(1.08) rotate(4deg);opacity:1}78%{transform:scale(.96) rotate(0)}100%{transform:scale(1) rotate(0);opacity:1}}
+  @keyframes bmwRing{0%{transform:scale(.35);opacity:0}35%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+  `;document.head.appendChild(st);
+  const d=document.createElement('div');d.id='bmwSplash';d.innerHTML='<div class="ring"></div><svg class="logo" viewBox="0 0 200 200" aria-label="BMW"><circle cx="100" cy="100" r="91" fill="#0d141c" stroke="#dce7f2" stroke-width="6"/><circle cx="100" cy="100" r="70" fill="#f3f6f9"/><path d="M100 100L100 30A70 70 0 0 1 170 100Z" fill="#1680d9"/><path d="M100 100L170 100A70 70 0 0 1 100 170Z" fill="#1680d9"/><circle cx="100" cy="100" r="70" fill="none" stroke="#b7c8d8" stroke-width="2"/><text x="100" y="108" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="900" fill="#17202a">BMW</text></svg>';
+  document.body.prepend(d);
+  const hide=()=>{d.classList.add('hide');setTimeout(()=>d.remove(),700)};
+  window.addEventListener('load',()=>setTimeout(hide,1250),{once:true});setTimeout(hide,3000);
+}
+
+/* ---------- Home / logo / navigation ---------- */
+function bindNav(){
+  document.querySelectorAll('.home-choice').forEach(b=>b.onclick=e=>{e.preventDefault();route(b.dataset.route||'')});
+  document.querySelectorAll('[data-home]').forEach(b=>b.onclick=e=>{e.preventDefault();home()});
+  document.querySelectorAll('.bmw-roundel').forEach(b=>b.onclick=e=>{e.preventDefault();home()});
+}
+
+/* ---------- Garage ---------- */
+function readCars(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
+function writeCars(c){localStorage.setItem(KEY,JSON.stringify(c))}
+function buildFromBuilder(){
+  const g=typeof cur==='function'?cur():null;if(!g)return null;
+  const engines=typeof currentEngines==='function'?currentEngines():g.engines;
+  const gears=typeof currentGears==='function'?currentGears():g.gear;
+  const get=id=>$(id)?.selectedOptions?.[0]?.text||'';
+  let total=Number(g.base)||0;const options=[];
+  if(S?.chosen)S.chosen.forEach(code=>{const o=OPTS.find(x=>x[1]===code);if(o&&allowed(o)){total+=Number(o[3])||0;options.push(code)}});
+  return {series:DB[S.si][0],generation:g.id,year:g.years[S.year],body:g.bodies[S.body],engine:engines[S.engine],drive:get('drive'),gear:gears[S.gear],trim:get('trim'),color:get('color'),upholstery:get('upholstery'),wheels:get('wheels'),interior:get('interior'),price:total,options};
+}
+function saveGarage(){
+  const b=buildFromBuilder();if(!b){alert('Välj BMW först.');return}
+  const cars=readCars();
+  if(editingGarageId){
+    const c=cars.find(x=>x.id===editingGarageId);
+    if(!c){editingGarageId=null;return saveGarage()}
+    c.build={...(c.build||{}),...b};c.name=[b.series,b.generation,b.engine].filter(Boolean).join(' ');writeCars(cars);const id=c.id;editingGarageId=null;activeGarageId=id;route('garage');openProfile(id);toast('✓ BMW uppdaterad i Garage');return;
+  }
+  const car={id:'bmw_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),name:[b.series,b.generation,b.engine].filter(Boolean).join(' ')||'Min BMW',mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',build:b,tasks:[],services:[],costs:[]};
+  cars.unshift(car);writeCars(cars);activeGarageId=car.id;route('garage');openProfile(car.id);toast('✓ BMW sparad i Garage');
+}
+function renderGarage(){
+  const list=$('garageList');if(!list)return;const cars=readCars();
+  if(!cars.length){list.innerHTML='<div class="garage-empty" style="grid-column:1/-1"><div class="big">🚘</div><b>Garaget är tomt</b><div style="margin-top:5px">Bygg en BMW och lägg den i Garage.</div></div>';return}
+  list.innerHTML=cars.map(c=>{const b=c.build||{};const title=c.name||[b.series,b.generation].filter(Boolean).join(' ')||'BMW';const spec=[b.year,b.engine,b.body].filter(Boolean).join(' • ');const img=c.image?`<img src="${esc(c.image)}" alt="">`:'<div class="car-art">🚘</div>';return `<article class="garage-card" data-gid="${esc(c.id)}"><div class="hero">${img}</div><div class="gb"><div class="gt">${esc(title)}</div><div class="gs">${esc(spec)}</div><div class="chips">${c.reg?`<span class="chip">${esc(c.reg)}</span>`:''}${c.mileage?`<span class="chip">${esc(c.mileage)} mil</span>`:''}<span class="chip">${esc(b.price||'—')}</span></div><button type="button" class="open" data-open-garage="${esc(c.id)}">Öppna bilen →</button></div></article>`}).join('');
+  list.querySelectorAll('[data-open-garage]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();openProfile(b.dataset.openGarage)});
+  list.querySelectorAll('.garage-card').forEach(c=>c.onclick=e=>{if(!e.target.closest('button'))openProfile(c.dataset.gid)});
+}
+function openProfile(id){
+  const c=readCars().find(x=>x.id===id);if(!c)return;activeGarageId=id;
+  const card=$('garageCard'),profile=$('carProfileCard');if(card)card.style.display='none';if(profile)profile.style.display='';
+  $('profileTitle').textContent='🚗 '+(c.name||'Min BMW');$('profileSubtitle').textContent=[c.build?.series,c.build?.generation,c.build?.year,c.build?.engine].filter(Boolean).join(' • ');
+  $('carNameInput').value=c.name||'';$('carMileageInput').value=c.mileage||'';$('carRegInput').value=c.reg||'';$('carVinInput').value=c.vin||'';$('carConditionInput').value=c.condition||'Bra';$('carNotesInput').value=c.notes||'';
+  renderTasks(c);renderServices(c);addEditButton();
+  const val=$('valuationResult');if(val)val.style.display='none';
+}
+function closeProfile(){activeGarageId=null;if($('carProfileCard'))$('carProfileCard').style.display='none';if($('garageCard'))$('garageCard').style.display='';renderGarage()}
+function saveProfile(){const cars=readCars(),c=cars.find(x=>x.id===activeGarageId);if(!c)return;c.name=$('carNameInput').value.trim()||'Min BMW';c.mileage=$('carMileageInput').value;c.reg=$('carRegInput').value.trim().toUpperCase();c.vin=$('carVinInput').value.trim().toUpperCase();c.condition=$('carConditionInput').value;c.notes=$('carNotesInput').value;writeCars(cars);openProfile(c.id);toast('✓ Ändringar sparade')}
+function deleteProfile(){if(!activeGarageId)return;if(!confirm('Ta bort bilen från Garage?'))return;const id=activeGarageId;const cars=readCars().filter(c=>c.id!==id);writeCars(cars);activeGarageId=null;closeProfile();toast('✓ Bilen togs bort från Garage')}
+function addEditButton(){const title=$('profileTitle');if(!title)return;let b=$('editBuildBtn');if(!b){b=document.createElement('button');b.id='editBuildBtn';b.type='button';b.className='suite-btn secondary';b.textContent='✏️ Ändra BMW';title.insertAdjacentElement('afterend',b)}b.onclick=()=>editProfile()}
+function setBuilderValue(id,text){const e=$(id);if(!e)return false;const i=Array.from(e.options).findIndex(o=>o.text.trim()===String(text).trim());if(i<0)return false;e.value=String(i);e.dispatchEvent(new Event('change',{bubbles:true}));return true}
+function editProfile(){const c=readCars().find(x=>x.id===activeGarageId);if(!c?.build){alert('Kunde inte hitta bilen.');return}editingGarageId=c.id;route('build');setTimeout(()=>{
+  const b=c.build;setBuilderValue('series',b.series);setBuilderValue('generation',b.generation);setBuilderValue('year',b.year);setBuilderValue('body',b.body);setBuilderValue('engine',b.engine);setBuilderValue('drive',b.drive);setBuilderValue('gear',b.gear);setBuilderValue('trim',b.trim);setBuilderValue('color',b.color);setBuilderValue('upholstery',b.upholstery);setBuilderValue('wheels',b.wheels);setBuilderValue('interior',b.interior);
+  if(Array.isArray(b.options)&&S?.chosen){S.chosen=new Set(b.options);renderOptions();summary()}
+  syncStepBuilder();toast('✏️ Redigerar bilen – ändra val och spara till Garage');
+},180)}
+function renderTasks(c){const out=$('taskList');if(!out)return;c.tasks=c.tasks||[];out.innerHTML=c.tasks.length?c.tasks.map((t,i)=>`<div class="task ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} data-task="${i}"><div class="grow"><b>${esc(t.name)}</b><div class="mini">${t.cost?esc(t.cost)+' kr':''}${t.dueMileage?' • vid '+esc(t.dueMileage)+' mil':''}${t.dueDate?' • '+esc(t.dueDate):''}</div></div><button type="button" class="suite-btn danger" data-del-task="${i}">×</button></div>`).join(''):'<div class="suite-muted">Inga saker att göra ännu.</div>';out.querySelectorAll('[data-task]').forEach(x=>x.onchange=()=>{c.tasks[+x.dataset.task].done=x.checked;const cars=readCars();const z=cars.find(y=>y.id===c.id);if(z)z.tasks=c.tasks;writeCars(cars);renderTasks(c)});out.querySelectorAll('[data-del-task]').forEach(x=>x.onclick=()=>{c.tasks.splice(+x.dataset.delTask,1);const cars=readCars();const z=cars.find(y=>y.id===c.id);if(z)z.tasks=c.tasks;writeCars(cars);renderTasks(c)})}
+function addTask(){const c=readCars().find(x=>x.id===activeGarageId);if(!c)return;const name=$('taskNameInput').value.trim();if(!name)return;c.tasks=c.tasks||[];c.tasks.push({name,cost:$('taskCostInput').value,dueMileage:$('taskDueMileageInput').value,dueDate:$('taskDueDateInput').value,done:false});writeCars(readCars().map(x=>x.id===c.id?c:x));['taskNameInput','taskCostInput','taskDueMileageInput','taskDueDateInput'].forEach(id=>$(id).value='');renderTasks(c)}
+function renderServices(c){const out=$('serviceList');if(!out)return;c.services=c.services||[];if(!c.services.length){out.innerHTML=['Motorolja + filter','Luftfilter','Bränslefilter','Bromsvätska','Bromsar'].map((x,i)=>`<div class="task"><input type="checkbox" data-service-default="${i}"><div class="grow"><b>${x}</b><div class="mini">Inte registrerad ännu</div></div></div>`).join('')}else out.innerHTML=c.services.map((x,i)=>`<div class="task"><input type="checkbox" ${x.done?'checked':''} data-svc="${i}"><div class="grow"><b>${esc(x.name)}</b><div class="mini">${esc(x.date||'')} ${x.mileage?'• '+esc(x.mileage)+' mil':''}</div></div></div>`).join('');out.querySelectorAll('[data-svc]').forEach(x=>x.onchange=()=>{c.services[+x.dataset.svc].done=x.checked;writeCars(readCars().map(y=>y.id===c.id?c:y))})}
+function addService(){const c=readCars().find(x=>x.id===activeGarageId);if(!c)return;const name=prompt('Vad gjordes?');if(!name)return;const date=prompt('Datum (YYYY-MM-DD), lämna tomt om du vill:')||'';const mileage=prompt('Miltal, lämna tomt om du vill:')||'';c.services=c.services||[];c.services.push({name,date,mileage,done:true});writeCars(readCars().map(x=>x.id===c.id?c:x));renderServices(c);toast('✓ Service sparad')}
+
+/* ---------- Valuation ---------- */
+function valuation(){const c=readCars().find(x=>x.id===activeGarageId);if(!c)return;const b=c.build||{};const mileage=Number($('carMileageInput')?.value||0);let base=/7-serie/i.test(b.series)?90000:/5-serie/i.test(b.series)?65000:/6-serie/i.test(b.series)?75000:/4-serie/i.test(b.series)?60000:/3-serie/i.test(b.series)?52000:/2-serie/i.test(b.series)?48000:/1-serie/i.test(b.series)?40000:/x5/i.test(b.series)?85000:/x3/i.test(b.series)?70000:/x1/i.test(b.series)?55000:50000;if(/^g/i.test(b.generation))base*=1.55;else if(/^f/i.test(b.generation))base*=1.18;else if(/^e/i.test(b.generation))base*=.92;if(/m5|m3|m4|m2/i.test(b.engine))base*=2.15;else if(/535|540|550|545|530d/i.test(b.engine))base*=1.22;const km=mileage*10;if(km>0)base*=Math.max(.48,1-(Math.max(0,km-180000)/700000));const cond={'Dålig':.62,'Godkänd':.82,'Bra':1,'Mycket bra':1.14,'Normalt':.9,'Slitet':.68,'Projekt':.55,'Samlarbil':1.35}[$('carConditionInput')?.value]||1;base*=cond;const lo=Math.max(15000,Math.round(base*.88/1000)*1000),hi=Math.max(lo+5000,Math.round(base*1.12/1000)*1000);const o=$('valuationResult');if(o){o.style.display='block';o.innerHTML='<b>💰 Grov värdering</b><div style="font-size:25px;font-weight:900;margin-top:8px">'+lo.toLocaleString('sv-SE')+' – '+hi.toLocaleString('sv-SE')+' kr</div><div class="suite-muted" style="margin-top:7px">En enkel uppskattning – inte ett verifierat marknadspris.</div>'}}
+
+/* ---------- Diagnosis ---------- */
+function renderDiag(){const sm=$('diagMountSmart'),co=$('diagMountCodes');if(!sm||!co)return;sm.innerHTML='<div class="suite-card"><h2>🧠 Smart felsökning</h2><div class="suite-muted">Beskriv felet så får du en konkret kontrollista.</div><textarea id="masterSymptom" class="suite-textarea" style="margin-top:10px;min-height:120px" placeholder="T.ex. farthållaren fungerar inte..."></textarea><div class="suite-actions"><button type="button" class="suite-btn" id="masterDiagBtn">🔍 Bygg felsökning</button></div><div id="masterDiagResult"></div></div>';co.innerHTML='<div class="suite-card"><h2>📋 Läs felkoder</h2><div class="suite-muted">Klistra in INPA/ISTA/Carly/OBD-text.</div><textarea id="masterCodes" class="suite-textarea" style="margin-top:10px;min-height:130px" placeholder="DDE 4083\nDSC 5DF0\nP0299"></textarea><div class="suite-actions"><button type="button" class="suite-btn" id="masterParse">Läs felkoder</button><button type="button" class="suite-btn secondary" id="masterClear">Rensa</button></div><div id="masterCodeResult"></div></div>';
+  $('masterDiagBtn').onclick=()=>{const t=$('masterSymptom').value.toLowerCase();let a;if(/brom|farthåll|cruise/.test(t))a=['Kontrollera bromsljus och bromspedalkontakt.','Kontrollera switch-status i live-data.','Kontrollera säkring, kontaktstycke och kablage.','Läs DSC/DDE efter följdkoder.'];else if(/pdc|parkering|sensor/.test(t))a=['Kontrollera PDC-sensorer och matning.','Läs PDC-modulen.','Kontrollera kablage i stötfångaren.'];else if(/luft|fjädr|ehc|nivå/.test(t))a=['Kontrollera nivågivare och länkar.','Läs EHC efter felkoder och höjdvärden.','Kontrollera kompressor och läckage.'];else if(/motor|turbo|ladd|egr|diesel/.test(t))a=['Läs DDE/DME efter felkoder.','Kontrollera luft-, vakuum- och laddtryckssystem.','Jämför begärt och uppmätt live-data.'];else a=['Skriv exakt vad bilen gör och när.','Läs alla aktiva och sparade felkoder.','Kontrollera batterispänning och säkringar.'];$('masterDiagResult').innerHTML='<div class="tool-result ok" style="margin-top:10px"><b>Felsökningsplan</b>'+a.map((x,i)=>'<div class="step"><b>'+(i+1)+'.</b> '+esc(x)+'</div>').join('')+'</div>'};
+  $('masterParse').onclick=()=>{const t=$('masterCodes').value||'';const codes=[...new Set((t.match(/\b(?:[PBCU]\d{4}|[0-9A-F]{4,6})\b/gi)||[]).map(x=>x.toUpperCase()))];$('masterCodeResult').innerHTML=codes.length?'<div class="tool-result ok"><b>Hittade '+codes.length+' felkod'+(codes.length===1?'':'er')+'</b>'+codes.map(x=>{const f=typeof FAULT_DB!=='undefined'?FAULT_DB[x]:null;return '<div class="fault" style="margin-top:8px"><b>'+esc(x)+(f?' – '+esc(f.title):'')+'</b>'+(f?'<div class="tool-muted" style="margin-top:5px">'+esc(f.why)+'</div>':'<div class="tool-muted">Koden finns inte i den inbyggda databasen ännu.</div>')+'</div>'}).join('')+'</div>':'<div class="tool-result warn">Ingen tydlig felkod hittades.</div>'};$('masterClear').onclick=()=>{$('masterCodes').value='';$('masterCodeResult').innerHTML=''};
+}
+
+/* ---------- Lookup ---------- */
+function renderLookup(){const m=$('lookupMount');if(!m)return;m.innerHTML='<div class="suite-card"><h2>🔎 Regnummer / VIN</h2><div class="suite-muted">Regnummeruppslag kräver en ansluten fordonsdatakälla. VIN måste vara 17 tecken.</div><div class="suite-grid" style="margin-top:10px"><input class="suite-input" id="masterReg" maxlength="7" placeholder="ABC123"><input class="suite-input" id="masterVin" maxlength="17" placeholder="VIN 17 tecken"></div><div class="suite-actions"><button type="button" class="suite-btn" id="masterLookup">Sök bil</button></div><div class="tool-result" id="masterLookupResult"></div></div>';$('masterLookup').onclick=()=>{const reg=$('masterReg').value.trim().toUpperCase().replace(/\s/g,'');const vin=$('masterVin').value.trim().toUpperCase();const o=$('masterLookupResult');if(reg&&!/^[A-Z0-9]{5,7}$/.test(reg)){o.innerHTML='<b>Kontrollera registreringsnumret.</b>';return}if(vin&&!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)){o.innerHTML='<b>VIN ska vara 17 tecken.</b>';return}if(!reg&&!vin){o.innerHTML='<b>Skriv regnummer eller VIN.</b>';return}o.innerHTML='<div class="tool-result warn"><b>Ingen extern fordonsdatakälla är ansluten.</b><div class="tool-muted" style="margin-top:5px">Appen gissar inte fordonsdata utan verifierad källa.</div></div>'}}
+
+function toast(text){const n=document.createElement('div');n.textContent=text;n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147483000;background:#168b61;color:#fff;padding:13px 18px;border-radius:13px;font-weight:850;box-shadow:0 10px 30px #0008';document.body.appendChild(n);setTimeout(()=>n.remove(),1800)}
+
+function bindGarage(){
+  const add=$('addGarageBtn');if(add)add.onclick=()=>{editingGarageId=null;route('build')};
+  const save=$('saveCarBtn');if(save)save.onclick=saveProfile;
+  const del=$('deleteCarBtn');if(del)del.onclick=deleteProfile;
+  const val=$('valueCarBtn');if(val)val.onclick=valuation;
+  const task=$('addTaskBtn');if(task)task.onclick=addTask;
+  const service=$('addServiceBtn');if(service)service.onclick=addService;
+  const pdc=$('pdcGuideBtn');if(pdc)pdc.onclick=()=>{const box=$('pdcGuide');if(!box)return;box.style.display=box.style.display==='none'?'block':'none';box.innerHTML='<div class=\"tool-result ok\"><b>PDC-felsökning</b><div class=\"step\"><b>1.</b> Lägg i backen/aktivera PDC och kontrollera om någon sensor klickar.</div><div class=\"step\"><b>2.</b> Läs PDC-modulen efter felkod.</div><div class=\"step\"><b>3.</b> Kontrollera matning, jord och kontaktstycken.</div><div class=\"step\"><b>4.</b> Kontrollera kablage och varje sensor innan delar byts.</div></div>'};
+  const back=$('garageBackBtn');if(back)back.onclick=closeProfile;
+  const exp=$('exportGarageBtn');if(exp)exp.onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(readCars(),null,2)],{type:'application/json'}));a.download='BMW-Garage.json';a.click();URL.revokeObjectURL(a.href)};
+  if($('carImageInput'))$('carImageInput').onchange=e=>{const f=e.target.files?.[0];if(!f||!activeGarageId)return;const r=new FileReader();r.onload=()=>{const cars=readCars();const c=cars.find(x=>x.id===activeGarageId);if(c){c.image=r.result;writeCars(cars);openProfile(c.id)}};r.readAsDataURL(f)};
+  if(!$('garageBackBtn')){const b=document.createElement('button');b.id='garageBackBtn';b.type='button';b.className='suite-btn secondary';b.textContent='← Garage';b.onclick=closeProfile;$('profileTitle').before(b)}
+}
+
+function bindBuilderGarage(){const b=$('sbGarage');if(b){b.style.display='block';b.textContent='＋ Lägg i Garage';b.onclick=saveGarage}}
+function boot(){
+  mergeExtras();
+  // Re-run the core initializer after merging missing generations.
+  try{if(typeof init==='function')init()}catch(e){console.error(e)}
+  bindNav();bindGarage();bindBuilderGarage();
+  // Rebind after the step-builder's DOM has been refreshed.
+  setTimeout(()=>{bindBuilderGarage();home();},80);
+  splash();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
-
-<script id="correctedBuilderGarage">
-(function(){
-  function $x(id){return document.getElementById(id)}
-  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-  function currentBuildFixed(){
-    let g=null;
-    try{g=typeof cur==='function'?cur():null;}catch(e){g=null;}
-    let series='BMW',generation='',year='',body='',engine='',gear='';
-    try{
-      if(g){
-        series=DB[S.si][0]; generation=g.id;
-        year=g.years[S.year] ?? g.years[0];
-        body=g.bodies[S.body] ?? g.bodies[0];
-        const engines=typeof currentEngines==='function'?currentEngines():g.engines;
-        const gears=typeof currentGears==='function'?currentGears():g.gear;
-        engine=engines[S.engine] ?? engines[0]; gear=gears[S.gear] ?? gears[0];
-      }
-    }catch(e){g=null;}
-    // Fallback to the actual selected controls. This prevents the false "Välj BMW först" state.
-    const text=id=>document.getElementById(id)?.selectedOptions?.[0]?.text||'';
-    if(!g){
-      series=text('series')||series; generation=text('generation')||generation; year=text('year')||year;
-      body=text('body')||body; engine=text('engine')||engine; gear=text('gear')||gear;
-    }
-    if(!generation && window.bmwCurrentBuild) return window.bmwCurrentBuild;
-    let total=0, selected=[];
-    try{
-      const base=Number(g?.base)||0; total=base;
-      if(S?.chosen&&typeof allowed==='function') S.chosen.forEach(code=>{const o=OPTS.find(x=>x[1]===code);if(o&&allowed(o)){total+=Number(o[3])||0;selected.push(code)}});
-    }catch(e){
-      total=0; selected=[];
-    }
-    const b={
-      series,generation,year,body,engine,drive:text('drive'),gear,trim:text('trim'),color:text('color'),
-      upholstery:text('upholstery'),wheels:text('wheels'),interior:text('interior'),price:total,options:selected
-    };
-    return (generation||engine||series!=='BMW')?b:null;
-  }
-
-  function saveToGarageFixed(){
-    let b=null;
-    try{b=currentBuildFixed();}catch(e){b=null;}
-    if(!b && window.bmwCurrentBuild)b=window.bmwCurrentBuild;
-    if(!b){alert('Välj BMW först.');return}
-    const key='bmwBuilderGarageV2';
-    let cars=[];try{cars=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
-    if(!Array.isArray(cars))cars=[];
-    const car={
-      id:'bmw_'+Date.now(),
-      name:[b.series,b.generation,b.engine].filter(Boolean).join(' ')||'Min BMW',
-      mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',
-      build:b,tasks:[],services:[],costs:[]
-    };
-    cars.unshift(car);
-    localStorage.setItem(key,JSON.stringify(cars));
-    try{
-      if(window.bmwRoute)window.bmwRoute('garage');
-      if(window.bmwGarageAPI){window.bmwGarageAPI.refresh();window.bmwGarageAPI.open(car.id)}
-    }catch(e){if(window.bmwRoute)window.bmwRoute('garage');}
-    const n=document.createElement('div');
-    n.textContent='✓ BMW sparad i Garage';
-    n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:10000;background:#168b61;color:#fff;padding:13px 18px;border-radius:13px;font-weight:850;box-shadow:0 10px 30px #0008';
-    document.body.appendChild(n);setTimeout(()=>n.remove(),1800);
-  }
-
-  function forcePrice(){
-    const b=currentBuildFixed();if(!b)return;
-    const p=b.price.toLocaleString('sv-SE')+' kr';
-    if($x('total'))$x('total').textContent=p;
-    if($x('visualPrice'))$x('visualPrice').textContent=p;
-    if($x('sbMiniPrice'))$x('sbMiniPrice').textContent=p;
-    if($x('sbTotalMount'))$x('sbTotalMount').innerHTML='<div class="total">'+esc(p)+'</div>';
-  }
-  function wireFixed(){
-    const btn=$x('sbGarage');
-    if(btn){btn.onclick=saveToGarageFixed;btn.style.display='block'}
-    forcePrice();
-    ['series','generation','year','body','engine','drive','gear','trim','color','upholstery','wheels','interior'].forEach(id=>{
-      const el=$x(id);if(el)el.addEventListener('change',()=>setTimeout(forcePrice,20));
-    });
-    document.querySelectorAll('#stepBuilder .sb-choice').forEach(b=>b.addEventListener('click',()=>setTimeout(forcePrice,40)));
-    // Keep final summary fresh when options are clicked.
-    const opt=$x('options');if(opt)new MutationObserver(()=>setTimeout(forcePrice,20)).observe(opt,{childList:true,subtree:true});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wireFixed);else wireFixed();
-})();
-</script>
-<script id="cleanAppRouting">
-(function(){
- const body=document.body, home=document.getElementById('appHome');
- const step=document.getElementById('stepBuilder'), garage=document.getElementById('garageSuite');
- const smart=document.getElementById('smartDiagCard'), codes=document.getElementById('codePasteCard'), lookup=document.getElementById('garageImportCard');
- const smParent=smart&&smart.parentElement, codeParent=codes&&codes.parentElement, lookupParent=lookup&&lookup.parentElement;
- // Move existing diagnosis/lookup cards into their own screens so nothing from another mode leaks in.
- if(smart)document.getElementById('diagMountSmart').appendChild(smart);
- if(codes)document.getElementById('diagMountCodes').appendChild(codes);
- if(lookup)document.getElementById('lookupMount').appendChild(lookup);
- function route(r){
-   body.classList.remove('route-build','route-garage','route-diag','route-lookup');
-   if(r) body.classList.add('route-'+r);
-   // Startsidan visar exakt en funktion åt gången.
-   const screens={build:step,garage:garage,diag:document.getElementById('diagScreen'),lookup:document.getElementById('lookupScreen')};
-   Object.values(screens).forEach(el=>{if(el) el.style.display='none';});
-   if(r && screens[r]){
-     screens[r].style.display = r==='garage' ? 'grid' : 'block';
-     screens[r].scrollIntoView({behavior:'smooth',block:'start'});
-   } else if(home){
-     home.style.display='block';
-     window.scrollTo({top:0,behavior:'smooth'});
-   }
-   // Keep the hidden legacy navigation in sync, without relying on it for routing.
-   document.querySelectorAll('#appNav button').forEach(b=>b.classList.toggle('active',b.dataset.target===({build:'stepBuilder',garage:'garageSuite',diag:'smartDiagCard',lookup:'garageImportCard'}[r]||'')));
- }
- document.querySelectorAll('[data-route]').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));
- document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',()=>route('')));
- // Start clean on the home screen.
- route('');
-})();
-</script>
-
-<style id="failsafeBuilderCSS">
-/* FINAL FAILSAFE - independent touch controls */
-#failsafeBuilder{display:none;max-width:980px;margin:14px auto;padding:0 14px}
-#failsafeBuilder .fb-card{background:linear-gradient(145deg,#121c27,#0a1118);border:1px solid #2d4054;border-radius:20px;padding:16px;box-shadow:0 12px 35px #0006}
-#failsafeBuilder h2{margin:0 0 5px;font-size:22px}.fb-sub{color:#91a1b2;font-size:12px;margin-bottom:14px}
-.fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fb-field label{display:block;color:#aab7c5;font-size:11px;margin-bottom:5px}
-.fb-field select{width:100%;padding:13px;background:#080e15;color:#fff;border:1px solid #34485c;border-radius:11px;font-size:14px}
-.fb-choice-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.fb-choice{border:1px solid #304458!important;background:#101a24!important;color:#d8e1ea!important;border-radius:11px!important;padding:11px 12px!important;margin:0!important}.fb-choice.active{background:#1978f5!important;border-color:#4b9cff!important;color:#fff!important}
-.fb-next{width:100%;margin-top:14px!important;padding:14px!important;font-size:15px;background:#1978f5!important}.fb-status{margin-top:12px;padding:11px;border-radius:11px;background:#0b151f;border:1px solid #263a4d;color:#b8c6d4;font-size:12px}
-@media(max-width:650px){.fb-grid{grid-template-columns:1fr}#failsafeBuilder{padding:0 10px}}
-</style>
-<script id="finalFailsafeBuilder">
-(function(){
-  function start(){
-    var home=document.getElementById('appHome');
-    var oldBuild=document.getElementById('stepBuilder');
-    if(!home) return;
-
-    /* Make the start buttons work without depending on any earlier router. */
-    var buttons=home.querySelectorAll('.home-choice');
-    buttons.forEach(function(b){
-      b.onclick=function(ev){
-        ev.preventDefault(); ev.stopPropagation();
-        var r=b.getAttribute('data-route');
-        if(r==='build') showBuild();
-        else if(window.bmwRoute) window.bmwRoute(r);
-      };
-    });
-
-    var fb=document.getElementById('failsafeBuilder');
-    if(!fb){
-      fb=document.createElement('section'); fb.id='failsafeBuilder';
-      fb.innerHTML='<div class="fb-card">'+
-        '<button id="fbBack" type="button" class="app-back">← Till startsidan</button>'+
-        '<h2 style="margin-top:14px">🚘 Bygg BMW</h2>'+
-        '<div class="fb-sub">Välj bil direkt. Det här är den nya enkla byggaren och fungerar oberoende av den gamla menyn.</div>'+
-        '<div class="fb-grid">'+
-          '<div class="fb-field"><label>Serie / modell</label><select id="fbSeries"></select></div>'+
-          '<div class="fb-field"><label>Generation</label><select id="fbGeneration"></select></div>'+ 
-          '<div class="fb-field"><label>Årsmodell</label><select id="fbYear"></select></div>'+ 
-          '<div class="fb-field"><label>Kaross</label><select id="fbBody"></select></div>'+ 
-          '<div class="fb-field"><label>Motor</label><select id="fbEngine"></select></div>'+ 
-          '<div class="fb-field"><label>Växellåda</label><select id="fbGear"></select></div>'+ 
-        '</div>'+ 
-        '<div class="fb-choice-row" id="fbQuick"></div>'+ 
-        '<div class="fb-status" id="fbStatus">Välj serie för att börja.</div>'+ 
-        '<button type="button" class="fb-next" id="fbContinue">Fortsätt med den här BMW:n →</button>'+ 
-      '</div>';
-      document.body.appendChild(fb);
-    }
-
-    var sel={series:fb.querySelector('#fbSeries'),generation:fb.querySelector('#fbGeneration'),year:fb.querySelector('#fbYear'),body:fb.querySelector('#fbBody'),engine:fb.querySelector('#fbEngine'),gear:fb.querySelector('#fbGear')};
-    var fallback={
-      series:['1-serie','2-serie','3-serie','4-serie','5-serie','6-serie','7-serie','8-serie','X1','X2','X3','X4','X5','X6','X7','Z-serie','i-serie'],
-      generations:['E12','E21','E30','E36','E46','E53','E60/E61','E90/E91/E92/E93','F10/F11','F30/F31/F34','G30/G31'],
-      years:['2004','2005','2006','2007','2008','2009','2010'],
-      bodies:['Sedan','Touring','Coupé','Cabriolet','SUV'],
-      engines:['520i','523i','525i','530i','545i','550i','520d','525d','530d','535d','M5'],
-      gears:['Manuell','Automat','6-stegad Steptronic','SMG']
-    };
-    function optionsFor(el,arr){el.innerHTML=arr.map(function(x,i){return '<option value="'+i+'">'+String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</option>';}).join('');}
-    function currentData(){
-      try{return (typeof DB!=='undefined')?DB:null}catch(e){return null}
-    }
-    function dataForSeries(si){var d=currentData();return d&&d[si]?d[si][1]:null}
-    function refreshSeries(){
-      var d=currentData(), names=d?d.map(function(x){return x[0]}):fallback.series;
-      optionsFor(sel.series,names);
-      sel.series.value='4'; refreshGeneration();
-    }
-    function refreshGeneration(){
-      var g=dataForSeries(+sel.series.value), names=g?g.map(function(x){return x.id}):fallback.generations;
-      optionsFor(sel.generation,names);
-      var vals=Array.from(sel.generation.options).map(function(o){return o.text});
-      var e61=vals.findIndex(function(x){return x==='E61'});
-      if(names[e61]&&names[e61]==='E61') sel.generation.value=e61; else if(vals.includes('E60/E61')) sel.generation.value=vals.indexOf('E60/E61');
-      refreshDetails();
-    }
-    function refreshDetails(){
-      var oldYear=sel.year && sel.year.options.length ? sel.year.value : '0';
-      var oldBody=sel.body && sel.body.options.length ? sel.body.value : '0';
-      var oldEngine=sel.engine && sel.engine.options.length ? sel.engine.value : '0';
-      var oldGear=sel.gear && sel.gear.options.length ? sel.gear.value : '0';
-      var g=dataForSeries(+sel.series.value); g=g&&g[+sel.generation.value];
-      var years=g&&g.years?g.years:fallback.years.map(Number);
-      optionsFor(sel.year,years.map(String));
-      var yi=years.map(String).indexOf(String(years[+oldYear] ?? oldYear));
-      if(yi<0) yi=0;
-      sel.year.value=String(yi);
-      var bodies=g&&g.bodies?g.bodies:fallback.bodies;
-      optionsFor(sel.body,bodies);
-      if(+oldBody < bodies.length) sel.body.value=oldBody;
-      var selectedYear=years[+sel.year.value]||years[0];
-      var engines=g&&g.engines?g.engines:fallback.engines;
-      /* Exact E61 year data when available in the existing database. */
-      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'&&E61_DATA[selectedYear]) engines=E61_DATA[selectedYear].engines;
-      optionsFor(sel.engine,engines);
-      if(+oldEngine < engines.length) sel.engine.value=oldEngine;
-      var selectedEngine=sel.engine.options[sel.engine.selectedIndex]?.text||'';
-      var gears=g&&g.gear?g.gear:fallback.gears;
-      if(g&&g.id==='E61'&&typeof E61_DATA!=='undefined'&&E61_DATA[selectedYear]){
-        gears=E61_DATA[selectedYear].gears;
-      }
-      optionsFor(sel.gear,gears);
-      if(+oldGear < gears.length) sel.gear.value=oldGear;
-      updateStatus();
-    }
-    function updateStatus(){
-      var txt=sel.series.options[sel.series.selectedIndex]?.text+' '+sel.generation.options[sel.generation.selectedIndex]?.text+' '+sel.year.options[sel.year.selectedIndex]?.text;
-      var engine=sel.engine.options[sel.engine.selectedIndex]?.text||'';
-      var body=sel.body.options[sel.body.selectedIndex]?.text||'';
-      var gear=sel.gear.options[sel.gear.selectedIndex]?.text||'';
-      var st=fb.querySelector('#fbStatus'); if(st)st.textContent=txt+' • '+body+' • '+engine+' • '+gear;
-      var quick=fb.querySelector('#fbQuick');
-      if(quick)quick.innerHTML=['5-serie','E61','2008','520d','Manuell'].map(function(x){return '<button type="button" class="fb-choice">'+x+'</button>';}).join('');
-    }
-    function syncOld(){
-      try{
-        var ids=['series','generation','year','body','engine','gear'];
-        ids.forEach(function(id){var x=document.getElementById(id), f=sel[id];if(x&&f){x.value=f.value;x.dispatchEvent(new Event('change',{bubbles:true}));}});
-      }catch(e){}
-      var title=document.getElementById('headerModel');if(title)title.textContent=(sel.series.options[sel.series.selectedIndex]?.text||'BMW')+' '+(sel.generation.options[sel.generation.selectedIndex]?.text||'');
-    }
-    function showBuild(){
-      home.style.display='none';
-      if(oldBuild)oldBuild.style.display='none';
-      fb.style.display='block';
-      window.scrollTo(0,0);
-      refreshSeries();
-    }
-    function captureCompactBuild(){
-      var si=+sel.series.value, gi=+sel.generation.value, yi=+sel.year.value, bi=+sel.body.value, ei=+sel.engine.value, geari=+sel.gear.value;
-      window.bmwCurrentBuild={
-        series:sel.series.options[si]?.text||'BMW',generation:sel.generation.options[gi]?.text||'',
-        year:sel.year.options[yi]?.text||'',body:sel.body.options[bi]?.text||'',engine:sel.engine.options[ei]?.text||'',
-        drive:'',gear:sel.gear.options[geari]?.text||'',trim:'',color:'',upholstery:'',wheels:'',interior:'',price:0,options:[]
-      };
-      try{localStorage.setItem('bmwBuilderCurrent',JSON.stringify(window.bmwCurrentBuild));}catch(e){}
-      return window.bmwCurrentBuild;
-    }
-    function goHome(){fb.style.display='none';home.style.display='block';window.scrollTo(0,0)}
-    window.bmwGoHome=goHome;
-    window.bmwGoBuild=showBuild;
-    sel.series.onchange=refreshGeneration; sel.generation.onchange=refreshDetails; sel.year.onchange=refreshDetails;
-    sel.body.onchange=updateStatus; sel.engine.onchange=updateStatus; sel.gear.onchange=updateStatus;
-    fb.querySelector('#fbBack').onclick=goHome;
-    fb.querySelector('#fbContinue').onclick=function(){captureCompactBuild();syncOld();fb.querySelector('#fbStatus').textContent+=' ✓ Vald';};
-    fb.addEventListener('click',function(e){
-      var q=e.target.closest('.fb-choice');if(!q)return;
-      var v=q.textContent.trim();
-      [sel.series,sel.generation,sel.year,sel.engine,sel.gear].some(function(s){var i=Array.from(s.options).findIndex(function(o){return o.text===v});if(i>=0){s.value=String(i);s.dispatchEvent(new Event('change'));captureCompactBuild();return true}return false});
-    });
-    refreshSeries();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
-})();
-</script>
-
-<script id="bmwUltimateTapRouter">
-(function(){
-  function hideAll(){
-    ['appHome','stepBuilder','garageSuite','diagScreen','lookupScreen','failsafeBuilder'].forEach(function(id){
-      var e=document.getElementById(id); if(e) e.style.display='none';
-    });
-  }
-  function home(){
-    hideAll();
-    var e=document.getElementById('appHome'); if(e)e.style.display='block';
-    window.scrollTo(0,0);
-  }
-  function build(){
-    hideAll();
-    var fb=document.getElementById('failsafeBuilder');
-    var old=document.getElementById('stepBuilder');
-    if(fb){
-      fb.style.display='block';
-      try{fb.scrollIntoView({behavior:'auto',block:'start'});}catch(e){}
-      return;
-    }
-    if(old){old.style.display='block';try{old.scrollIntoView({behavior:'auto',block:'start'});}catch(e){}}
-  }
-  function route(r){
-    if(r==='build'){build();return;}
-    if(r==='garage'){
-      hideAll();var g=document.getElementById('garageSuite');if(g)g.style.display='grid';return;
-    }
-    if(r==='diag'){
-      hideAll();var d=document.getElementById('diagScreen');if(d)d.style.display='block';return;
-    }
-    if(r==='lookup'){
-      hideAll();var l=document.getElementById('lookupScreen');if(l)l.style.display='block';return;
-    }
-    home();
-  }
-  window.bmwUltimateHome=home;
-  window.bmwUltimateBuild=build;
-  window.bmwGoHome=home;
-  window.bmwGoBuild=build;
-  window.bmwUltimateRoute=route;
-
-  // Capture phase: this runs before the old click handlers, so a broken/old
-  // handler cannot prevent the visible navigation from working.
-  document.addEventListener('click',function(ev){
-    var logo=ev.target.closest && ev.target.closest('.bmw-roundel');
-    if(logo){ev.preventDefault();ev.stopPropagation();home();return;}
-    var choice=ev.target.closest && ev.target.closest('.home-choice');
-    if(choice){ev.preventDefault();ev.stopPropagation();route(choice.getAttribute('data-route')||'');return;}
-    var back=ev.target.closest && ev.target.closest('[data-home],#fbBack');
-    if(back){ev.preventDefault();ev.stopPropagation();home();return;}
-  },true);
-
-  // Make the first screen deterministic on load.
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',home);
-  else home();
-})();
-</script>
-<script id="bmwFinalFixes">
-(function(){
-  'use strict';
-  const $=id=>document.getElementById(id);
-
-  /* ---------- BMW start animation ---------- */
-  function installSplash(){
-    if($('bmwSplash')) return;
-    const style=document.createElement('style');
-    style.id='bmwSplashCSS';
-    style.textContent=`
-      #bmwSplash{position:fixed;inset:0;z-index:2147483647;background:#05080c;display:flex;align-items:center;justify-content:center;opacity:1;visibility:visible;transition:opacity .65s ease,visibility .65s ease}
-      #bmwSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
-      #bmwSplash .splashLogo{width:min(190px,45vw);height:min(190px,45vw);transform:scale(.18) rotate(-25deg);opacity:0;animation:bmwSplashIn 1.15s cubic-bezier(.17,.89,.25,1.18) forwards}
-      #bmwSplash .splashGlow{position:absolute;width:min(230px,54vw);height:min(230px,54vw);border:1px solid rgba(180,205,230,.22);border-radius:50%;transform:scale(.35);opacity:0;animation:bmwSplashRing 1.1s ease-out .15s forwards}
-      @keyframes bmwSplashIn{0%{transform:scale(.18) rotate(-25deg);opacity:0}55%{transform:scale(1.08) rotate(4deg);opacity:1}78%{transform:scale(.96) rotate(0)}100%{transform:scale(1) rotate(0);opacity:1}}
-      @keyframes bmwSplashRing{0%{transform:scale(.35);opacity:0}35%{opacity:1}100%{transform:scale(1.1);opacity:0}}
-      @media(prefers-reduced-motion:reduce){#bmwSplash .splashLogo{animation:none;transform:none;opacity:1}#bmwSplash .splashGlow{display:none}}
-    `;
-    document.head.appendChild(style);
-    const s=document.createElement('div');s.id='bmwSplash';s.innerHTML=`<div class="splashGlow"></div><svg class="splashLogo" viewBox="0 0 200 200" aria-label="BMW"><circle cx="100" cy="100" r="91" fill="#0d141c" stroke="#dce7f2" stroke-width="6"/><circle cx="100" cy="100" r="70" fill="#f3f6f9"/><path d="M100 100L100 30A70 70 0 0 1 170 100Z" fill="#1680d9"/><path d="M100 100L170 100A70 70 0 0 1 100 170Z" fill="#1680d9"/><circle cx="100" cy="100" r="70" fill="none" stroke="#b7c8d8" stroke-width="2"/><text x="100" y="108" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="900" fill="#17202a">BMW</text></svg>`;
-    document.body.prepend(s);
-    const hide=()=>{s.classList.add('hide');setTimeout(()=>s.remove(),700)};
-    window.addEventListener('load',()=>setTimeout(hide,1250),{once:true});
-    setTimeout(hide,3200);
-  }
-
-  /* ---------- Routing: one authoritative router ---------- */
-  function hideScreens(){
-    ['appHome','stepBuilder','garageSuite','diagScreen','lookupScreen','failsafeBuilder'].forEach(id=>{const e=$(id);if(e)e.style.display='none'});
-  }
-  function home(){
-    hideScreens();
-    const e=$('appHome');if(e)e.style.display='block';
-    window.scrollTo(0,0);
-  }
-  function build(){
-    hideScreens();
-    const fb=$('failsafeBuilder');
-    const step=$('stepBuilder');
-    if(fb){fb.style.display='block';window.scrollTo(0,0);return}
-    if(step){step.style.display='block';window.scrollTo(0,0);}
-  }
-  function route(r){
-    if(r==='build'){build();return}
-    if(r==='garage'){hideScreens();const e=$('garageSuite');if(e)e.style.display='grid';window.scrollTo(0,0);return}
-    if(r==='diag'){hideScreens();const e=$('diagScreen');if(e)e.style.display='block';renderDiagnosis();window.scrollTo(0,0);return}
-    if(r==='lookup'){hideScreens();const e=$('lookupScreen');if(e)e.style.display='block';window.scrollTo(0,0);return}
-    home();
-  }
-  window.bmwRoute=route;window.bmwGoHome=home;window.bmwGoBuild=build;
-
-  /* ---------- Diagnosis: self-contained, always visible ---------- */
-  const faultNames={
-    '4083':['Bromsljus-/bromspedalskontakt – signalavvikelse','Kontrollera bromsljus, bromspedalkontakt, kablage och switch-status i live-data.'],
-    '5DF0':['DSC-pumpenhet – fel','Kontrollera matning, säkringar, DSC-koder och pumpens funktion.'],
-    '5DF2':['DSC/ABS-enhet – hårdvarufel','Kontrollera spänning, kontaktstycke och om felet är aktivt.'],
-    '5E1F':['Rattvinkel – kalibrering/initiering','Kontrollera att ratten står rakt och kalibrera med BMW-diagnos.'],
-    'P0299':['Laddtryck för lågt','Kontrollera laddluftslangar, intercooler, vakuum och turboaktuator.'],
-    'P0401':['EGR-flöde för lågt','Kontrollera EGR/insug, vakuum/elektrik och luftmätning.'],
-    'P0101':['MAF – orimligt luftflöde','Kontrollera MAF, insugsläckage, luftfilter och EGR.'],
-    'P0300':['Flera/slumpmässiga feltändningar','Kontrollera tändning, bränsle, luft och kompression beroende på motor.']
-  };
-  function diagnosisHTML(){return `
-    <div class="suite-card" style="margin:0 0 12px">
-      <h2>🧠 Smart felsökning</h2>
-      <div class="suite-muted">Beskriv felet så får du en konkret kontrollista. Välj gärna diagnosverktyg och modul.</div>
-      <textarea id="finalSymptom" class="suite-textarea" style="margin-top:10px;min-height:120px" placeholder="T.ex. farthållaren fungerar inte och jag har fel på bromspedalskontakt..."></textarea>
-      <div class="suite-grid" style="margin-top:8px"><select id="finalDiagTool" class="suite-select"><option>Ingen diagnosläsare</option><option>INPA</option><option>ISTA</option><option>Carly</option><option>OBD-läsare</option></select><select id="finalDiagModule" class="suite-select"><option>Automatiskt</option><option>DDE</option><option>DME</option><option>DSC/ABS</option><option>EHC</option><option>PDC</option><option>CAS</option><option>FRM</option></select></div>
-      <div class="suite-actions"><button type="button" class="suite-btn" id="finalBuildDiag">🔍 Bygg felsökning</button></div>
-      <div id="finalDiagResult"></div>
-    </div>
-    <div class="suite-card" style="margin:0">
-      <h2>📋 Läs felkoder</h2><div class="suite-muted">Klistra in text från INPA, ISTA, Carly eller OBD-läsaren. Appen hittar BMW-hexkoder och P-koder.</div>
-      <textarea id="finalCodeInput" class="suite-textarea" style="margin-top:10px;min-height:130px" placeholder="Exempel: DDE 4083\nDSC 5DF0\nP0299"></textarea>
-      <div class="suite-actions"><button type="button" class="suite-btn" id="finalParseCodes">Läs felkoder</button><button type="button" class="suite-btn secondary" id="finalClearCodes">Rensa</button></div>
-      <div id="finalCodeResult"></div>
-    </div>`}
-  function renderDiagnosis(){
-    const m=$('diagMountSmart');const c=$('diagMountCodes');
-    if(m){m.innerHTML='';}
-    if(c){c.innerHTML='';}
-    if(m)m.innerHTML=diagnosisHTML().split('<div class="suite-card" style="margin:0">')[0];
-    if(c)c.innerHTML='<div class="suite-card" style="margin:0"><h2>📋 Läs felkoder</h2><div class="suite-muted">Klistra in text från INPA, ISTA, Carly eller OBD-läsaren. Appen hittar BMW-hexkoder och P-koder.</div><textarea id="finalCodeInput" class="suite-textarea" style="margin-top:10px;min-height:130px" placeholder="Exempel: DDE 4083\nDSC 5DF0\nP0299"></textarea><div class="suite-actions"><button type="button" class="suite-btn" id="finalParseCodes">Läs felkoder</button><button type="button" class="suite-btn secondary" id="finalClearCodes">Rensa</button></div><div id="finalCodeResult"></div></div>';
-    bindDiagnosis();
-  }
-  function bindDiagnosis(){
-    const b=$('finalBuildDiag');
-    if(b)b.onclick=()=>{
-      const t=($('finalSymptom')?.value||'').trim().toLowerCase();
-      const mod=$('finalDiagModule')?.value||'Automatiskt';
-      let checks=[];
-      if(/brom|farthåll|cruise/.test(t))checks=['Kontrollera bromsljusen och bromspedalkontakten.','Läs bromsswitchens status i live-data.','Kontrollera säkring, kontaktstycke och kablage.','Läs DSC/DDE efter följdkoder.'];
-      else if(/pdc|parkering|sensor/.test(t))checks=['Kontrollera att alla PDC-sensorer klickar svagt när systemet är aktivt.','Kontrollera PDC-matning och säkring.','Läs PDC-modulen efter felkoder.','Kontrollera kontaktstycken och kablage i stötfångaren.'];
-      else if(/luft|fjädr|ehc|nivå/.test(t))checks=['Kontrollera nivågivarnas länkar och kontaktstycken.','Läs EHC efter felkoder och aktuella höjdvärden.','Kontrollera kompressor och läckage.','Kalibrera höjden först när givarna fungerar.'];
-      else if(/motor|turbo|ladd|egr|diesel/.test(t))checks=['Läs DDE/DME efter aktiva och sparade felkoder.','Kontrollera luft-, vakuum- och laddtryckssystem.','Jämför begärda och uppmätta värden i live-data.','Kontrollera bränsle/insprutning om värdena avviker.'];
-      else checks=['Skriv exakt vad bilen gör och när felet uppstår.','Läs alla aktiva och sparade felkoder.','Kontrollera batterispänning och säkringar.','Jämför live-data med normala värden innan delar byts.'];
-      $('finalDiagResult').innerHTML='<div class="tool-result ok" style="margin-top:10px"><b>Felsökningsplan</b><div class="tool-muted" style="margin-top:5px">Modul: '+esc(mod)+'</div>'+checks.map((x,i)=>'<div class="step"><b>'+(i+1)+'.</b> '+esc(x)+'</div>').join('')+'</div>';
-    };
-    const p=$('finalParseCodes');
-    if(p)p.onclick=()=>{
-      const text=$('finalCodeInput')?.value||'';const found=[];const seen=new Set();
-      const add=(code,module)=>{code=code.toUpperCase();if(seen.has(code))return;seen.add(code);found.push([code,module||''])};
-      for(const m of text.matchAll(/\b([PBCU]\d{4})\b/gi))add(m[1],'');
-      for(const line of text.split(/\r?\n/)){
-        const mod=(line.match(/\b(DDE|DME|DSC|ABS|EHC|CAS|FRM|PDC|KOMBI|IHKA|EGS|SZL)\b/i)||[])[1]||'';
-        for(const m of line.matchAll(/\b(?:0x)?([0-9A-F]{4,6})\b/gi)){const x=m[1].toUpperCase();if(!/^20\d{2}$/.test(x))add(x,mod)}
-      }
-      const out=$('finalCodeResult');if(!found.length){out.innerHTML='<div class="tool-result warn"><b>Ingen tydlig felkod hittades.</b><div class="tool-muted">Klistra in hela raden från diagnosen.</div></div>';return}
-      out.innerHTML='<div class="tool-result ok"><b>Hittade '+found.length+' felkod'+(found.length===1?'':'er')+'</b>'+found.map(([code,mod])=>{const f=faultNames[code];return '<div class="fault" style="margin-top:8px"><b>'+esc(code)+'</b>'+(mod?' <span class="severity">'+esc(mod)+'</span>':'')+(f?'<div style="margin-top:5px"><b>'+esc(f[0])+'</b><div class="tool-muted" style="margin-top:5px">'+esc(f[1])+'</div></div>':'<div class="tool-muted" style="margin-top:5px">Koden finns inte i den inbyggda databasen ännu – appen gissar inte betydelsen.</div>')+'</div>'}).join('')+'</div>';
-    };
-    const cl=$('finalClearCodes');if(cl)cl.onclick=()=>{$('finalCodeInput').value='';$('finalCodeResult').innerHTML=''};
-  }
-
-  /* ---------- Real valuation ---------- */
-  function valuation(){
-    const title=($('profileTitle')?.textContent||'').replace(/^🚗\s*/,'');
-    const mileage=Number($('carMileageInput')?.value||0);
-    const condition=$('carConditionInput')?.value||'Bra';
-    const active=(localStorage.getItem('bmwBuilderGarageV2')||'[]');
-    let cars=[];try{cars=JSON.parse(active)}catch(e){}
-    const current=cars.find(c=>c.name===title)||null;
-    const b=current?.build||{};
-    const series=(b.series||title).toLowerCase();
-    const gen=(b.generation||'').toLowerCase();
-    const engine=(b.engine||'').toLowerCase();
-    let base=/7-serie/.test(series)?90000:/5-serie/.test(series)?65000:/6-serie/.test(series)?75000:/4-serie/.test(series)?60000:/3-serie/.test(series)?52000:/2-serie/.test(series)?48000:/1-serie/.test(series)?40000:/x5/.test(series)?85000:/x3/.test(series)?70000:/x1/.test(series)?55000:50000;
-    if(gen.startsWith('g'))base*=1.55;else if(gen.startsWith('f'))base*=1.18;else if(gen.startsWith('e'))base*=.92;
-    if(/m5|m3|m4|m2/.test(engine))base*=2.15;else if(/535|540|550|545|530d/.test(engine))base*=1.22;else if(/520d|318d|320d|525d/.test(engine))base*=1.02;
-    if(mileage>0){const km=mileage*10; const ref=180000; base*=Math.max(.48,1-(Math.max(0,km-ref)/700000)); if(km<80000)base*=1.12;}
-    const cond={'Dålig':.62,'Godkänd':.82,'Bra':1,'Mycket bra':1.14,'Samlarbil':1.35}[condition]||1;
-    base*=cond;
-    const low=Math.max(15000,Math.round(base*.88/1000)*1000), high=Math.max(low+5000,Math.round(base*1.12/1000)*1000);
-    const out=$('valuationResult');if(!out)return;
-    out.style.display='block';out.innerHTML='<b>💰 Grov värdering</b><div style="font-size:25px;font-weight:900;margin-top:8px">'+low.toLocaleString('sv-SE')+' – '+high.toLocaleString('sv-SE')+' kr</div><div class="suite-muted" style="margin-top:7px">Detta är en enkel app-beräkning baserad på BMW-modell, generation, motor, miltal och skick. Det är inte ett verifierat marknadspris.</div>';
-  }
-
-  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-
-  function finalWire(){
-    // Home buttons and logo use capture phase so old handlers cannot break them.
-    document.addEventListener('click',function(e){
-      const logo=e.target.closest?.('.bmw-roundel');
-      if(logo){e.preventDefault();e.stopImmediatePropagation();home();return}
-      const choice=e.target.closest?.('.home-choice');
-      if(choice){e.preventDefault();e.stopImmediatePropagation();route(choice.dataset.route||'');return}
-      const back=e.target.closest?.('[data-home],#fbBack');
-      if(back){e.preventDefault();e.stopImmediatePropagation();home();return}
-    },true);
-    const v=$('valueCarBtn');if(v){v.onclick=e=>{e.preventDefault();e.stopPropagation();valuation()}}
-    // Also keep the direct diagnostic card button working if the old UI is shown somewhere.
-    const oldDiag=$('buildDiagBtn');if(oldDiag && !oldDiag.dataset.finalBound){oldDiag.dataset.finalBound='1';oldDiag.onclick=()=>{route('diag')}}
-    home();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{installSplash();finalWire()},{once:true});
-  else {installSplash();finalWire()}
-})();
-</script>
-
-<script id="bmwGarageBuildEditorFix">
-(function(){
-  'use strict';
-  const KEY='bmwBuilderGarageV2';
-  const $=id=>document.getElementById(id);
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  let editingId=null;
-
-  function readCars(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
-  function writeCars(c){localStorage.setItem(KEY,JSON.stringify(c))}
-
-  function currentFailSafeBuild(){
-    const ids=['fbSeries','fbGeneration','fbYear','fbBody','fbEngine','fbGear'];
-    const vals={};
-    ids.forEach(id=>{const e=$(id); vals[id]=e?.selectedOptions?.[0]?.text||''});
-    return {series:vals.fbSeries||'BMW',generation:vals.fbGeneration,year:vals.fbYear,body:vals.fbBody,engine:vals.fbEngine,drive:'',gear:vals.fbGear,trim:'',color:'',upholstery:'',wheels:'',interior:'',price:0,options:[]};
-  }
-  function updateBuilderStatus(){
-    const b=currentFailSafeBuild();
-    const st=$('fbStatus'); if(st) st.textContent=[b.series,b.generation,b.year,b.body,b.engine,b.gear].filter(Boolean).join(' • ');
-  }
-  function setSelectByText(id,text){
-    const e=$(id); if(!e||!text)return false;
-    const i=Array.from(e.options).findIndex(o=>o.text.trim()===String(text).trim());
-    if(i<0)return false; e.value=String(i); e.dispatchEvent(new Event('change',{bubbles:true})); return true;
-  }
-  function fillBuilder(b){
-    const set=(id,text)=>{const e=$(id);if(!e||!text)return false;const i=Array.from(e.options).findIndex(o=>o.text.trim()===String(text).trim());if(i<0)return false;e.value=String(i);return true};
-    set('fbSeries',b.series);
-    const genSet=set('fbGeneration',b.generation);
-    if($('fbGeneration')) $('fbGeneration').dispatchEvent(new Event('change',{bubbles:true}));
-    setTimeout(()=>{
-      set('fbYear',b.year);
-      set('fbBody',b.body);
-      set('fbEngine',b.engine);
-      set('fbGear',b.gear);
-      updateBuilderStatus();
-    },80);
-  }
-
-  function ensureButtons(){
-    const cont=$('fbContinue'); if(!cont)return;
-    let save=$('fbSaveGarage');
-    if(!save){
-      save=document.createElement('button'); save.id='fbSaveGarage'; save.type='button'; save.className='fb-next';
-      save.style.marginTop='10px'; save.style.background='#168b61'; cont.insertAdjacentElement('afterend',save);
-    }
-    save.textContent=editingId?'💾 Spara ändringar i Garage':'＋ Lägg bilen i Garage';
-    save.onclick=saveBuilder;
-  }
-
-  function saveBuilder(){
-    const b=currentFailSafeBuild();
-    if(!b.generation||!b.year||!b.engine){alert('Välj serie, generation, årsmodell och motor först.');return}
-    const cars=readCars();
-    if(editingId){
-      const c=cars.find(x=>x.id===editingId);
-      if(c){c.build={...(c.build||{}),...b};c.name=[b.series,b.generation,b.engine].filter(Boolean).join(' ');writeCars(cars);editingId=null;showGarage();toast('✓ BMW uppdaterad i Garage');return;}
-      editingId=null;
-    }
-    const car={id:'bmw_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),name:[b.series,b.generation,b.engine].filter(Boolean).join(' ')||'Min BMW',mileage:'',reg:'',vin:'',condition:'Bra',notes:'',image:'',build:b,tasks:[],services:[],costs:[]};
-    cars.unshift(car);writeCars(cars);showGarage();toast('✓ BMW sparad i Garage');
-    setTimeout(()=>openGarageProfile(car.id),60);
-  }
-  function toast(text){const n=document.createElement('div');n.textContent=text;n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147483000;background:#168b61;color:#fff;padding:13px 18px;border-radius:13px;font-weight:850;box-shadow:0 10px 30px #0008';document.body.appendChild(n);setTimeout(()=>n.remove(),1800)}
-  function showGarage(){if(window.bmwRoute)window.bmwRoute('garage');else{['appHome','stepBuilder','failsafeBuilder','diagScreen','lookupScreen'].forEach(id=>{const e=$(id);if(e)e.style.display='none'});if($('garageSuite'))$('garageSuite').style.display='grid'};if(window.bmwGarageAPI)window.bmwGarageAPI.refresh()}
-  function openGarageProfile(id){if(window.bmwGarageAPI){window.bmwGarageAPI.refresh();window.bmwGarageAPI.open(id)}}
-
-  function addEditButton(){
-    const title=$('profileTitle'); if(!title)return;
-    let btn=$('editBuildBtn');
-    if(!btn){btn=document.createElement('button');btn.id='editBuildBtn';btn.type='button';btn.className='suite-btn secondary';btn.textContent='✏️ Ändra BMW';btn.style.margin='8px 0';title.insertAdjacentElement('afterend',btn)}
-    btn.onclick=editCurrentCar;
-  }
-  function editCurrentCar(){
-    const cars=readCars();
-    const title=($('profileTitle')?.textContent||'').replace(/^🚗\s*/,'');
-    let id=window.bmwGarageActiveId||null;
-    if(!id && window.bmwGarageAPI && window.bmwGarageAPI.getActiveId) id=window.bmwGarageAPI.getActiveId();
-    let c=id?cars.find(x=>x.id===id):null;
-    if(!c)c=cars.find(x=>x.name===title)||null;
-    if(!c||!c.build){alert('Kunde inte hitta bilen i Garage.');return}
-    editingId=c.id;
-    if(window.bmwGoBuild)window.bmwGoBuild();else if(window.bmwRoute)window.bmwRoute('build');
-    setTimeout(()=>{ensureButtons();fillBuilder(c.build)},120);
-  }
-
-  // Keep active id observable without replacing the existing garage API.
-  function hookGarage(){
-    if(window.bmwGarageAPI && !window.bmwGarageAPI.__editorHooked){
-      const oldOpen=window.bmwGarageAPI.open;
-      window.bmwGarageAPI.open=function(id){window.bmwGarageActiveId=id;return oldOpen(id)};
-      window.bmwGarageAPI.__editorHooked=true;
-    }
-    addEditButton();
-  }
-
-  // Fix delete so the exact garage record disappears immediately.
-  document.addEventListener('click',function(e){
-    const del=e.target.closest?.('#deleteCarBtn'); if(!del)return;
-    setTimeout(()=>{
-      try{const active=window.bmwGarageActiveId; if(active){const cars=readCars().filter(c=>c.id!==active);writeCars(cars);window.bmwGarageActiveId=null;}}
-      catch(_e){}
-    },30);
-  },true);
-
-  // Rebind the failsafe builder controls after it is created and after every route.
-  function watch(){
-    ensureButtons();
-    ['fbSeries','fbGeneration','fbYear','fbBody','fbEngine','fbGear'].forEach(id=>{const e=$(id);if(e&&!e.dataset.editorBound){e.dataset.editorBound='1';e.addEventListener('change',()=>setTimeout(updateBuilderStatus,10));}});
-    hookGarage();
-  }
-  const mo=new MutationObserver(watch);mo.observe(document.body,{childList:true,subtree:true});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
-  window.bmwEditGarageCar=function(id){const c=readCars().find(x=>x.id===id);if(!c)return;editingId=id;if(window.bmwGoBuild)window.bmwGoBuild();setTimeout(()=>fillBuilder(c.build),120)};
-})();
-</script>
-
-
-<style id="bmwInteractionFixCSS">
-/* Final interaction layer: nothing invisible may sit above the controls. */
-html,body{touch-action:manipulation}
-button,select,input,textarea{pointer-events:auto!important;-webkit-user-select:auto;user-select:auto}
-#failsafeBuilder{position:relative;z-index:1000;pointer-events:auto!important}
-#failsafeBuilder .fb-card,#failsafeBuilder select,#failsafeBuilder button{pointer-events:auto!important}
-#bmwSplash{z-index:999999!important}
-</style>
-<script id="bmwInteractionFix">
-(function(){
-  'use strict';
-  function $(id){return document.getElementById(id)}
-  function hideSplashNow(){
-    var s=$('bmwSplash');
-    if(s){s.classList.add('hide');setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s)},800)}
-  }
-  function makeInteractive(){
-    document.querySelectorAll('button,select,input,textarea').forEach(function(el){
-      el.style.pointerEvents='auto';
-    });
-    var fb=$('failsafeBuilder');
-    if(fb){
-      fb.style.pointerEvents='auto';fb.style.zIndex='1000';
-      fb.querySelectorAll('select').forEach(function(s){
-        s.disabled=false;
-        s.style.pointerEvents='auto';
-        if(!s.dataset.interactionFix){
-          s.dataset.interactionFix='1';
-          s.addEventListener('change',function(){
-            var ev=new Event('change',{bubbles:true});
-            // Let the existing onchange do the real refresh; this only updates status.
-            setTimeout(function(){
-              var st=$('fbStatus');
-              if(st){var vals=['fbSeries','fbGeneration','fbYear','fbBody','fbEngine','fbGear'].map(function(id){var x=$(id);return x&&x.selectedOptions[0]?x.selectedOptions[0].text:''}).filter(Boolean);st.textContent=vals.join(' • ')}
-            },10);
-          });
-        }
-      });
-    }
-  }
-  function boot(){
-    // Never wait for window load: external images/network must not block the UI.
-    setTimeout(hideSplashNow,1400);
-    makeInteractive();
-    var mo=new MutationObserver(function(){makeInteractive()});
-    mo.observe(document.body,{childList:true,subtree:true});
-    setTimeout(function(){mo.disconnect()},10000);
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
-})();
-</script>
-
 </body></html>
