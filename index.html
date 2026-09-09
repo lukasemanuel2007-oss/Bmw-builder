@@ -2038,3 +2038,94 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 window.bmwV2Premium={refresh:function(){update();finalUpdate();eqUpdate()}};
 })();
 </script>
+
+<!-- BMW BUILDER V4 MEGA PATCH: real interior + truly varied cinematic intros -->
+<style id="bmwV4MegaCSS">
+/* Five clearly different intro styles */
+#cinematicSplash.v4-1 .cs-photo{animation:v4Photo1 5.8s ease forwards!important}
+#cinematicSplash.v4-1 .cs-blue{animation:v4Blue1 4s ease-in-out infinite!important}
+#cinematicSplash.v4-2 .cs-photo{animation:v4Photo2 5.8s ease forwards!important;filter:saturate(.72) contrast(1.08) brightness(.64)}
+#cinematicSplash.v4-2 .cs-blue{animation:v4Blue2 3.2s ease-in-out infinite!important}
+#cinematicSplash.v4-2 .cs-content{transform:translateY(10px);animation:v4Content2 .9s ease forwards}
+#cinematicSplash.v4-3 .cs-photo{animation:v4Photo3 5.8s ease forwards!important;filter:saturate(1.15) contrast(1.1) brightness(.6)}
+#cinematicSplash.v4-3 .cs-blue{animation:v4Blue3 2.8s ease-in-out infinite!important}
+#cinematicSplash.v4-3 .cs-content{animation:v4Content3 .8s cubic-bezier(.2,.9,.2,1) forwards}
+#cinematicSplash.v4-4 .cs-photo{animation:v4Photo4 5.8s ease forwards!important;filter:brightness(.48) contrast(1.16)}
+#cinematicSplash.v4-4 .cs-blue{animation:v4Blue4 4.5s ease-in-out infinite!important;opacity:.5}
+#cinematicSplash.v4-4 .cs-content{animation:v4Content4 1s ease forwards}
+#cinematicSplash.v4-5 .cs-photo{animation:v4Photo5 5.8s ease forwards!important;filter:grayscale(.8) contrast(1.12) brightness(.58)}
+#cinematicSplash.v4-5 .cs-blue{animation:v4Blue5 5s ease-in-out infinite!important;opacity:.32}
+#cinematicSplash.v4-5 .cs-content{animation:v4Content5 1.15s ease forwards}
+@keyframes v4Photo1{0%{transform:scale(1.18) translateX(-2%);filter:brightness(.46) saturate(.7)}100%{transform:scale(1.02) translateX(0);filter:brightness(.78) saturate(1)}}
+@keyframes v4Photo2{0%{transform:scale(1.03);background-position:52% 50%;filter:blur(5px) brightness(.3)}45%{transform:scale(1.11);background-position:47% 50%;filter:blur(0) brightness(.62)}100%{transform:scale(1.04);background-position:50% 50%;filter:brightness(.72)}}
+@keyframes v4Photo3{0%{transform:scale(1.24) translateX(3%);filter:brightness(.28) saturate(.8)}55%{transform:scale(1.06) translateX(-1%);filter:brightness(.68) saturate(1.25)}100%{transform:scale(1.01);filter:brightness(.76) saturate(1.08)}}
+@keyframes v4Photo4{0%{transform:scale(1.15) translateY(2%);filter:brightness(.22)}35%{transform:scale(1.08);filter:brightness(.5)}100%{transform:scale(1.02) translateY(-1%);filter:brightness(.62)}}
+@keyframes v4Photo5{0%{transform:scale(1.02);filter:grayscale(1) blur(3px) brightness(.24)}50%{transform:scale(1.09);filter:grayscale(.9) blur(0) brightness(.55)}100%{transform:scale(1.03);filter:grayscale(.7) brightness(.66)}}
+@keyframes v4Blue1{0%,100%{transform:translate(-22vw,-6vh) scale(.7)}50%{transform:translate(22vw,8vh) scale(1.1)}}
+@keyframes v4Blue2{0%,100%{transform:translate(24vw,-10vh) scale(.55)}50%{transform:translate(-20vw,10vh) scale(1.2)}}
+@keyframes v4Blue3{0%,100%{transform:translate(-30vw,12vh) scale(.5);opacity:.3}50%{transform:translate(30vw,-8vh) scale(1.3);opacity:1}}
+@keyframes v4Blue4{0%,100%{transform:translateY(18vh) scale(.6)}50%{transform:translateY(-18vh) scale(1.15)}}
+@keyframes v4Blue5{0%,100%{transform:translate(-12vw,-15vh) scale(.5)}50%{transform:translate(18vw,12vh) scale(1)}}
+@keyframes v4Content2{to{transform:translateY(0);opacity:1}}
+@keyframes v4Content3{from{transform:scale(.94);opacity:.2}to{transform:scale(1);opacity:1}}
+@keyframes v4Content4{from{transform:translateX(-20px);opacity:.15}to{transform:translateX(0);opacity:1}}
+@keyframes v4Content5{from{transform:translateY(18px);opacity:.1}to{transform:translateY(0);opacity:1}}
+/* Real interior presentation */
+.v4-real-interior{position:relative;background:#05090d;padding:0;overflow:hidden}
+.v4-real-interior img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center;filter:saturate(.96) contrast(1.03);transition:transform .5s ease,filter .35s ease}
+.v4-real-interior:active img{transform:scale(1.025)}
+.v4-real-badge{position:absolute;left:12px;top:12px;padding:8px 11px;border-radius:999px;background:#071019d9;border:1px solid #78bfff55;backdrop-filter:blur(12px);font-size:10px;font-weight:900;color:#fff}
+.v4-real-caption{padding:11px 13px 13px;background:linear-gradient(180deg,#0b1219,#070c11);border-top:1px solid #1e3447;color:#90a4b6;font-size:10px;line-height:1.45}
+.v4-real-caption b{color:#fff}
+.v4-real-caption a{color:#74baff;text-decoration:none}
+@media(max-width:640px){.v4-real-interior img{aspect-ratio:4/3;object-position:center}}
+</style>
+<script id="bmwV4MegaScript">
+(function(){
+'use strict';
+function pickIntro(){
+  var s=document.getElementById('cinematicSplash'); if(!s)return;
+  var last=Number(localStorage.getItem('bmwBuilderLastIntro')||'0');
+  var n=1+Math.floor(Math.random()*5);
+  if(n===last)n=n%5+1;
+  localStorage.setItem('bmwBuilderLastIntro',String(n));
+  s.classList.remove('v3-a','v3-b','v3-c','v4-1','v4-2','v4-3','v4-4','v4-5');
+  s.classList.add('v4-'+n);
+  var labels=[
+    ['Startar...','Din BMW','M-STYLE','GARAGE','HERITAGE'],
+    ['Kallstart...','Din BMW','M-STYLE','GARAGE','HERITAGE'],
+    ['M PERFORMANCE...','Din BMW','M-STYLE','GARAGE','HERITAGE'],
+    ['Öppnar garaget...','Din BMW','M-STYLE','GARAGE','HERITAGE'],
+    ['BMW HERITAGE...','Din BMW','M-STYLE','GARAGE','HERITAGE']
+  ][n-1];
+  var l=document.getElementById('csLoadingText');if(l)l.textContent=labels[0];
+  var title=document.querySelector('#cinematicSplash .cs-title');
+  var sub=document.querySelector('#cinematicSplash .cs-sub');
+  if(n===2){if(title)title.textContent='DIN BMW';if(sub)sub.textContent='Din bil. Din stil.'}
+  if(n===3){if(title)title.textContent='M PERFORMANCE';if(sub)sub.textContent='Precision • Power • Passion'}
+  if(n===4){if(title)title.textContent='MY GARAGE';if(sub)sub.textContent='Samla • Spara • Bygg vidare'}
+  if(n===5){if(title)title.textContent='BMW HERITAGE';if(sub)sub.textContent='Tradition möter framtid'}
+}
+function realInterior(){
+  var host=document.getElementById('pvContent');
+  var tab=document.querySelector('#premiumVisualHost .pv-tab.on[data-pv="interior"]');
+  var gen=(document.getElementById('generation')?.selectedOptions?.[0]?.text||'').toUpperCase();
+  if(!host||!tab)return;
+  if(!/^E6[01]\b/.test(gen) && gen!=='E60' && gen!=='E61')return;
+  if(host.querySelector('.v4-real-interior'))return;
+  var url='https://commons.wikimedia.org/wiki/Special:Redirect/file/BMW_E60_M5_Interior.JPG';
+  host.innerHTML='<div class="v4-real-interior"><img src="'+url+'" alt="Riktig BMW E60/E61 interiör" loading="eager"><div class="v4-real-badge">Riktig BMW-interiör • E60/E61</div></div><div class="v4-real-caption"><b>Riktig interiörbild</b><br>Originalfoto av BMW E60-interiör som används som E60/E61-kupéreferens. <a href="https://commons.wikimedia.org/wiki/File:BMW_E60_M5_Interior.JPG" target="_blank" rel="noopener">Visa källa</a></div>';
+  var img=host.querySelector('img');
+  if(img)img.addEventListener('error',function(){host.innerHTML='<div class="pv-loading">Interiörbilden kunde inte laddas. Försöker igen nästa gång du öppnar Interiör.</div>';});
+}
+function boot(){
+  pickIntro();
+  setTimeout(realInterior,700);
+  setInterval(realInterior,1200);
+  document.addEventListener('click',function(e){
+    if(e.target.closest('#premiumVisualHost .pv-tab[data-pv="interior"]'))setTimeout(realInterior,500);
+  },true);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
