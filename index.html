@@ -728,8 +728,41 @@ function updateImage(){
     <text x="220" y="25" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">BMW ${series} ${gen}</text>
     <text x="220" y="173" text-anchor="middle" fill="#aab8c8" font-size="12">${year} • ${body} • ${wheelName}${sun?" • Taklucka": ""}</text>
   </svg>`;
-  $("imageCaption").innerHTML=`<span class="status-ok">● Visar bygget:</span> ${series} ${gen} — ${year} — ${body} — ${colorName} — ${wheelName}${sun?" — Taklucka":""}`;
+
+  setTimeout(()=>renderRealBuilderPreview({series,gen,year,body,colorName,wheelName}),30);
 }
+
+let __realBuilderToken=0, __realBuilderCache=new Map();
+const __realBuilderMap={
+ 'E87':'https://commons.wikimedia.org/wiki/Special:FilePath/BMW_E87_front_20080719.jpg',
+ 'E81':'https://commons.wikimedia.org/wiki/Special:FilePath/BMW_E81_front_20080719.jpg',
+ 'E90':'https://commons.wikimedia.org/wiki/Special:FilePath/BMW_E90_front_20080719.jpg',
+ 'E61':'https://commons.wikimedia.org/wiki/Special:FilePath/BMW_5er_Touring_(E61).jpg',
+ 'E60':'https://commons.wikimedia.org/wiki/Special:FilePath/BMW_E60_front_20080515.jpg',
+ 'F30':'https://commons.wikimedia.org/wiki/Special:FilePath/BMW_F30_Front.jpg'
+};
+async function renderRealBuilderPreview(meta){
+ const box=$("previewBox"); if(!box)return; const token=++__realBuilderToken;
+ const key=meta.gen+'|'+meta.body;
+ let url=__realBuilderMap[meta.gen] || null;
+ if(!url && __realBuilderCache.has(key)) url=__realBuilderCache.get(key);
+ if(!url){
+  try{
+   const q=encodeURIComponent('BMW '+meta.gen+' '+meta.body+' '+meta.year+' front');
+   const r=await fetch('https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+q+'&gsrnamespace=6&gsrlimit=8&prop=imageinfo&iiprop=url&iiurlwidth=1200&format=json&origin=*',{cache:'force-cache'});
+   const j=await r.json(); const pages=Object.values(j.query?.pages||{});
+   const hit=pages.map(p=>p.imageinfo?.[0]?.thumburl||p.imageinfo?.[0]?.url).find(x=>x&&/\.(jpe?g|png|webp)(\?|$)/i.test(x));
+   if(hit){url=hit;__realBuilderCache.set(key,url)}
+  }catch(e){}
+ }
+ if(token!==__realBuilderToken || !url)return;
+ const old=box.querySelector('.v14-real-builder'); if(old)return;
+ const card=document.createElement('div'); card.className='v14-real-builder';
+ card.innerHTML='<img src="'+url.replace(/"/g,'&quot;')+'" alt="Riktig BMW '+meta.gen+' modellbild" loading="eager"><div class="v14-real-builder-badge">Riktig modellbild • '+meta.gen+' • '+meta.body+'</div><div class="v14-real-builder-note">Referensbild för vald generation. Färg och fälg enligt dina val visas i konfigurationen.</div>';
+ card.addEventListener('click',()=>{card.classList.toggle('focus')});
+ box.innerHTML=''; box.appendChild(card);
+}
+
 
 const FAULT_DB={
  'P0299':{title:'Laddtryck för lågt',risk:'Medel–hög',why:'Motorn får mindre laddtryck än styrsystemet förväntar sig.',causes:['Läckage i laddluftslang/intercooler','Vakuumläcka eller fel på styrning av turbo','VGT/turbo som kärvar eller är sliten','MAP/trycksensor som visar fel'],steps:['Läs av koden igen och notera freeze-frame om diagnosverktyget visar det.','Kontrollera alla laddluftslangar, intercooler och slanganslutningar efter oljefukt, sprickor och lösa klämmor.','Kontrollera vakuumslangar och turboaktuator där motorn använder vakuumstyrning.','Jämför begärt och uppmätt laddtryck under provkörning.','Om allt ovan är normalt: kontrollera MAP-sensor och turbo/VGT mer ingående.']},
@@ -1735,7 +1768,25 @@ function renderShell(i){const host=buildPanel();if(!host)return null; const pric
 function colorHex(n){const m={"Alpinvit":"#f4f4f2","Jet Black":"#15171a","Black Sapphire":"#101923","Space Grey":"#68727c","Titan Silver":"#b7bec5","Sparkling Graphite":"#4f5962","Le Mans Blue":"#2459a6","Monaco Blue":"#172f57","Deep Green":"#274a36","Imolaröd":"#8f1720","Melbourne Red":"#a51d26","Mineral White":"#e8e8e3","Mineral Grey":"#6d747b","Estoril Blue":"#2d68c0","San Marino Blue":"#173e8a","Tanzanite Blue":"#183b61","Frozen Grey":"#7b8185"};return m[n]||"#5b6570"}
 function renderConfigStrip(i){const host=$('pvContent');if(!host)return;host.querySelector('.pv-config-strip')?.remove();const x=document.createElement('div');x.className='pv-config-strip';x.innerHTML=`<div class="pv-config-item"><span>Färg</span><b><i class="pv-color-dot" style="background:${colorHex(val('color'))}"></i>${val('color')}</b></div><div class="pv-config-item"><span>Fälg</span><b>${val('wheels')}</b></div><div class="pv-config-item"><span>Klädsel</span><b>${i.up}</b></div><div class="pv-config-item"><span>List</span><b>${i.trim}</b></div>`;host.appendChild(x)}
 function renderPhotos(photos,i){const host=$('pvContent');if(!host)return;if(!photos.length){host.innerHTML='<div class="pv-loading">Inga matchande modellbilder hittades just nu.</div>';return}photoIndex=Math.min(photoIndex,photos.length-1);const p=photos[photoIndex];host.innerHTML=`<div class="pv-main"><img class="pv-image" src="${p.url}" alt="BMW ${i.gen} ${i.year} ${i.body}" loading="eager"><div class="pv-badge">${mode==='interior'?'Interiör':'Exteriör'} • ${i.gen} • ${i.body}</div></div><div class="pv-credit">Källa: Wikimedia Commons • <a href="${p.page}" target="_blank" rel="noopener">Visa original</a></div><div class="pv-thumbs">${photos.map((x,n)=>`<button class="pv-thumb ${n===photoIndex?'on':''}" data-pv-photo="${n}"><img src="${x.url}" alt="Vy ${n+1}" loading="lazy"></button>`).join('')}</div>`;host.querySelectorAll('[data-pv-photo]').forEach(b=>b.onclick=()=>{photoIndex=+b.dataset.pvPhoto;renderPhotos(photos,i)});renderConfigStrip(i)}
-function renderInteriorPreview(i){const host=$('pvContent');if(!host)return;const seat=interiorColors[i.up]||'#25282b',trim=trimColors[i.trim]||'#333';host.innerHTML=`<div class="pv-interior"><div class="pv-spec"><div class="pv-chip"><span>Klädsel</span><b>${i.up}</b></div><div class="pv-chip"><span>Interiörlist</span><b>${i.trim}</b></div></div><div class="pv-cabin" style="--seat:${seat}"><div class="pv-windshield"></div><div class="pv-dash" style="background:linear-gradient(180deg,${trim},#11171e)"></div><div class="pv-screen"></div><div class="pv-wheel"></div><div class="pv-seat left"></div><div class="pv-seat right"></div><div class="pv-console"></div></div><div class="pv-list"><b style="color:#fff">Din interiör</b><br>${i.up} • ${i.trim}<br>Previewen ändras direkt när du väljer klädsel eller interiörlist.</div></div>`;renderConfigStrip(i)}
+function renderInteriorPreview(i){
+ const host=$('pvContent');if(!host)return;
+ const real={
+  'E87':{file:'BMW_130i_interior.jpg',page:'https://commons.wikimedia.org/wiki/File:BMW_130i_interior.jpg',label:'BMW 1-serie E87'},
+  'E81':{file:'BMW_E81_dashboard_20080719.jpg',page:'https://commons.wikimedia.org/wiki/File:BMW_E81_dashboard_20080719.jpg',label:'BMW 1-serie E81'},
+  'E60':{file:'BMW_E60_M5_Interior.JPG',page:'https://commons.wikimedia.org/wiki/File:BMW_E60_M5_Interior.JPG',label:'BMW 5-serie E60'},
+  'E61':{file:'BMW_E60_M5_Interior.JPG',page:'https://commons.wikimedia.org/wiki/File:BMW_E60_M5_Interior.JPG',label:'BMW 5-serie E61 / E60'},
+  'E90':{file:'BMW_E90_Interior.JPG',page:'https://commons.wikimedia.org/wiki/File:BMW_E90_Interior.JPG',label:'BMW 3-serie E90'},
+  'F30':{file:'BMW_320d_M_Sport_Business_Edition_2_-_006_-_Flickr_-_Supermac1961.jpg',page:'https://commons.wikimedia.org/wiki/File:BMW_320d_M_Sport_Business_Edition_2_-_006_-_Flickr_-_Supermac1961.jpg',label:'BMW 3-serie F30'}
+ };
+ const match=Object.keys(real).find(k=>i.gen===k||i.gen.startsWith(k+'/')||i.gen.includes(k));
+ if(match){
+   const r=real[match],url='https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(r.file);
+   host.innerHTML=`<div class="v4-real-interior v14-real-interior"><img src="${url}" alt="Riktig ${r.label}-interiör" loading="eager"><div class="v4-real-badge">Riktig interiör • ${r.label}</div></div><div class="v4-real-caption"><b>${r.label}</b><br>Riktig modellbild används i stället för den ritade kupé-previewen. Vald klädsel och list visas under bilden. <a href="${r.page}" target="_blank" rel="noopener">Visa källa</a></div>`;
+   const img=host.querySelector('img'); if(img) img.addEventListener('error',()=>{renderInteriorFallback(i)}); renderConfigStrip(i); return;
+ }
+ renderInteriorFallback(i);
+}
+function renderInteriorFallback(i){const host=$('pvContent');if(!host)return;const seat=interiorColors[i.up]||'#25282b',trim=trimColors[i.trim]||'#333';host.innerHTML=`<div class="pv-interior"><div class="pv-spec"><div class="pv-chip"><span>Klädsel</span><b>${i.up}</b></div><div class="pv-chip"><span>Interiörlist</span><b>${i.trim}</b></div></div><div class="pv-cabin" style="--seat:${seat}"><div class="pv-windshield"></div><div class="pv-dash" style="background:linear-gradient(180deg,${trim},#11171e)"></div><div class="pv-screen"></div><div class="pv-wheel"></div><div class="pv-seat left"></div><div class="pv-seat right"></div><div class="pv-console"></div></div><div class="pv-list"><b style="color:#fff">Din interiör</b><br>${i.up} • ${i.trim}<br>Ingen exakt modellbild hittades just nu.</div></div>`;renderConfigStrip(i)}
 async function render(){const i=info();const host=renderShell(i);if(!host)return;photoIndex=0;const arr=pickPhotos(await fetchCommons(queryFor(i,mode==='interior')),mode==='interior');if(mode==='interior'&&!arr.length){renderInteriorPreview(i)}else if(arr.length){renderPhotos(arr,i)}else{renderInteriorPreview(i)}}
 function schedule(){clearTimeout(timer);timer=setTimeout(render,180)}
 function bind(){['series','generation','year','body','engine','color','upholstery','wheels','interior','trim'].forEach(id=>{const e=$(id);if(e)e.addEventListener('change',schedule)});document.addEventListener('DOMContentLoaded',()=>schedule());if(document.readyState!=='loading')schedule()}
@@ -2109,15 +2160,12 @@ function pickIntro(){
 function realInterior(){
   var host=document.getElementById('pvContent');
   var tab=document.querySelector('#premiumVisualHost .pv-tab.on[data-pv="interior"]');
-  var gen=(document.getElementById('generation')?.selectedOptions?.[0]?.text||'').toUpperCase();
   if(!host||!tab)return;
-  if(!/^E6[01]\b/.test(gen) && gen!=='E60' && gen!=='E61')return;
-  if(host.querySelector('.v4-real-interior'))return;
-  var url='https://commons.wikimedia.org/wiki/Special:Redirect/file/BMW_E60_M5_Interior.JPG';
-  host.innerHTML='<div class="v4-real-interior"><img src="'+url+'" alt="Riktig BMW E60/E61 interiör" loading="eager"><div class="v4-real-badge">Riktig BMW-interiör • E60/E61</div></div><div class="v4-real-caption"><b>Riktig interiörbild</b><br>Originalfoto av BMW E60-interiör som används som E60/E61-kupéreferens. <a href="https://commons.wikimedia.org/wiki/File:BMW_E60_M5_Interior.JPG" target="_blank" rel="noopener">Visa källa</a></div>';
-  var img=host.querySelector('img');
-  if(img)img.addEventListener('error',function(){host.innerHTML='<div class="pv-loading">Interiörbilden kunde inte laddas. Försöker igen nästa gång du öppnar Interiör.</div>';});
+  if(typeof window.bmwPremiumVisuals==='object' && typeof window.bmwPremiumVisuals.refresh==='function'){
+    /* The premium visual renderer now owns the real interior image. */
+  }
 }
+
 function boot(){
   pickIntro();
   setTimeout(realInterior,700);
@@ -2545,6 +2593,20 @@ body.v10-active{background:#020408!important;color:#f7fbff!important}
 @media(max-width:600px){#bmwV10Splash .v10-car-wrap{width:100vw!important;top:45%!important}#bmwV10Splash .v10-copy{bottom:max(8.5vh,86px)!important}#bmwV10Splash .v10-title{font-size:39px!important}}
 @media(max-height:700px){#bmwV10Splash .v10-car-wrap{top:43%!important}#bmwV10Splash .v10-copy{bottom:82px!important}}
 @media(prefers-reduced-motion:reduce){#bmwV10Splash .v10-car-wrap,#bmwV10Splash .v10-sweep,#bmwV10Splash .v10-copy,#bmwV10Splash:after{animation:none!important}#bmwV10Splash .v10-car-wrap{opacity:1!important;transform:translate(-50%,-50%) scale(1)!important}#bmwV10Splash .v10-copy{opacity:1!important;transform:none!important}}
+
+/* V14 real model interior */
+.v14-real-interior{position:relative;background:#05090d;overflow:hidden;border:1px solid rgba(120,170,220,.24);box-shadow:0 20px 60px rgba(0,0,0,.34)}
+.v14-real-interior img{display:block;width:100%;height:min(62vw,520px);min-height:270px;object-fit:cover;object-position:center;filter:saturate(.98) contrast(1.04);transition:transform .8s cubic-bezier(.16,1,.3,1),filter .4s ease}
+.v14-real-interior:active img{transform:scale(1.015);filter:saturate(1) contrast(1.06)}
+.v14-real-interior .v4-real-badge{position:absolute;left:14px;bottom:14px;padding:9px 12px;border-radius:12px;background:rgba(5,10,16,.78);backdrop-filter:blur(14px);font-size:12px;letter-spacing:.06em;color:#fff;border:1px solid rgba(160,200,240,.18)}
+@media(max-width:640px){.v14-real-interior img{height:62vw;min-height:250px;max-height:430px}}
+
+.v14-real-builder{position:relative;width:100%;min-height:230px;overflow:hidden;border-radius:18px;background:#070c12;border:1px solid rgba(120,170,220,.28);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 18px 50px rgba(0,0,0,.28)}
+.v14-real-builder img{display:block;width:100%;height:clamp(230px,42vw,430px);object-fit:cover;object-position:center;filter:saturate(.98) contrast(1.04);transition:transform .8s cubic-bezier(.16,1,.3,1),filter .35s ease}
+.v14-real-builder.focus img{transform:scale(1.035);filter:saturate(1.03) contrast(1.06)}
+.v14-real-builder-badge{position:absolute;top:12px;left:12px;padding:8px 11px;border-radius:12px;background:rgba(5,10,16,.72);backdrop-filter:blur(14px);border:1px solid rgba(160,200,240,.2);font-size:11px;color:#fff;letter-spacing:.06em}
+.v14-real-builder-note{position:absolute;left:12px;right:12px;bottom:12px;padding:10px 12px;border-radius:13px;background:linear-gradient(180deg,rgba(5,10,16,.18),rgba(5,10,16,.82));color:#cbd7e4;font-size:11px;line-height:1.4;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+@media(max-width:640px){.v14-real-builder img{height:54vw;min-height:230px;max-height:360px}.v14-real-builder-note{font-size:10px}}
 </style>
 <script id="v13IntroControl">
 (function(){
